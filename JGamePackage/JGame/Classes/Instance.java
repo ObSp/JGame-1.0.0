@@ -2,9 +2,14 @@ package JGamePackage.JGame.Classes;
 
 import java.util.ArrayList;
 
+import JGamePackage.lib.CustomError.CustomError;
 import JGamePackage.lib.Signal.Signal;
 
 public class Instance {
+    //--CUSTOM ERRORS--//
+    private static CustomError ErrorAlreadyDestroyed = new CustomError("Cannot destroy an already destroyed instance.", CustomError.WARNING, 1);
+    private static CustomError ErrorParentLocked = new CustomError("Unable to set parent property; the property is locked.", CustomError.WARNING, 1);
+
     /**A non-unique identifier that can be used to access this instance through its parent.
      * 
      */
@@ -32,11 +37,11 @@ public class Instance {
      * 
      */
     public Signal<Instance> DescendantRemoved = new Signal<>();
-    
 
     //--HIERARCHY VARS--//
     protected ArrayList<Instance> children = new ArrayList<>();
     protected Instance parent;
+    protected boolean parentLocked = false;
 
     //--UTIL--//
     private Instance[] instanceListToArray(ArrayList<Instance> list){
@@ -49,6 +54,19 @@ public class Instance {
     }
 
     //--HIERARCHY METHODS--//
+    public void Destroy(){
+        if (parentLocked) {
+            ErrorAlreadyDestroyed.Throw();
+            return;
+        }
+
+        this.SetParent(null);
+        this.parentLocked = true;
+
+        for (Instance child : GetChildren())
+            child.Destroy();
+    }
+
     private void addDescendantsRecursive(Instance curInstance, ArrayList<Instance> list){
         for (Instance child : curInstance.GetChildren()) {
             list.add(child);
@@ -111,6 +129,11 @@ public class Instance {
     }
 
     public void SetParent(Instance parent) {
+        if (parentLocked) {
+            ErrorParentLocked.Throw();
+            return;
+        }
+
         if (this.parent != null) {
             this.parent.RemoveChild(this);
         }
