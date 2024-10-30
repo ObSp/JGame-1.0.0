@@ -2,41 +2,51 @@ package JGamePackage.JGame.Classes;
 
 import java.util.ArrayList;
 
+import JGamePackage.JGame.JGame;
 import JGamePackage.lib.CustomError.CustomError;
 import JGamePackage.lib.Signal.Signal;
+import JGamePackage.lib.Signal.SignalWrapper;
 
-public class Instance {
+public abstract class Instance {
     //--CUSTOM ERRORS--//
-    private static CustomError ErrorAlreadyDestroyed = new CustomError("Cannot destroy an already destroyed instance.", CustomError.WARNING, 1);
-    private static CustomError ErrorParentLocked = new CustomError("Unable to set parent property; the property is locked.", CustomError.WARNING, 1);
+    private static CustomError ErrorAlreadyDestroyed = new CustomError("Cannot destroy an already destroyed instance.", CustomError.WARNING, "JGamePackage");
+    private static CustomError ErrorParentLocked = new CustomError("Unable to set parent property; the property is locked.", CustomError.WARNING, "JGamePackage");
+    private static CustomError ErrorNoJGame = new CustomError("A JGame must be running in order to create JGame instances.", CustomError.ERROR, "JGamePackage");
 
     /**A non-unique identifier that can be used to access this instance through its parent.
      * 
      */
-    public String Name = "Instance";
+    public String Name;
 
 
     //--SIGNALS--//
 
+    private Signal<Instance> childAddedSignal = new Signal<>();
     /**Fires when an instance is parented to this instance
      * 
      */
-    public Signal<Instance> ChildAdded = new Signal<>();
+    public SignalWrapper<Instance> ChildAdded = new SignalWrapper<>(childAddedSignal);
 
+    private Signal<Instance> childRemovedSignal = new Signal<>();
     /**Fires when a child of this instance is parented to something else
      * 
      */
-    public Signal<Instance> ChildRemoved = new Signal<>();
+    public SignalWrapper<Instance> ChildRemoved = new SignalWrapper<>(childRemovedSignal);
 
+    private Signal<Instance> descendantAddedSignal = new Signal<>();
     /**Fires when an instance is parented to a descendant of this instance
      * 
      */
-    public Signal<Instance> DescendantAdded = new Signal<>();
+    public SignalWrapper<Instance> DescendantAdded = new SignalWrapper<>(descendantAddedSignal);
 
+    private Signal<Instance> descendantRemovedSignal = new Signal<>();
     /**Fires when a descendant of this instance is parented to an instance that's not an ancestor of this instance
      * 
      */
-    public Signal<Instance> DescendantRemoved = new Signal<>();
+    public SignalWrapper<Instance> DescendantRemoved = new SignalWrapper<>(descendantRemovedSignal);
+
+    //--MISC--//
+    protected JGame game;
 
     //--HIERARCHY VARS--//
     protected ArrayList<Instance> children = new ArrayList<>();
@@ -51,6 +61,16 @@ public class Instance {
             array[i] = list.get(i);
 
         return array;
+    }
+
+    //--CONSTRUCTORS--//
+    public Instance() {
+        JGame curGame = JGame.CurrentGame;
+        if (curGame == null){
+            ErrorNoJGame.Throw(); //exits program
+        }
+        this.game = curGame;
+        this.Name = this.getClass().getSimpleName();
     }
 
     //--HIERARCHY METHODS--//
@@ -108,23 +128,49 @@ public class Instance {
         return null;
     }
 
+    /**Returns the first found child whose classname is equal to the className parameter.
+     * 
+     * @param className
+     * @return
+     */
+    public Instance GetChildOfClass(String className) {
+        for (Instance child : GetChildren()) {
+            if (child.getClass().getSimpleName().equals(className))
+                return child;
+        }
+        return null;
+    }
+
+    /**Returns the first found child whose class is related to the given class
+     * 
+     * @param className
+     * @return
+     */
+    public Instance GetChildWhichIsA(Class<?> childClass) {
+        for (Instance child : GetChildren()) {
+            if (childClass.isInstance(child))
+                return child;
+        }
+        return null;
+    }
+
     protected void AddChild(Instance child) {
         children.add(child);
-        ChildAdded.Fire(child);
-        DescendantAdded.Fire(child);
+        childAddedSignal.Fire(child);
+        descendantAddedSignal.Fire(child);
 
         for (Instance ancestor : GetAncestors()) {
-            ancestor.DescendantAdded.Fire(child);
+            ancestor.descendantAddedSignal.Fire(child);
         }
     }
 
     protected void RemoveChild(Instance child) {
         children.remove(child);
-        ChildRemoved.Fire(child);
-        DescendantRemoved.Fire(child);
+        childRemovedSignal.Fire(child);
+        descendantRemovedSignal.Fire(child);
 
         for (Instance ancestor : GetAncestors()) {
-            ancestor.DescendantRemoved.Fire(child);
+            ancestor.descendantRemovedSignal.Fire(child);
         }
     }
 

@@ -2,10 +2,11 @@ package JGamePackage.JGame.Types.PointObjects;
 
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.lib.CustomError.CustomError;
+import JGamePackage.lib.Utils.ExtendedMath;
 
 public class Vector2 extends BasePoint {
 
-    private static final CustomError ErrorAccessIndexOutOfBounds = new CustomError("Index %s out of bounds for Vector2 index access. Valid indices are "+Constants.Vector2Axis.X+" and "+Constants.Vector2Axis.Y+".", CustomError.ERROR, 1);
+    private static final CustomError ErrorAccessIndexOutOfBounds = new CustomError("Index %s out of bounds for Vector2 index access. Valid indices are "+Constants.Vector2Axis.X+" and "+Constants.Vector2Axis.Y+".", CustomError.ERROR, "Vector2");
 
     /**Shorthand for {@code Vector2(0,0)}.*/
     public static final Vector2 zero = new Vector2(0, 0);
@@ -137,15 +138,9 @@ public class Vector2 extends BasePoint {
         return Math.sqrt(X*X + Y*Y);
     }
 
-
-
-    private double lerpComponent(double a, double b, double t) {
-        return (1-t) * a + t*b;
-    }
-
     public Vector2 lerp(Vector2 goal, double t) {
-        double newX = lerpComponent(X, goal.X, t);
-        double newY = lerpComponent(Y, goal.Y, t);
+        double newX = ExtendedMath.lerp(X, goal.X, t);
+        double newY = ExtendedMath.lerp(Y, goal.Y, t);
         return new Vector2(newX, newY);
     }
 

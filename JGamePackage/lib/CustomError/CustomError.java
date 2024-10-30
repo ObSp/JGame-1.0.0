@@ -4,7 +4,7 @@ public class CustomError {
     private String message;
     private int errorType;
     private String ansiColor;
-    private int jumpOverElements;
+    private String jumpOverElementsContaining;
 
     public static final int ERROR = 0;
     public static final int WARNING = 1;
@@ -17,10 +17,10 @@ public class CustomError {
      * @param errorType
      * @param stackTraceElementsToJumpOver
      */
-    public CustomError(String errorMessage, int errorType, int stackTraceElementsToJumpOver) {
+    public CustomError(String errorMessage, int errorType, String stackTraceElementBlacklist) {
         this.message = errorMessage;
         this.errorType = errorType;
-        this.jumpOverElements = stackTraceElementsToJumpOver;
+        this.jumpOverElementsContaining = stackTraceElementBlacklist;
 
         if (this.errorType == CustomError.ERROR) {
             ansiColor = "\u001B[31m";
@@ -37,7 +37,9 @@ public class CustomError {
         System.out.println((char) 27 +"[4m"+ ansiColor+message+"\033[0m");
         System.out.print(ansiColor);
         StackTraceElement[] stackTrace = new Throwable().getStackTrace();
-        for (int i = jumpOverElements+1; i < stackTrace.length; i++) {
+        for (int i = 1; i < stackTrace.length; i++) {
+            if (stackTrace[i].toString().contains(this.jumpOverElementsContaining)) continue;
+
             System.out.println("    at "+stackTrace[i]);
         }
         System.out.print("\033[0m");
