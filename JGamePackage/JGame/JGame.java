@@ -51,6 +51,8 @@ public class JGame {
         UINode = new UINode();
         StorageNode = new StorageNode();
 
+        gameWindow = new JFrame("JGame");
+
         Services = new ServiceContainer(servicesOnTick);
         renderer = new Renderer(this);
         Camera = new Camera();
@@ -62,8 +64,6 @@ public class JGame {
     //--INITIALIZATION--//
     private Promise start() {
         return new Promise(self ->{
-            gameWindow = new JFrame("JGame");
-
             gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
             gameWindow.setIconImage(new ImageIcon("JGamePackage\\JGame\\Assets\\icon.png").getImage());
             gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

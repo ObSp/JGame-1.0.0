@@ -9,7 +9,9 @@ public abstract class Renderable extends Instance {
     public BasePoint Position;
     public BasePoint Size;
     
-    public double Rotation;
+    public double Rotation = 0;
+
+    public int ZIndex = 0;
 
     public abstract void render(Graphics2D graphics);
 }

@@ -10,14 +10,18 @@ public class Vector2 extends BasePoint {
 
     /**Shorthand for {@code Vector2(0,0)}.*/
     public static final Vector2 zero = new Vector2(0, 0);
+    /**Shorthand for {@code Vector2(.5,.5)} */
+    public static final Vector2 half = new Vector2(.5, .5);
+    /**Shorthand for {@code Vector2(1,1)} */
+    public static final Vector2 one = new Vector2(1, 1);
     /**Shorthand for {@code Vector2(-1,0)}.*/
     public static final Vector2 left = new Vector2(-1, 0);
     /**Shorthand for {@code Vector2(0,1)}. */
-    public static final Vector2 up = new Vector2(0, 1);
+    public static final Vector2 up = new Vector2(0, -1);
     /**Shorthand for {@code Vector2(1,0)}. */
     public static final Vector2 right = new Vector2(1, 0);
     /**Shorthand for {@code Vector2(0,-1)}.*/
-    public static final Vector2 down = new Vector2(0, -1);
+    public static final Vector2 down = new Vector2(0, 1);
 
 
     /**The X component of this Vector2.

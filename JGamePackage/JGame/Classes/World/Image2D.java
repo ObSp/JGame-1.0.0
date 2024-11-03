@@ -1,4 +1,4 @@
-package JGamePackage.JGame.Classes.UI;
+package JGamePackage.JGame.Classes.World;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -8,8 +8,7 @@ import javax.imageio.ImageIO;
 
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
-public class UIImage extends UIBase {
-
+public class Image2D extends WorldBase {
     /**The BufferedImage that is rendered with this object.
      * 
      */
@@ -17,7 +16,7 @@ public class UIImage extends UIBase {
 
     private String imagePath = "JGamePackage\\JGame\\Assets\\imageDefault.png";
 
-    public UIImage() {
+    public Image2D() {
         SetImage(imagePath);
     }
 
@@ -32,18 +31,17 @@ public class UIImage extends UIBase {
 
     @Override
     public void render(Graphics2D graphics) {
-        Vector2 renderSize = GetAbsoluteSize();
-        Vector2 renderPosition = GetAbsolutePosition();
+        Vector2 renderSize = GetRenderSize();
+        Vector2 renderPosition = GetRenderPosition();
 
         if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPosition)) return;
 
-        if (this.BackgroundTransparency < 1) {
-            graphics.setColor(this.GetBackgroundRenderColor());
+        if (this.Transparency < 1) {
+            graphics.setColor(this.GetRenderColor());
 
             graphics.fillRect((int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y);
         }
 
         graphics.drawImage(this.Image, (int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y, null);
     }
-    
 }

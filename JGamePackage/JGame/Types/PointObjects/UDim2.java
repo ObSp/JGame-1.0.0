@@ -2,6 +2,8 @@ package JGamePackage.JGame.Types.PointObjects;
 
 public class UDim2 extends BasePoint {
 
+    public static final UDim2 zero = UDim2.fromScale(0, 0);
+
     public static UDim2 fromScale(double xScale, double yScale) {
         return new UDim2(xScale, 0, yScale, 0);
     }
@@ -16,7 +18,7 @@ public class UDim2 extends BasePoint {
 
 
     public UDim2(double xScale, double xAbsolute, double yScale, double yAbsolute) {
-        this.X = new UDim(xAbsolute, xAbsolute);
+        this.X = new UDim(xScale, xAbsolute);
         this.Y = new UDim(yScale, yAbsolute);
     }
 
@@ -28,6 +30,27 @@ public class UDim2 extends BasePoint {
 
     public UDim2 lerp(UDim2 goal, double t) {
         return new UDim2(X.lerp(goal.X, t), Y.lerp(goal.Y, t));
+    }
+
+    
+    public UDim2 add(UDim2 other) {
+        return new UDim2(this.X.Scale + other.X.Scale, this.X.Absolute + other.X.Absolute,
+            this.Y.Scale + other.Y.Scale, this.Y.Absolute + other.Y.Absolute);
+    }
+
+    public UDim2 subtract(UDim2 other) {
+        return new UDim2(this.X.Scale - other.X.Scale, this.X.Absolute - other.X.Absolute,
+            this.Y.Scale - other.Y.Scale, this.Y.Absolute - other.Y.Absolute);
+    }
+
+    public UDim2 multiply(UDim2 other) {
+        return new UDim2(this.X.Scale * other.X.Scale, this.X.Absolute * other.X.Absolute,
+            this.Y.Scale * other.Y.Scale, this.Y.Absolute * other.Y.Absolute);
+    }
+
+    public UDim2 divide(UDim2 other) {
+        return new UDim2(this.X.Scale/other.X.Scale, this.X.Absolute/other.X.Absolute,
+            this.Y.Scale/other.Y.Scale, this.Y.Absolute/other.Y.Absolute);
     }
 
 
@@ -42,5 +65,13 @@ public class UDim2 extends BasePoint {
         double scaleXAbsolute = this.X.Scale * totalSize.X;
         double scaleYAbsolute = this.Y.Scale * totalSize.Y;
         return new Vector2(scaleXAbsolute + this.X.Absolute, scaleYAbsolute + this.Y.Absolute);
+    }
+
+    public UDim2 ToScale() {
+        return new UDim2(X.Scale, 0, Y.Scale, 0);
+    }
+
+    public UDim2 ToAbsolute() {
+        return new UDim2(0, X.Absolute, 0, Y.Absolute);
     }
 }

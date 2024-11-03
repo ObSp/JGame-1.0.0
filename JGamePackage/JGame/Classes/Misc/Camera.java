@@ -34,11 +34,42 @@ public class Camera extends Instance {
 
     public Vector2 GetWorldBaseRenderSize(WorldBase object) {
         checkOutOfBounds();
-        return object.Size.multiply(DepthFactor);
+        return object.Size.divide(DepthFactor);
+    }
+
+    private Vector2 getWorldBaseTopLeftCorner(WorldBase object) {
+        return object.Position.subtract(object.GetPivotOffset());
+    }
+
+    private Vector2 getCenterPos() {
+        return game.Services.WindowService.GetScreenSize().divide(2);
     }
     
     public Vector2 GetWorldBaseRenderPosition(WorldBase object) {
         checkOutOfBounds();
-        return Position.add(object.Position.multiply(DepthFactor));
+        return getWorldBaseTopLeftCorner(object).subtract(this.Position).divide(DepthFactor).add(getCenterPos());//Position.add(object.Position.subtract(object.GetPivotOffset())).divide(DepthFactor).add(game.Services.WindowService.GetScreenSize().divide(2));
+    }
+
+
+    public boolean AreBoundsInCameraBounds(Vector2 size, Vector2 position) {
+        Vector2 screenSize = game.Services.WindowService.GetScreenSize();
+
+        double left = 0;
+        double top = 0;
+        double right = left + screenSize.X;
+        double bottom = top + screenSize.Y;
+
+        Vector2 topLeft = position;
+        double otherLeft = topLeft.X;
+        double otherRight = topLeft.X+size.X;
+        double otherTop = topLeft.Y;
+        double otherBottom = otherTop+size.Y;
+
+        boolean visibleLeft = otherRight > left;
+        boolean visibleRight = otherLeft < right;
+        boolean visibleTop = otherBottom > top;
+        boolean visibleBottom = otherTop < bottom;
+
+        return visibleLeft && visibleRight && visibleTop && visibleBottom;
     }
 }

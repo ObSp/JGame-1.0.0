@@ -1,5 +1,6 @@
 package JGamePackage.JGame.Classes;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import JGamePackage.JGame.JGame;
@@ -119,6 +120,20 @@ public abstract class Instance {
         return instanceListToArray(children);
     }
 
+    @SuppressWarnings("unchecked")
+    public <T extends Instance> T[] GetChildrenOfClass(Class<T> classToFind) {
+        ArrayList<T> filteredChildren = new ArrayList<>();
+        for (Instance child : children) {
+            if (classToFind.isInstance(child))
+                filteredChildren.add((T) child);
+        }
+        T[] arrayChildren = (T[]) Array.newInstance(classToFind, filteredChildren.size());
+        for (int i = 0; i < arrayChildren.length; i++) {
+            arrayChildren[i] = filteredChildren.get(i);
+        }
+        return arrayChildren;
+    }
+
     public Instance GetChild(String name){
         for (Instance child : GetChildren()) {
             if (child.Name.equals(name)) {
@@ -138,6 +153,7 @@ public abstract class Instance {
             if (child.getClass().getSimpleName().equals(className))
                 return child;
         }
+        
         return null;
     }
 
@@ -146,10 +162,11 @@ public abstract class Instance {
      * @param className
      * @return
      */
-    public Instance GetChildWhichIsA(Class<?> childClass) {
+    @SuppressWarnings("unchecked")
+    public <T> T GetChildWhichIsA(Class<T> childClass) {
         for (Instance child : GetChildren()) {
             if (childClass.isInstance(child))
-                return child;
+                return (T) child;
         }
         return null;
     }
