@@ -15,7 +15,7 @@ public class CustomError {
      * 
      * @param errorMessage
      * @param errorType
-     * @param stackTraceElementsToJumpOver
+     * @param stackTraceElementBlacklist
      */
     public CustomError(String errorMessage, int errorType, String stackTraceElementBlacklist) {
         this.message = errorMessage;

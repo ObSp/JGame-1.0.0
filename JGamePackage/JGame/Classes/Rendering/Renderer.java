@@ -19,16 +19,6 @@ public class Renderer extends JPanel {
         this.game = game;
     }
 
-    @Override
-    public void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        RenderWorld(g2d, game.WorldNode.GetDescendants());
-        RenderUI(g2d, game.UINode.GetDescendants());
-    }
-
     private void sortRenderableArrayByZIndex(Renderable[] arr) {
         int size = arr.length;
         for (int i = 0; i < size - 1; i++) {
@@ -47,6 +37,16 @@ public class Renderer extends JPanel {
             arr[i] = arr[mindex];
             arr[mindex] = itemAtIndex;
         }
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        RenderWorld(g2d, game.WorldNode.GetDescendants());
+        RenderUI(g2d, game.UINode.GetDescendants());
     }
 
     private void renderUIRecursive(UIBase[] curChildren, Graphics2D g) {

@@ -1,4 +1,4 @@
-package JGamePackage.JGame.Classes.UI;
+package JGamePackage.JGame.Classes.World;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
-public class UIText extends UIBase{
+public class Text2D extends WorldBase{
 
     public String Text = "";
 
@@ -32,8 +32,8 @@ public class UIText extends UIBase{
     public void render(Graphics2D g) {
         if (Text == null) return;
 
-        Vector2 renderSize = GetAbsoluteSize();
-        Vector2 renderPosition = GetAbsolutePosition();
+        Vector2 renderSize = GetRenderSize();
+        Vector2 renderPosition = GetRenderPosition();
 
         if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPosition)) return;
 
@@ -41,7 +41,7 @@ public class UIText extends UIBase{
         int centerY = (int) (renderPosition.Y + (renderSize.Y/2));
 
         //render background
-        Color backgroundRenderColor = this.GetBackgroundRenderColor();
+        Color backgroundRenderColor = this.GetRenderColor();
         if (backgroundRenderColor.getAlpha() > 0) {
             g.setColor(backgroundRenderColor);
             g.fillRect((int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y);

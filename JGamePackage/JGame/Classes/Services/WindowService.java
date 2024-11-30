@@ -23,10 +23,12 @@ public class WindowService extends Service {
     }
 
     public int GetScreenHeight(){
+        checkForInit();
         return game.GetWindow().getContentPane().getHeight();
     }
 
     public int GetScreenWidth(){
+        checkForInit();
         return game.GetWindow().getContentPane().getWidth();
     }
 
@@ -36,5 +38,10 @@ public class WindowService extends Service {
 
     public void SetWindowIcon(String path){
         game.GetWindow().setIconImage(new ImageIcon(path).getImage());
+    }
+
+    private void checkForInit() {
+        if (game.Services.TimeService.GetElapsedTicks() == 0)
+            game.Services.TimeService.WaitTicks(1);
     }
 }

@@ -10,6 +10,7 @@ import JGamePackage.lib.Signal.SignalWrapper;
 
 public abstract class Instance {
     //--CUSTOM ERRORS--//
+    private static CustomError ErrorRecursiveParent = new CustomError("Cannot set an object's parent to the object itself.", CustomError.WARNING, "JGamePackage");
     private static CustomError ErrorAlreadyDestroyed = new CustomError("Cannot destroy an already destroyed instance.", CustomError.WARNING, "JGamePackage");
     private static CustomError ErrorParentLocked = new CustomError("Unable to set parent property; the property is locked.", CustomError.WARNING, "JGamePackage");
     private static CustomError ErrorNoJGame = new CustomError("A JGame must be running in order to create JGame instances.", CustomError.ERROR, "JGamePackage");
@@ -194,6 +195,11 @@ public abstract class Instance {
     public void SetParent(Instance parent) {
         if (parentLocked) {
             ErrorParentLocked.Throw();
+            return;
+        }
+
+        if (parent == this) {
+            ErrorRecursiveParent.Throw();
             return;
         }
 
