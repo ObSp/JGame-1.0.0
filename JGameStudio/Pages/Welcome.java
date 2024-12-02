@@ -5,6 +5,7 @@ import java.awt.Color;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIImage;
+import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 
 public class Welcome {
@@ -15,11 +16,10 @@ public class Welcome {
 
         container.Size = UDim2.fromScale(1, 1);
 
-        UIImage cover = new UIImage();
-        cover.SetImage("JGameStudio\\Assets\\JGameStudioCover.png");
-        cover.Size = UDim2.fromScale(1, .25);
-        cover.BackgroundTransparency = 1;
-        cover.SetParent(container);
+        UIText continueText = new UIText();
+        continueText.Text = "Jump back in";
+        continueText.TextScaled = true;
+        continueText.SetParent(container);
 
         return container;
     }
