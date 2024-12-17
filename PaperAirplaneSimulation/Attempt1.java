@@ -6,12 +6,14 @@ import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.World.Box2D;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
-public class Main {
+public class Attempt1 {
     static JGame game = new JGame();
 
     static Box2D plane;
 
-    static double c = 0;
+    static double velocity = 0.0;
+
+
     public static void main(String[] args) {
         game.Services.WindowService.BackgroundColor = new Color(76, 201, 254);
 
@@ -24,15 +26,13 @@ public class Main {
         b.SetParent(game.WorldNode);
 
         plane = new Box2D();
-        plane.Size = new Vector2(30, 5);
+        plane.Size = new Vector2(30.4, 5);
         plane.Position = new Vector2(game.Services.WindowService.GetScreenWidth()-100, 150);
         plane.Rotation = Math.toDegrees(45);
         plane.SetParent(game.WorldNode);
 
-        game.Services.TimeService.OnTick.Connect(dt->calculateValues());
-    }
-
-    private static void calculateValues() {
-        c = plane.Rotation;
+        game.Services.TimeService.OnTick.Connect(dt->{
+            
+        });
     }
 }
