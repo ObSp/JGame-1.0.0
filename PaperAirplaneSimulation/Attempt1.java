@@ -31,12 +31,13 @@ public class Attempt1 {
 
         plane = new Box2D();
         plane.Size = new Vector2(30.4, 5);
+        plane.Pivot = Vector2.one;
         plane.Position = new Vector2(0, game.Services.WindowService.GetScreenHeight() - b.Size.Y - ExperimentData.throwHeight * ExperimentData.meterInPixel);
         plane.Rotation = Math.toDegrees(45);
         plane.SetParent(game.WorldNode);
 
         tickConnection = game.Services.TimeService.OnTick.Connect(dt->{
-            if (plane.Position.Y >= b.Position.Y + b.Size.Y) {
+            if (plane.Position.Y >= b.Position.Y - b.Size.Y) {
                 tickConnection.Disconnect();
                 System.out.println(plane.Position.X/ExperimentData.meterInPixel);
                 return;
@@ -48,7 +49,7 @@ public class Attempt1 {
             double yInMeters = -0.04*(xInMeters*xInMeters) + ExperimentData.throwHeight;
 
             double yInPixels = yInMeters * ExperimentData.meterInPixel;
-            yInPixels = b.Position.Y + b.Size.Y - yInPixels;
+            yInPixels = b.Position.Y - b.Size.Y - yInPixels;
 
             double xInPixels = xInMeters * ExperimentData.meterInPixel;
 

@@ -6,5 +6,5 @@ public final class ExperimentData {
     public static final double referenceArea = 2.20; //m
     public static final double throwHeight = 1.70; //m
 
-    public static final double meterInPixel = 274; //pixels
+    public static final double meterInPixel = 243; //pixels
 }

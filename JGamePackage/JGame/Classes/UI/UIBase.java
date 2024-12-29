@@ -48,7 +48,7 @@ public abstract class UIBase extends Renderable {
 
         if (!(parentInstance instanceof UIBase)) return Position.ToVector2(game.Services.WindowService.GetScreenSize());
 
-        return Position.ToVector2(((UIBase) parentInstance).GetAbsolutePosition());
+        return Position.ToVector2(((UIBase) parentInstance).GetAbsoluteSize()).add(((UIBase) parentInstance).GetAbsolutePosition());
     }
 
     public Vector2 GetAbsoluteSize() {
