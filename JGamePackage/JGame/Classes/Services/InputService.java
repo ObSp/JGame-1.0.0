@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGamePackage.lib.Signal.Signal;
 import JGamePackage.lib.Signal.SignalWrapper;
@@ -37,7 +38,6 @@ public class InputService extends Service {
     private Signal<Integer> mouseWheelMoved = new Signal<>();
     public SignalWrapper<Integer> OnMouseScroll = new SignalWrapper<>(mouseWheelMoved);
     
-
     public Integer FullscreenHotKey = KeyEvent.VK_F11;
 
 
@@ -94,6 +94,12 @@ public class InputService extends Service {
                 if (e.getButton() == MouseEvent.BUTTON1){
                     isMouse1Down = true;
                     onclick.Fire();
+
+                    UIBase uiTarget = GetMouseTarget();
+                    if (uiTarget != null) {
+                        uiTarget.Mouse1Down.Fire();
+                    }
+
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
                     isMouse2Down = true;
                 }
@@ -104,6 +110,12 @@ public class InputService extends Service {
                 if (e.getButton() == MouseEvent.BUTTON1){
                     isMouse1Down = false;
                     mouseUp.Fire();
+
+                    UIBase uiTarget = GetMouseTarget();
+                    if (uiTarget != null) {
+                        uiTarget.Mouse1Up.Fire();
+                    }
+
                 } else if(e.getButton() == MouseEvent.BUTTON2){
                     isMouse2Down = false;
                 }
@@ -222,9 +234,39 @@ public class InputService extends Service {
         return isMouse2Down;
     }
 
-    public Vector2 GetMouseScreenPosition() {
+    public Vector2 GetMousePosition() {
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
         return new Vector2(mouseLoc.getX(), mouseLoc.getY() - (IsFullscreen() ? 0 : 20));
+    }
+
+    public UIBase GetMouseTarget() {
+        Vector2 mousePos = GetMousePosition();
+        UIBase curTarget = null;
+        //first find an UI instance that (SHOULD BE) diplayed on top
+        //the one issue with this is that children are always displayed on TOP of parents, therefore step 2 is needed 
+        for (UIBase v : game.UINode.GetChildrenOfClass(UIBase.class)) {
+            if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos)) continue;
+            if (curTarget != null && v.ZIndex <= curTarget.ZIndex) continue;
+            curTarget = v;
+        }
+        if (curTarget == null) return null;
+        //to fix the above mentioned issue, repeadedly loop through children
+        while (true) {
+            UIBase[] children = curTarget.GetChildrenOfClass(UIBase.class);
+            if (children.length == 0) break;
+            
+            UIBase lastChild = null;
+
+            for (UIBase child : children) {
+                if (!isPointInBounds(child.GetAbsolutePosition(), child.GetAbsoluteSize(), mousePos)) continue;
+                if (lastChild != null && child.ZIndex <= lastChild.ZIndex) continue;
+                lastChild = child;
+            }
+
+            if (lastChild == null) break;
+            curTarget = lastChild;
+        }
+        return curTarget;
     }
 
 
@@ -238,5 +280,17 @@ public class InputService extends Service {
 
     public boolean IsFullscreen() {
         return game.GetWindow().isUndecorated();
+    }
+
+    private boolean isPointInBounds(Vector2 pos, Vector2 size, Vector2 point) {
+        double left = pos.X;
+        double right = left + size.X;
+        double top = pos.Y;
+        double bottom = top + size.Y;
+
+        double x = point.X;
+        double y = point.Y;
+
+        return (left<=x && x <=right && y<=bottom && y>=top);
     }
 }

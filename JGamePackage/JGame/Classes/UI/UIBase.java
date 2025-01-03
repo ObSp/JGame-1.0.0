@@ -6,6 +6,7 @@ import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Rendering.Renderable;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
+import JGamePackage.lib.Signal.VoidSignal;
 
 public abstract class UIBase extends Renderable {
 
@@ -13,6 +14,9 @@ public abstract class UIBase extends Renderable {
      * 
      */
     public UDim2 Position = UDim2.zero;
+
+    public final VoidSignal Mouse1Down = new VoidSignal();
+    public final VoidSignal Mouse1Up = new VoidSignal();
 
     /**The size of the object in 2D space, represented by a UDim2.
      * 
@@ -46,9 +50,9 @@ public abstract class UIBase extends Renderable {
     public Vector2 GetAbsolutePosition() {
         Instance parentInstance = this.GetParent();
 
-        if (!(parentInstance instanceof UIBase)) return Position.ToVector2(game.Services.WindowService.GetScreenSize());
+        if (!(parentInstance instanceof UIBase)) return Position.ToVector2(game.Services.WindowService.GetScreenSize()).subtract(GetAnchorPointOffset());
 
-        return Position.ToVector2(((UIBase) parentInstance).GetAbsoluteSize()).add(((UIBase) parentInstance).GetAbsolutePosition());
+        return Position.ToVector2(((UIBase) parentInstance).GetAbsoluteSize()).add(((UIBase) parentInstance).GetAbsolutePosition()).subtract(GetAnchorPointOffset());
     }
 
     public Vector2 GetAbsoluteSize() {

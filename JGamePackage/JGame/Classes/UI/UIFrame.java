@@ -1,5 +1,7 @@
 package JGamePackage.JGame.Classes.UI;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
@@ -13,7 +15,6 @@ public class UIFrame extends UIBase {
         Vector2 renderSize = GetAbsoluteSize();
         
         graphics.setColor(GetBackgroundRenderColor());
-        
         
         UICorner cornerEffect = this.GetChildWhichIsA(UICorner.class);
 
