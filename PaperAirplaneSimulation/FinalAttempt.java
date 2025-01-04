@@ -3,7 +3,10 @@ package PaperAirplaneSimulation;
 import java.awt.Color;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.World.Box2D;
+import JGamePackage.JGame.Types.Constants.Constants;
+import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
 public class FinalAttempt {
@@ -11,12 +14,21 @@ public class FinalAttempt {
 
     static Box2D plane;
 
-    static double velocity = 50;
+    static Vector2 velocity = new Vector2(0);
 
     static double drag = 0.0;
 
 
     public static void main(String[] args) {
+        UIText header = new UIText();
+        header.Text = "Paper Airplane Aerodynamics - Simplified Model";
+        header.TextScaled = true;
+        header.Size = UDim2.fromScale(1, .02);
+        header.TextColor = Color.white;
+        header.BackgroundTransparency = 1;
+        header.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        header.SetParent(game.UINode);
+
         game.Services.WindowService.BackgroundColor = new Color(76, 201, 254);
 
         System.out.println(game.Services.WindowService.GetScreenWidth());
@@ -37,15 +49,6 @@ public class FinalAttempt {
 
         game.Services.TimeService.WaitSeconds(5);
 
-        game.Services.TimeService.OnTick.Connect(dt->{
-            plane.Position =  plane.Position.subtract(new Vector2(velocity, 0));
-            drag = calcDrag();
-            velocity -= drag;
-            System.out.println(velocity+", "+drag);
-        });
-    }
-
-    static double calcDrag() {
-        return .5*ExperimentData.airDensity*velocity*ExperimentData.referenceArea*ExperimentData.coefficient;
+        
     }
 }
