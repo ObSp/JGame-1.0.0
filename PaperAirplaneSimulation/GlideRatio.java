@@ -6,7 +6,7 @@ import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.World.Box2D;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
-public class FinalAttempt {
+public class GlideRatio {
     static JGame game = new JGame();
 
     static Box2D plane;
@@ -14,7 +14,6 @@ public class FinalAttempt {
     static double velocity = 50;
 
     static double drag = 0.0;
-
 
     public static void main(String[] args) {
         game.Services.WindowService.BackgroundColor = new Color(76, 201, 254);
