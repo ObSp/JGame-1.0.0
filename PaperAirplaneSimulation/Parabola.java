@@ -7,7 +7,7 @@ import JGamePackage.JGame.Classes.World.Box2D;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGamePackage.lib.Signal.Signal.Connection;
 
-public class Attempt1 {
+public class Parabola {
     static JGame game = new JGame();
 
     static Box2D plane;
