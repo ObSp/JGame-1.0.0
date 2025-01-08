@@ -71,6 +71,14 @@ public class Renderer extends JPanel {
         sortRenderableArrayByZIndex(curChildren);
         for (WorldBase child : curChildren) {
             if (!child.Visible) continue;
+
+            Vector2 renderPos = child.GetRenderPosition();
+            Vector2 renderSize = child.GetRenderSize();
+            
+            double rotation = child.Rotation;
+            double rotPointX = renderPos.X;
+
+            //rotation
             child.render(g);
         }
 

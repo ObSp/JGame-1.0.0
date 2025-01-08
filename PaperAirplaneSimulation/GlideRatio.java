@@ -5,6 +5,7 @@ import java.awt.Color;
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.World.Box2D;
+import JGamePackage.JGame.Classes.World.Image2D;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
@@ -28,9 +29,12 @@ public class GlideRatio {
         header.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
         header.SetParent(game.UINode);
 
-        game.Services.WindowService.BackgroundColor = new Color(76, 201, 254);
-
-        System.out.println(game.Services.WindowService.GetScreenWidth());
+        Image2D background = new Image2D();
+        background.SetImage("PaperAirplaneSimulation\\Assets\\Sky.png");
+        background.Size = new Vector2(800, 300).multiply(5);
+        background.Pivot = Vector2.half;
+        background.Position = game.Camera.Position;
+        background.SetParent(game.WorldNode);
 
         Box2D b = new Box2D();
         b.Size = new Vector2(game.Services.WindowService.GetScreenWidth(), 100);
