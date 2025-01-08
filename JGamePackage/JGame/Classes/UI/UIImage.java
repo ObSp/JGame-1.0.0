@@ -33,17 +33,17 @@ public class UIImage extends UIBase {
     @Override
     public void render(Graphics2D graphics) {
         Vector2 renderSize = GetAbsoluteSize();
-        Vector2 renderPosition = GetAbsolutePosition();
+        Vector2 renderPos = GetAbsolutePosition();
 
-        if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPosition)) return;
+        if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPos)) return;
 
         if (this.BackgroundTransparency < 1) {
             graphics.setColor(this.GetBackgroundRenderColor());
 
-            graphics.fillRect((int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y);
+            graphics.fillRect((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y);
         }
 
-        graphics.drawImage(this.Image, (int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y, null);
+        graphics.drawImage(this.Image, (int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, null);
     }
     
 }

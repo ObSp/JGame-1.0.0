@@ -11,9 +11,12 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JFrame;
 
+import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGamePackage.lib.Signal.Signal;
@@ -40,15 +43,16 @@ public class InputService extends Service {
     
     public Integer FullscreenHotKey = KeyEvent.VK_F11;
 
-
     private ArrayList<String> heldKeys = new ArrayList<>();
+
+    private ArrayList<UIBase> hoveringUIItems = new ArrayList<>();
 
 
     private boolean isMouse1Down = false;
     private boolean isMouse2Down = false;
 
 
-    public InputService() {
+    public InputService(SignalWrapper<Double> onTick) {
         JFrame gameWindow = game.GetWindow();
 
         gameWindow.addKeyListener(new KeyListener() {
@@ -60,7 +64,7 @@ public class InputService extends Service {
                 if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))!=-1) return;
 
                 if (e.getKeyCode() == FullscreenHotKey) {
-                    SetFullscreen(!IsFullscreen());
+                    game.Services.WindowService.SetFullscreen(!game.Services.WindowService.IsFullscreen());
                 }
 
                 //if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))==-1) heldKeys.add(KeyEvent.getKeyText(e.getKeyCode()));
@@ -95,7 +99,7 @@ public class InputService extends Service {
                     isMouse1Down = true;
                     onclick.Fire();
 
-                    UIBase uiTarget = GetMouseTarget();
+                    UIBase uiTarget = GetMouseUITarget();
                     if (uiTarget != null) {
                         uiTarget.Mouse1Down.Fire();
                     }
@@ -111,7 +115,7 @@ public class InputService extends Service {
                     isMouse1Down = false;
                     mouseUp.Fire();
 
-                    UIBase uiTarget = GetMouseTarget();
+                    UIBase uiTarget = GetMouseUITarget();
                     if (uiTarget != null) {
                         uiTarget.Mouse1Up.Fire();
                     }
@@ -163,6 +167,24 @@ public class InputService extends Service {
                 heldKeys.clear();
             }
             
+        });
+
+        onTick.Connect(dt->{
+            List<UIBase> mouseTargets = Arrays.asList(GetMouseUITargetList());
+            for (UIBase v : game.UINode.GetDescendantsOfClass(UIBase.class)) {
+                boolean inList = hoveringUIItems.contains(v);
+
+                if (!mouseTargets.contains(v)) { //idk why ! is needed, smth is wrong with GetMouseUITargetList()
+                    if (!inList) {
+                        v.MouseEnter.Fire();
+                        hoveringUIItems.add(v);
+                    }
+                } else if (inList) {
+                    v.MouseLeave.Fire();
+                    hoveringUIItems.remove(v);
+                }
+
+            }
         });
     }
 
@@ -236,10 +258,10 @@ public class InputService extends Service {
 
     public Vector2 GetMousePosition() {
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
-        return new Vector2(mouseLoc.getX(), mouseLoc.getY() - (IsFullscreen() ? 0 : 20));
+        return new Vector2(mouseLoc.getX(), mouseLoc.getY() - (game.Services.WindowService.IsFullscreen() ? 0 : 22));
     }
 
-    public UIBase GetMouseTarget() {
+    public UIBase GetMouseUITarget() {
         Vector2 mousePos = GetMousePosition();
         UIBase curTarget = null;
         //first find an UI instance that (SHOULD BE) diplayed on top
@@ -254,34 +276,37 @@ public class InputService extends Service {
         while (true) {
             UIBase[] children = curTarget.GetChildrenOfClass(UIBase.class);
             if (children.length == 0) break;
-            
             UIBase lastChild = null;
-
             for (UIBase child : children) {
                 if (!isPointInBounds(child.GetAbsolutePosition(), child.GetAbsoluteSize(), mousePos)) continue;
                 if (lastChild != null && child.ZIndex <= lastChild.ZIndex) continue;
                 lastChild = child;
             }
-
             if (lastChild == null) break;
             curTarget = lastChild;
         }
         return curTarget;
     }
 
+    public UIBase[] GetMouseUITargetList() {
+        ArrayList<UIBase> list = new ArrayList<>();
+        Vector2 mousePos = GetMousePosition();
+        for (Instance item : game.UINode.GetDescendants()) {
+            if (!(item instanceof UIBase)) continue;
+
+            UIBase v = (UIBase) item;
+
+            if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos))
+                list.add(v);
+        }
+        UIBase[] arr = new UIBase[list.size()];
+        for (int i = 0; i < arr.length; i++)
+            arr[i] = list.get(i);
+        return arr;
+    }
+
 
     //--FULLSCREEN--//
-    public void SetFullscreen(boolean fullscreen) {
-        JFrame gameWindow = game.GetWindow();
-        gameWindow.dispose();
-        gameWindow.setUndecorated(fullscreen);
-        gameWindow.setVisible(true);
-    }
-
-    public boolean IsFullscreen() {
-        return game.GetWindow().isUndecorated();
-    }
-
     private boolean isPointInBounds(Vector2 pos, Vector2 size, Vector2 point) {
         double left = pos.X;
         double right = left + size.X;

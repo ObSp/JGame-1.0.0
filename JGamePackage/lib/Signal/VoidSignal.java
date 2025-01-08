@@ -112,6 +112,11 @@ public class VoidSignal extends AbstractSignal{
    
            Connected = false;
        }
+
+       public void Reconnect() {
+            Connected = true;
+            parent._connections.add(this);
+       }
    
    }
 

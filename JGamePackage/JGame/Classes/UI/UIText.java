@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
+import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
@@ -29,22 +30,29 @@ public class UIText extends UIBase{
     public int FontStyle = Font.PLAIN;
 
     @Override
-    public void render(Graphics2D g) {
+    public void render(Graphics2D graphics) {
         if (Text == null) return;
 
         Vector2 renderSize = GetAbsoluteSize();
-        Vector2 renderPosition = GetAbsolutePosition();
+        Vector2 renderPos = GetAbsolutePosition();
 
-        if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPosition)) return;
+        if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPos)) return;
 
-        int centerX = (int) (renderPosition.X + (renderSize.X/2));
-        int centerY = (int) (renderPosition.Y + (renderSize.Y/2));
+        int centerX = (int) (renderPos.X + (renderSize.X/2));
+        int centerY = (int) (renderPos.Y + (renderSize.Y/2));
 
         //render background
         Color backgroundRenderColor = this.GetBackgroundRenderColor();
         if (backgroundRenderColor.getAlpha() > 0) {
-            g.setColor(backgroundRenderColor);
-            g.fillRect((int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y);
+            graphics.setColor(backgroundRenderColor);
+            UICorner cornerEffect = this.GetChildWhichIsA(UICorner.class);
+            if (cornerEffect != null) {
+                double radius = cornerEffect.Radius;
+                radius *= renderSize.getAxisFromIndex(cornerEffect.RelativeTo);
+                graphics.fillRoundRect((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, (int) radius, (int) radius);
+            } else {
+                graphics.fillRect((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y);
+            }
         }
 
         Font font;
@@ -55,9 +63,9 @@ public class UIText extends UIBase{
             font = new Font(this.FontName, this.FontStyle, this.FontSize);
         }
 
-        g.setFont(font);
+        graphics.setFont(font);
 
-        FontMetrics fm = g.getFontMetrics();
+        FontMetrics fm = graphics.getFontMetrics();
 
         int pixelHeight = (int) Math.round((double) font.getSize()*.75);
         int pixelWidth = fm.stringWidth(Text);
@@ -66,23 +74,23 @@ public class UIText extends UIBase{
         int yStringPos;
 
         if (HorizontalTextAlignment == Constants.HorizontalTextAlignment.Left) {
-            xStringPos = (int) renderPosition.X;
+            xStringPos = (int) renderPos.X;
         } else if (HorizontalTextAlignment == Constants.HorizontalTextAlignment.Center) {
             xStringPos = (int) (centerX-pixelWidth/2);
         } else { //right alignment
-            xStringPos = (int) (renderPosition.X + renderSize.X - pixelWidth);
+            xStringPos = (int) (renderPos.X + renderSize.X - pixelWidth);
         }
 
         if (VerticalTextAlignment == Constants.VerticalTextAlignment.Top) {
-            yStringPos = (int) (renderPosition.Y + pixelHeight*2.2);
+            yStringPos = (int) (renderPos.Y + pixelHeight*2.2);
         } else if (VerticalTextAlignment == Constants.VerticalTextAlignment.Center) {
             yStringPos = (int) (centerY + pixelHeight/2);
         } else { //bottom alignment
-            yStringPos = (int) (renderPosition.Y + renderSize.Y);
+            yStringPos = (int) (renderPos.Y + renderSize.Y);
         }
 
-        g.setColor(GetTextRenderColor());
-        g.drawString(Text, xStringPos, yStringPos);
+        graphics.setColor(GetTextRenderColor());
+        graphics.drawString(Text, xStringPos, yStringPos);
     }
 
     private Color GetTextRenderColor(){

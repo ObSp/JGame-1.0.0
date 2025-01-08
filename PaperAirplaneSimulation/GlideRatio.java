@@ -1,57 +1,71 @@
 package PaperAirplaneSimulation;
 
-import java.awt.Color;
-
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.UI.UIText;
-import JGamePackage.JGame.Classes.World.Box2D;
 import JGamePackage.JGame.Classes.World.Image2D;
-import JGamePackage.JGame.Types.Constants.Constants;
-import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
+import JGamePackage.lib.Signal.Signal.Connection;
+import JGamePackage.lib.Signal.VoidSignal.VoidConnection;
+import PaperAirplaneSimulation.Scene.SceneCreator;
 
 public class GlideRatio {
     static JGame game = new JGame();
 
-    static Box2D plane;
+    static Image2D plane1;
+    static Image2D plane2;
 
     static Vector2 velocity = new Vector2(0);
 
     static double drag = 0.0;
 
+    static boolean pauseSim = false;
+    static boolean finished = false;
+
+    static double plane1RatioEquation(double xMeters) {
+        return -(1/ExperimentData.ref1GlideDistancePerHeightLost) * xMeters + ExperimentData.ref1throwHeight;
+    }
+
     public static void main(String[] args) {
-        UIText header = new UIText();
-        header.Text = "Paper Airplane Aerodynamics - Simplified Model";
-        header.TextScaled = true;
-        header.Size = UDim2.fromScale(1, .02);
-        header.TextColor = Color.white;
-        header.BackgroundTransparency = 1;
-        header.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
-        header.SetParent(game.UINode);
+        game.Services.TimeService.WaitTicks(10);
+        game.Services.WindowService.SetFullscreen(true);
 
-        Image2D background = new Image2D();
-        background.SetImage("PaperAirplaneSimulation\\Assets\\Sky.png");
-        background.Size = new Vector2(800, 300).multiply(5);
-        background.Pivot = Vector2.half;
-        background.Position = game.Camera.Position;
-        background.SetParent(game.WorldNode);
+        SceneCreator.createMap(game);
 
-        Box2D b = new Box2D();
-        b.Size = new Vector2(game.Services.WindowService.GetScreenWidth(), 100);
-        b.Pivot = new Vector2(0, 1);
-        b.Position = new Vector2(0, game.Services.WindowService.GetScreenHeight()+50);
-        b.FillColor = new Color(88,234,66);
-        game.Camera.Position = game.Services.WindowService.GetScreenSize().divide(2);
-        b.SetParent(game.WorldNode);
+        ((UIText) game.UINode.GetChild("Header")).Text = "Paper Airplane Aerodynamics - Simplified Model";
 
-        plane = new Box2D();
-        plane.Size = new Vector2(30.4, 5);
-        plane.Position = new Vector2(game.Services.WindowService.GetScreenWidth()-100, game.Services.WindowService.GetScreenHeight()-b.Size.Y-465.8);
-        plane.Rotation = Math.toDegrees(45);
-        plane.SetParent(game.WorldNode);
+        plane1 = (Image2D) game.WorldNode.GetChild("Plane1");
+        plane2 = (Image2D) game.WorldNode.GetChild("Plane1");
 
-        game.Services.TimeService.WaitSeconds(5);
+        UIText start = (UIText) game.UINode.GetChild("Start");
 
-        
+        game.Camera.DepthFactor = 1.1;
+
+        start.Mouse1Down.Wait();
+
+        start.Text = "Pause Sim";
+        VoidConnection toggleButtonCon = start.Mouse1Down.Connect(()->{
+            pauseSim = !pauseSim;
+            start.Text = pauseSim ? "Continue Sim" : "Pause Sim";
+        });
+
+        @SuppressWarnings("rawtypes")
+        Connection tickConnection = game.Services.TimeService.OnTick.Connect(dt->{
+            if (pauseSim) return;
+
+            //PLANE1
+            if (plane1RatioEquation(MSAUtil.toMeters(plane1.Position.X)) > 0) {
+                double plane1CurX = MSAUtil.toMeters(plane1.Position.X);
+                plane1CurX += .05;
+                double plane1Y = plane1RatioEquation(plane1CurX);
+                plane1.Position = new Vector2(MSAUtil.toPixels(plane1CurX), game.Services.WindowService.GetScreenHeight() - plane1.Size.Y/2 -MSAUtil.toPixels(plane1Y));
+            }
+        });
+
+        while (!finished) game.Services.TimeService.WaitTicks(1);
+
+        toggleButtonCon.Disconnect();
+        tickConnection.Disconnect();
+
+        start.Text = "Reset Sim";
     }
 }

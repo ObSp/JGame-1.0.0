@@ -3,6 +3,7 @@ package JGamePackage.JGame.Classes.Services;
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGamePackage.lib.Signal.SignalWrapper;
@@ -38,6 +39,17 @@ public class WindowService extends Service {
 
     public void SetWindowIcon(String path){
         game.GetWindow().setIconImage(new ImageIcon(path).getImage());
+    }
+
+    public void SetFullscreen(boolean fullscreen) {
+        JFrame gameWindow = game.GetWindow();
+        gameWindow.dispose();
+        gameWindow.setUndecorated(fullscreen);
+        gameWindow.setVisible(true);
+    }
+
+    public boolean IsFullscreen() {
+        return game.GetWindow().isUndecorated();
     }
 
     private void checkForInit() {

@@ -3,6 +3,7 @@ package JGamePackage.JGame.Classes.Rendering;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
 
@@ -76,10 +77,19 @@ public class Renderer extends JPanel {
             Vector2 renderSize = child.GetRenderSize();
             
             double rotation = child.Rotation;
-            double rotPointX = renderPos.X;
+            int rotPointX = (int) (renderPos.X + child.Pivot.X * renderSize.X);
+            int rotPointY = (int) (renderPos.Y + child.Pivot.Y * renderSize.Y);
+
+            AffineTransform previous = g.getTransform();
+            AffineTransform rotated = new AffineTransform();
+            rotated.rotate(rotation, rotPointX, rotPointY);
+
+            g.transform(rotated);
 
             //rotation
             child.render(g);
+
+            g.setTransform(previous);
         }
 
         for (WorldBase child : curChildren) {

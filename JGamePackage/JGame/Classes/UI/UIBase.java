@@ -18,6 +18,9 @@ public abstract class UIBase extends Renderable {
     public final VoidSignal Mouse1Down = new VoidSignal();
     public final VoidSignal Mouse1Up = new VoidSignal();
 
+    public final VoidSignal MouseEnter = new VoidSignal();
+    public final VoidSignal MouseLeave = new VoidSignal();
+
     /**The size of the object in 2D space, represented by a UDim2.
      * 
      */

@@ -16,7 +16,7 @@ public class ServiceContainer {
     public ServiceContainer(SignalWrapper<Double> onTick) {
         TimeService = new TimeService(onTick);
         WindowService = new WindowService(onTick);
-        InputService = new InputService();
+        InputService = new InputService(onTick);
 
         Services = new Service[] {InputService, TimeService, WindowService};
     }

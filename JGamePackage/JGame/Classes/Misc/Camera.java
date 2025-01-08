@@ -47,7 +47,7 @@ public class Camera extends Instance {
     
     public Vector2 GetWorldBaseRenderPosition(WorldBase object) {
         checkOutOfBounds();
-        return getWorldBaseTopLeftCorner(object).subtract(this.Position).divide(DepthFactor).add(getCenterPos());//Position.add(object.Position.subtract(object.GetPivotOffset())).divide(DepthFactor).add(game.Services.WindowService.GetScreenSize().divide(2));
+        return getWorldBaseTopLeftCorner(object).subtract(this.Position).divide(DepthFactor).add(getCenterPos()).subtract(0, game.Services.WindowService.IsFullscreen() ? 50 : 0);//Position.add(object.Position.subtract(object.GetPivotOffset())).divide(DepthFactor).add(game.Services.WindowService.GetScreenSize().divide(2));
     }
 
 

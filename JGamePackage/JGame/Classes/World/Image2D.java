@@ -16,6 +16,8 @@ public class Image2D extends WorldBase {
 
     private String imagePath = "JGamePackage\\JGame\\Assets\\imageDefault.png";
 
+    public boolean XFlipped = false;
+
     public Image2D() {
         SetImage(imagePath);
     }
@@ -40,6 +42,11 @@ public class Image2D extends WorldBase {
             graphics.setColor(this.GetRenderColor());
 
             graphics.fillRect((int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y);
+        }
+
+        if (XFlipped){
+            renderSize = new Vector2(-renderSize.X, renderSize.Y);
+            renderPosition = new Vector2(renderPosition.X + Math.abs(renderSize.X), renderPosition.Y);
         }
 
         graphics.drawImage(this.Image, (int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y, null);

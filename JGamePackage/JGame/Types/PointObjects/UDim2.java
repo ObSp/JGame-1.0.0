@@ -12,6 +12,11 @@ public class UDim2 extends BasePoint {
         return new UDim2(0, xAbsolute, 0, yAbsolute);
     }
 
+    
+    public static UDim2 scaleFromVector2(Vector2 vector2, Vector2 screenSize) {
+        return UDim2.fromScale(vector2.X/screenSize.X, vector2.Y/screenSize.Y);
+    }
+
 
     public final UDim X;
     public final UDim Y;

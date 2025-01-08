@@ -104,6 +104,28 @@ public abstract class Instance {
         return instanceListToArray(list);
     }
 
+    @SuppressWarnings("unchecked")
+    private <T extends Instance> void addDescendantsOfClassRecursive(Instance curInstance, ArrayList<T> list, Class<T> classToFind){
+        for (Instance child : curInstance.GetChildren()) {
+            if (!(classToFind.isInstance(child))) continue;
+            list.add((T) child);
+            addDescendantsOfClassRecursive(child, list, classToFind);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Instance> T[] GetDescendantsOfClass(Class<T> classToFind) {
+        ArrayList<T> list = new ArrayList<>();
+
+        addDescendantsOfClassRecursive(this, list, classToFind);
+
+        T[] arrayChildren = (T[]) Array.newInstance(classToFind, list.size());
+        for (int i = 0; i < arrayChildren.length; i++) {
+            arrayChildren[i] = list.get(i);
+        }
+        return arrayChildren;
+    }
+
     public Instance[] GetAncestors() {
         ArrayList<Instance> ancestors = new ArrayList<>();
 
