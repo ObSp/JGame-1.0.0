@@ -3,8 +3,11 @@ package PaperAirplaneSimulation.Scene;
 import java.awt.Color;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
 import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
+import JGamePackage.JGame.Classes.World.Box2D;
 import JGamePackage.JGame.Classes.World.Image2D;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
@@ -39,6 +42,17 @@ public class SceneCreator {
             System.exit(0);
         });
 
+        UIImage cam = new UIImage();
+        cam.Size = UDim2.fromScale(.012, .02);
+        cam.Position = UDim2.fromScale(.96, .007);
+        cam.BackgroundTransparency = 1;
+        cam.SetImage("PaperAirplaneSimulation\\Assets\\Camera.png");
+        cam.Name = "CamButton";
+        cam.SetParent(game.UINode);
+
+        UIAspectRatioConstraint camConstraint = new UIAspectRatioConstraint();
+        camConstraint.SetParent(cam);
+
         UIText start = new UIText();
         start.AnchorPoint = new Vector2(.5, 0);
         start.Text = "Start Sim";
@@ -71,11 +85,18 @@ public class SceneCreator {
         Image2D b = new Image2D();
         b.Size = new Vector2(game.Services.WindowService.GetScreenWidth()*1.5, 100);
         b.Pivot = new Vector2(.5, 1);
-        b.Position = new Vector2(game.Services.WindowService.GetScreenWidth()/2, game.Services.WindowService.GetScreenHeight()+127);
+        b.Position = new Vector2(game.Services.WindowService.GetScreenWidth()/2, game.Services.WindowService.GetScreenHeight()+b.Size.Y/2 -15);
         b.Transparency = 1;
         b.SetImage("PaperAirplaneSimulation\\Assets\\Ground.png");
-        game.Camera.Position = game.Services.WindowService.GetScreenSize().divide(2);
+        b.Name = "Ground";
         b.SetParent(game.WorldNode);
+
+        Box2D belowB = new Box2D();
+        belowB.Size = b.Size.add(0, 500);
+        belowB.Pivot = new Vector2(.5, 0);
+        belowB.FillColor = new Color(35,191,53);
+        belowB.Position = b.Position.subtract(0, 5);
+        belowB.SetParent(game.WorldNode);
 
         Image2D plane1 = new Image2D();
         plane1.Size = new Vector2(ExperimentData.meterInPixel*.3, ExperimentData.meterInPixel*.13);
@@ -94,5 +115,7 @@ public class SceneCreator {
         plane2.Transparency = 1;
         plane2.Name = "Plane2";
         plane2.SetParent(game.WorldNode);
+
+        game.Camera.Position = game.Services.WindowService.GetScreenSize().divide(2);
     }
 }

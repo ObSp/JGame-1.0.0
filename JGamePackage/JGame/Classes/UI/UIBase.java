@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Rendering.Renderable;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
+import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGamePackage.lib.Signal.VoidSignal;
@@ -60,10 +62,25 @@ public abstract class UIBase extends Renderable {
 
     public Vector2 GetAbsoluteSize() {
         Instance parentInstance = this.GetParent();
+        Vector2 realSize = null;
         
-        if (!(parentInstance instanceof UIBase)) return Size.ToVector2(game.Services.WindowService.GetScreenSize());
+        if (!(parentInstance instanceof UIBase)) {
+            realSize = Size.ToVector2(game.Services.WindowService.GetScreenSize());
+        } else {
+            realSize = Size.ToVector2(((UIBase) parentInstance).GetAbsoluteSize());
+        }
 
-        return Size.ToVector2(((UIBase) parentInstance).GetAbsoluteSize());
+        UIAspectRatioConstraint aspectConstr = this.GetChildWhichIsA(UIAspectRatioConstraint.class);
+
+        if (aspectConstr != null) {
+            if (aspectConstr.DominantAxis == Constants.Vector2Axis.X) {
+                realSize = new Vector2(realSize.X, realSize.X/aspectConstr.AspectRatio);
+            } else {
+                realSize = new Vector2(realSize.Y*aspectConstr.AspectRatio, realSize.Y);
+            }
+        }
+
+        return realSize;
     }
 
     public double GetAbsoluteRotation() {

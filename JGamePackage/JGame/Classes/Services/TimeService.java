@@ -2,6 +2,7 @@ package JGamePackage.JGame.Classes.Services;
 
 import JGamePackage.lib.Signal.Signal;
 import JGamePackage.lib.Signal.SignalWrapper;
+import JGamePackage.lib.Signal.Signal.Connection;
 
 public class TimeService extends Service {
     private double elapsedSeconds = 0;
@@ -39,5 +40,35 @@ public class TimeService extends Service {
 
     public double GetElapsedSeconds() {
         return elapsedSeconds;
+    }
+
+    public void DelaySeconds(double secondsToWait, Runnable executor){
+        new DelayObjSeconds(secondsToWait, executor).start();
+    }
+
+
+    private class DelayObjSeconds{
+
+        double seconds;
+        Runnable ex;
+        double elapsed = 0;
+
+        @SuppressWarnings("rawtypes")
+        Connection con;
+
+        public DelayObjSeconds(double seconds, Runnable ex){
+            this.seconds = seconds;
+            this.ex = ex;
+        }
+
+        public void start(){
+            con = OnTick.Connect(dt->{
+                elapsed += dt;
+                if (elapsed > seconds){
+                    con.Disconnect();
+                    ex.run();
+                }
+            });
+        }
     }
 }

@@ -194,6 +194,12 @@ public abstract class Instance {
         return null;
     }
 
+    public void DestroyChildren() {
+        for (Instance child : GetChildren()) {
+            child.Destroy();
+        }
+    }
+
     protected void AddChild(Instance child) {
         children.add(child);
         childAddedSignal.Fire(child);
