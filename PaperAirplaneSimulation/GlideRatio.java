@@ -36,7 +36,9 @@ class Simulation {
     boolean plane1Finished = false;
     boolean plane2Finished = false;
 
-    boolean specialCam = false;
+    static boolean specialCam = false;
+
+    double xStep = .1;
 
     static double plane1RatioEquation(double xMeters) {
         return -(1/ExperimentData.ref1GlideDistancePerHeightLost) * xMeters + ExperimentData.ref1throwHeight;
@@ -48,6 +50,7 @@ class Simulation {
 
     public Simulation(JGame jgame) {
         game = jgame;
+
         SceneCreator.createMap(game);
 
         ((UIText) game.UINode.GetChild("Header")).Text = "Paper Airplane Aerodynamics - Glide Ratio Model";
@@ -98,7 +101,7 @@ class Simulation {
             //PLANE1
             if (!plane1Finished) {
                 double plane1CurX = MSAUtil.toMeters(plane1.Position.X);
-                plane1CurX += .025 * 1.1 * (1 - ExperimentData.ref1Wind);
+                plane1CurX += xStep * 1.1 * (1 - ExperimentData.ref1Wind);
                 double plane1Y = plane1RatioEquation(plane1CurX);
                 plane1.Position = new Vector2(MSAUtil.toPixels(plane1CurX), game.Services.WindowService.GetScreenHeight() - plane1.Size.Y/2 -MSAUtil.toPixels(plane1Y));
                 plane1.Rotation = Math.atan(ExperimentData.ref1throwHeight/ExperimentData.ref1DistanceX);
@@ -107,7 +110,7 @@ class Simulation {
 
             if (!plane2Finished) {
                 double plane2CurX = MSAUtil.toMeters(plane2.Position.X);
-                plane2CurX += .025  * 1.1 * (1 - ExperimentData.ref2Wind) ;
+                plane2CurX += xStep  * 1.1 * (1 - ExperimentData.ref2Wind) ;
                 double plane2Y = plane2RatioEquation(plane2CurX);
                 plane2.Position = new Vector2(MSAUtil.toPixels(plane2CurX), game.Services.WindowService.GetScreenHeight() - plane2.Size.Y/2 -MSAUtil.toPixels(plane2Y));
                 plane2.Rotation = Math.atan(ExperimentData.ref2throwHeight/ExperimentData.ref2DistanceX);
