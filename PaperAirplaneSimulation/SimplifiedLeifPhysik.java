@@ -38,15 +38,10 @@ class Simulation {
 
     static boolean specialCam = false;
 
-    double xStep = .1;
-
-    static double plane1RatioEquation(double xMeters) {
-        return -(1/ExperimentData.ref1GlideDistancePerHeightLost) * xMeters + ExperimentData.ref1throwHeight;
+    static double getDrag(Image2D plane) {
+        return ExperimentData.planeWeight * 9.81 * Math.sin(plane.Rotation);
     }
 
-    static double plane2RatioEquation(double xMeters) {
-        return -(1/ExperimentData.ref2GlideDistancePerHeightLost) * xMeters + ExperimentData.ref2throwHeight;
-    }
 
     public Simulation(JGame jgame) {
         game = jgame;
@@ -83,39 +78,7 @@ class Simulation {
 
         @SuppressWarnings("rawtypes")
         Connection tickConnection = game.Services.TimeService.OnTick.Connect(dt->{
-            if (specialCam) {
-                game.Camera.DepthFactor = 0.5;
-                MSAUtil.positionSpecialCamera(game, plane1.Position, plane2.Position);
-            } else {
-                game.Camera.DepthFactor = 1.1;
-                game.Camera.Position = game.Services.WindowService.GetScreenSize().divide(2);
-            }
-
-            if (plane1Finished && plane2Finished) {
-                finished = true;
-                return;
-            }
-
-            if (pauseSim) return;
-
-            //PLANE1
-            if (!plane1Finished) {
-                double plane1CurX = MSAUtil.toMeters(plane1.Position.X);
-                plane1CurX += xStep * 1.1 * (1 - ExperimentData.ref1Wind);
-                double plane1Y = plane1RatioEquation(plane1CurX);
-                plane1.Position = new Vector2(MSAUtil.toPixels(plane1CurX), game.Services.WindowService.GetScreenHeight() - plane1.Size.Y/2 -MSAUtil.toPixels(plane1Y));
-                plane1.Rotation = Math.atan(ExperimentData.ref1throwHeight/ExperimentData.ref1DistanceX);
-                if (plane1Y <= 0) plane1Finished = true;
-            }
-
-            if (!plane2Finished) {
-                double plane2CurX = MSAUtil.toMeters(plane2.Position.X);
-                plane2CurX += xStep  * 1.1 * (1 - ExperimentData.ref2Wind) ;
-                double plane2Y = plane2RatioEquation(plane2CurX);
-                plane2.Position = new Vector2(MSAUtil.toPixels(plane2CurX), game.Services.WindowService.GetScreenHeight() - plane2.Size.Y/2 -MSAUtil.toPixels(plane2Y));
-                plane2.Rotation = Math.atan(ExperimentData.ref2throwHeight/ExperimentData.ref2DistanceX);
-                if (plane2Y <= 0) plane2Finished = true;
-            }
+            
         });
 
         while (!finished) game.Services.TimeService.WaitTicks(1);
