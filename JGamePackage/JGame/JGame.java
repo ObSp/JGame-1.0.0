@@ -18,7 +18,7 @@ public class JGame {
     
 
     //--NUMBERS--//
-    public double TicksPerSecond = 0.016;
+    public double SecondsPerTick = 1.0/60.0;
 
     //--BASE NODES--//
     public final WorldNode WorldNode;
@@ -91,7 +91,7 @@ public class JGame {
 
         while (true) {
             double curSeconds = curSeconds();
-            if (curSeconds-lastTick>=TicksPerSecond) {
+            if (curSeconds-lastTick>=SecondsPerTick) {
                 double delta = curSeconds - lastTick;
                 lastTick = curSeconds;
                 tick(delta);
