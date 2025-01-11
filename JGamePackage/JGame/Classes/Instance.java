@@ -14,6 +14,7 @@ public abstract class Instance {
     private static CustomError ErrorAlreadyDestroyed = new CustomError("Cannot destroy an already destroyed instance.", CustomError.WARNING, "JGamePackage");
     private static CustomError ErrorParentLocked = new CustomError("Unable to set parent property; the property is locked.", CustomError.WARNING, "JGamePackage");
     private static CustomError ErrorNoJGame = new CustomError("A JGame must be running in order to create JGame instances.", CustomError.ERROR, "JGamePackage");
+    private static CustomError WarningNullClone = new CustomError("The method Clone() is unimplemented for the class %s..", CustomError.WARNING, "JGamePackage");
 
     /**A non-unique identifier that can be used to access this instance through its parent.
      * 
@@ -166,6 +167,16 @@ public abstract class Instance {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
+    public <T extends Instance> T GetTypedChild(String name){
+        for (Instance child : GetChildren()) {
+            if (child.Name.equals(name)) {
+                return ((T) child);
+            }
+        }
+        return null;
+    }
+
     /**Returns the first found child whose classname is equal to the className parameter.
      * 
      * @param className
@@ -244,6 +255,30 @@ public abstract class Instance {
 
     public Instance GetParent() {
         return parent;
+    }
+
+    /**Returns a duplicate of this instance while also duplicating all descendants
+     * 
+     * @return A clone of this instance
+     */
+    public abstract Instance Clone();
+    protected abstract Instance cloneWithoutChildren();
+    
+    private static void duplicateChildren(Instance from, Instance to) {
+        for (Instance child : from.GetChildren()) {
+            Instance clone = child.cloneWithoutChildren();
+            if (clone == null) {
+                WarningNullClone.Throw(new String[] {child.getClass().getSimpleName()});
+                continue;
+            }
+            clone.SetParent(to);
+            duplicateChildren(child, clone);
+        }
+    }
+
+    /**Clone all children from this Instance to the new instance */
+    protected void cloneHierarchyToNewParent(Instance newParent) {
+        duplicateChildren(this, newParent);
     }
 
     //--OVERRIDES--//

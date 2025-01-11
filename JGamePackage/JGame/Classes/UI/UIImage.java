@@ -45,5 +45,20 @@ public class UIImage extends UIBase {
 
         graphics.drawImage(this.Image, (int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, null);
     }
+
+    @Override
+    public UIImage Clone() {
+        UIImage clone = cloneWithoutChildren();
+        this.cloneHierarchyToNewParent(clone);
+        return clone;
+    }
+
+    @Override
+    protected UIImage cloneWithoutChildren() {
+        UIImage img = new UIImage();
+        img.SetImage(this.imagePath);
+        this.cloneHelper(img);
+        return img;
+    }
     
 }

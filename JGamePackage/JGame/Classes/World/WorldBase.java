@@ -66,4 +66,14 @@ public abstract class WorldBase extends Renderable{
     protected Color GetRenderColor() {
         return new Color(FillColor.getRed(), FillColor.getGreen(), FillColor.getBlue(), (int) (255*(1-Transparency)));
     }
+
+    @Override
+    public WorldBase Clone() {
+        return null;
+    }
+
+    @Override
+    public WorldBase cloneWithoutChildren() {
+        return null;
+    }
 }

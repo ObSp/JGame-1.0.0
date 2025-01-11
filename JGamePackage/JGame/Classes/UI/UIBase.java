@@ -107,4 +107,20 @@ public abstract class UIBase extends Renderable {
     protected Color GetBackgroundRenderColor() {
         return new Color(BackgroundColor.getRed(), BackgroundColor.getGreen(), BackgroundColor.getBlue(), (int) (255*(1-BackgroundTransparency)));
     }
+
+
+    //Internal method for UIBase instances to duplicate their basic UIBase properties
+    protected void cloneHelper(UIBase base) {
+        base.AnchorPoint = this.AnchorPoint;
+        base.BackgroundColor = this.BackgroundColor;
+        base.BackgroundTransparency = this.BackgroundTransparency;
+        base.Name = this.Name;
+        base.Position = this.Position;
+        base.Rotation = this.Rotation;
+        base.Size = this.Size;
+        base.Visible = this.Visible;
+        base.ZIndex = this.ZIndex;
+    }
+
+    public abstract UIBase Clone();
 }

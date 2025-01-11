@@ -96,4 +96,27 @@ public class UIText extends UIBase{
     private Color GetTextRenderColor(){
         return new Color(TextColor.getRed(), TextColor.getGreen(), TextColor.getBlue(), (int) (255*(1-TextTransparency)));
     }
+
+    @Override
+    public UIText Clone() {
+        UIText clone = cloneWithoutChildren();
+        this.cloneHierarchyToNewParent(clone);
+        return clone;
+    }
+
+    @Override
+    protected UIText cloneWithoutChildren() {
+        UIText text = new UIText();
+        this.cloneHelper(text);
+        text.Text = this.Text;
+        text.TextColor = this.TextColor;
+        text.TextTransparency = this.TextTransparency;
+        text.HorizontalTextAlignment = this.HorizontalTextAlignment;
+        text.VerticalTextAlignment = this.VerticalTextAlignment;
+        text.FontSize = this.FontSize;
+        text.FontName = this.FontName;
+        text.FontStyle = this.FontStyle;
+        text.TextScaled = this.TextScaled;
+        return text;
+    }
 }

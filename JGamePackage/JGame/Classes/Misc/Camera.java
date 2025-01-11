@@ -72,4 +72,20 @@ public class Camera extends Instance {
 
         return visibleLeft && visibleRight && visibleTop && visibleBottom;
     }
+
+    @Override
+    public Camera Clone() {
+        Camera clone = cloneWithoutChildren();
+        this.cloneHierarchyToNewParent(clone);
+        return clone;
+    }
+
+    @Override
+    protected Camera cloneWithoutChildren() {
+        Camera cam = new Camera();
+        cam.Position = this.Position;
+        cam.Rotation = this.Rotation;
+        cam.DepthFactor = this.DepthFactor;
+        return cam;
+    }
 }

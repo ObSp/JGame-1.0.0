@@ -16,4 +16,14 @@ public class Service extends Instance {
         }
         game = current;
     }
+
+     @Override
+    public Service Clone() {
+        return null;
+    }
+
+    @Override
+    public Service cloneWithoutChildren() {
+        return null;
+    }
 }

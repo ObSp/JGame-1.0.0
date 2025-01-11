@@ -13,8 +13,8 @@ public final class ExperimentData {
     public static final double ref1DistanceX = 6.41; //m
     public static final double ref1throwHeight = 1.85; //m
     public static final double ref1GlideDistancePerHeightLost = ref1DistanceX/ref1throwHeight; //m
-    public static final double ref1Wind = .3;
-    public static final double ref1ThrowAngle = 10;
+    public static final double ref1Wind = .3; //m/s
+    public static final double ref1ThrowAngle = 10; //deg
     public static final double ref1InitialVelocityX = 5.38; //m/s
     public static final double ref1InitialVelocityY = 0.948; //m/s
 
@@ -23,5 +23,8 @@ public final class ExperimentData {
     public static final double ref2DistanceX = 4.85; //m
     public static final double ref2throwHeight = 1.80; //m
     public static final double ref2GlideDistancePerHeightLost = ref2DistanceX/ref2throwHeight; //m
-    public static final double ref2Wind = .5;
+    public static final double ref2Wind = .05; //m/s
+    public static final double ref2ThrowAngle = 37; //deg
+    public static final double ref2InitialVelocityX = 4.5;//4.86; //m/s
+    public static final double ref2InitialVelocityY = 3.67; //m/s
 }

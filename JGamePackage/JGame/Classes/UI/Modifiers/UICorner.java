@@ -9,4 +9,19 @@ public class UICorner extends UIModifier {
      * 
      */
     public int RelativeTo = Constants.Vector2Axis.X;
+
+    @Override
+    public UICorner Clone() {
+        UICorner clone = this.cloneWithoutChildren();
+        this.cloneHierarchyToNewParent(clone);
+        return clone;
+    }
+
+    @Override
+    protected UICorner cloneWithoutChildren() {
+        UICorner clone = new UICorner();
+        clone.Radius = this.Radius;
+        clone.RelativeTo = this.RelativeTo;
+        return clone;
+    }
 }

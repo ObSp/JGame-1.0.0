@@ -25,4 +25,17 @@ public class UIFrame extends UIBase {
         }
     }
     
+    @Override
+    public UIFrame Clone() {
+        UIFrame clone = cloneWithoutChildren();
+        this.cloneHierarchyToNewParent(clone);
+        return clone;
+    }
+
+    @Override
+    protected UIFrame cloneWithoutChildren() {
+        UIFrame frame = new UIFrame();
+        this.cloneHelper(frame);
+        return frame;
+    }
 }
