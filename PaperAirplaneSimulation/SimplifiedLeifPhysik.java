@@ -207,9 +207,11 @@ class ASimulation {
                 liftNewtons = Math.abs(liftNewtons);
                 weightNewtons = Math.abs(weightNewtons);   
 
+                System.out.println(getLiftCoefficient(plane1, plane1Velocity));
+
                 double dragVelImpact = newtonsToMetersPerSecond(dragNewtons, secondsInAir) * jgame.SecondsPerTick; //make sure it's not moving in m/tick instead of m/s
                 double liftVelImpact = newtonsToMetersPerSecond(liftNewtons, secondsInAir) * jgame.SecondsPerTick;
-                double weightVelImpact = newtonsToMetersPerSecond(weightNewtons, secondsInAir) *jgame.SecondsPerTick;
+                double weightVelImpact = newtonsToMetersPerSecond(weightNewtons, secondsInAir) * jgame.SecondsPerTick;
 
                 double dragVelPixels = MSAUtil.toPixels(dragVelImpact);
                 double liftVelPixels = MSAUtil.toPixels(liftVelImpact);
