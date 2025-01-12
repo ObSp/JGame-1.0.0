@@ -10,6 +10,8 @@ public class Studio {
     //PAGE NODES
     static UIBase welcomeNode;
     public static void main(String[] args) {
+        StudioUtil.game = game;
+
         welcomeNode = Welcome.createWelcomePageNode();
         welcomeNode.SetParent(game.UINode);
     }
