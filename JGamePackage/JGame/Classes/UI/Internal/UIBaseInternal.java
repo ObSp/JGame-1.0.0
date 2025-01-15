@@ -17,7 +17,7 @@ public class UIBaseInternal {
 
         int posInChildren = Arrays.asList(childrenOfClass).indexOf(inst);
         if (posInChildren == 0) {
-            return Vector2.zero;
+            return ((UIBase) inst.GetParent()).GetAbsolutePosition().subtract(inst.GetAnchorPointOffset());
         } else {
             UIBase childBefore = childrenOfClass[posInChildren - 1];
             Vector2 absSize = childBefore.GetAbsoluteSize();

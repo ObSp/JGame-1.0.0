@@ -72,12 +72,6 @@ public abstract class UIBase extends Renderable {
             }
         }
 
-
-
-        if (parentInstance.GetChildWhichIsA(UIListLayout.class) != null) {
-
-        }
-
         return realPos;
     }
 

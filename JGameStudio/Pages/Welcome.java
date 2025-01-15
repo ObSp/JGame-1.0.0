@@ -7,6 +7,7 @@ import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
@@ -30,6 +31,14 @@ public class Welcome {
         innerContainer.Position = StudioUtil.UDim2ScaleToAbsolute(UDim2.fromScale(.15, 0));
         innerContainer.BackgroundTransparency = 1;
         innerContainer.SetParent(container);
+
+        UIListLayout listLayout = new UIListLayout();
+        listLayout.SetParent(innerContainer);
+
+        UIFrame listFrame = new UIFrame();
+        listFrame.Size = StudioUtil.UDim2ScaleToAbsolute(UDim2.fromScale(3, .3), innerContainer);
+        listFrame.SetParent(innerContainer);
+        
 
         return container;
     }
