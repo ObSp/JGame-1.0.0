@@ -15,7 +15,7 @@ import JGamePackage.lib.Signal.VoidSignal.VoidConnection;
 import PaperAirplaneSimulation.Scene.InfoPanelCreator;
 import PaperAirplaneSimulation.Scene.SceneCreator;
 
-public class SimplifiedLeifPhysik {
+public class thing {
     static JGame game = new JGame();
 
     public static void main(String[] args) {
@@ -24,18 +24,18 @@ public class SimplifiedLeifPhysik {
 
         game.Services.WindowService.BackgroundColor = new Color(208,244,247);
 
-        new ASimulation(game);
+        new bSimulation(game);
     }
 }
 
-class ASimulation {
+class bSimulation {
     JGame game;
 
     Image2D plane1;
     Image2D plane2;
 
-    Vector2 plane1Velocity = new Vector2(MSAUtil.toPixels(ExperimentData.ref1InitialVelocityX)/14.526, -MSAUtil.toPixels(ExperimentData.ref1InitialVelocityY)/100); //new Vector2(90, -1); //pixels/second
-    Vector2 plane2Velocity = new Vector2(MSAUtil.toPixels(ExperimentData.ref2InitialVelocityX)/14.526, -MSAUtil.toPixels(ExperimentData.ref2InitialVelocityY)/50);
+    Vector2 plane1Velocity = new Vector2(MSAUtil.toPixels(ExperimentData.ref1InitialVelocityX), -MSAUtil.toPixels(ExperimentData.ref1InitialVelocityY)); //new Vector2(90, -1); //pixels/second
+    Vector2 plane2Velocity = new Vector2(MSAUtil.toPixels(ExperimentData.ref2InitialVelocityX), -MSAUtil.toPixels(ExperimentData.ref2InitialVelocityY));
 
     Vector2 plane1RealPos;
     Vector2 plane2RealPos;
@@ -85,7 +85,7 @@ class ASimulation {
     }
 
     static double getWeight(Image2D plane, double secondsInAir) { //Weight = mass * acceleration
-        return ExperimentData.planeWeight * (9.81*1.9); //for stall example, do 9.81*secondsInAir
+        return ExperimentData.planeWeight * 9.81; //for stall example, do 9.81*secondsInAir
     }
 
     static double newtonsToMetersPerSecond(double newtons, double t) {
@@ -108,7 +108,7 @@ class ASimulation {
     }
 
 
-    public ASimulation(JGame jgame) {
+    public bSimulation(JGame jgame) {
         game = jgame;
 
         SceneCreator.createMap(game);
@@ -205,22 +205,22 @@ class ASimulation {
 
                 dragNewtons = Math.abs(dragNewtons);
                 liftNewtons = Math.abs(liftNewtons);
-                weightNewtons = Math.abs(weightNewtons);   
+                weightNewtons = Math.abs(weightNewtons);
 
-                double dragVelImpact = newtonsToMetersPerSecond(dragNewtons, secondsInAir) * jgame.SecondsPerTick; //make sure it's not moving in m/tick instead of m/s
-                double liftVelImpact = newtonsToMetersPerSecond(liftNewtons, secondsInAir) * jgame.SecondsPerTick;
-                double weightVelImpact = newtonsToMetersPerSecond(weightNewtons, secondsInAir) * jgame.SecondsPerTick;
+                double dragVelImpact = newtonsToMetersPerSecond(dragNewtons, secondsInAir); //make sure it's not moving in m/tick instead of m/s
+                double liftVelImpact = newtonsToMetersPerSecond(liftNewtons, secondsInAir);
+                double weightVelImpact = newtonsToMetersPerSecond(weightNewtons, secondsInAir);
 
-                double dragVelPixels = MSAUtil.toPixels(dragVelImpact);
-                double liftVelPixels = MSAUtil.toPixels(liftVelImpact);
-                double weightVelPixels = MSAUtil.toPixels(weightVelImpact); 
+                double dragVelPixels = MSAUtil.toPixels(dragVelImpact) * jgame.SecondsPerTick;
+                double liftVelPixels = MSAUtil.toPixels(liftVelImpact) * jgame.SecondsPerTick;
+                double weightVelPixels = MSAUtil.toPixels(weightVelImpact)  * jgame.SecondsPerTick; 
                 
                 if (dragVelPixels > plane1Velocity.X)
                     dragVelPixels = plane1Velocity.X;
 
                 plane1Velocity = plane1Velocity.add(-dragVelPixels, -liftVelPixels);
-                plane1Velocity = plane1Velocity.add(0, weightVelPixels*.9);
-                plane1Velocity = plane1Velocity.add(MSAUtil.toPixels(ExperimentData.ref1Wind) * jgame.SecondsPerTick, 0);
+                plane1Velocity = plane1Velocity.add(0, weightVelPixels);
+                plane1Velocity = plane1Velocity.add(-MSAUtil.toPixels(ExperimentData.ref1Wind) * jgame.SecondsPerTick, 0);
 
                 plane1RealPos = plane1RealPos.add(plane1Velocity);
 
@@ -345,6 +345,6 @@ class ASimulation {
         game.UINode.DestroyChildren();
         game.WorldNode.DestroyChildren();
         
-        new ASimulation(game);
+        new bSimulation(game);
     }
 }
