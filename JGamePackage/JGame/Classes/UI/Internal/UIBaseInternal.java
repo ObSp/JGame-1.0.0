@@ -1,0 +1,29 @@
+package JGamePackage.JGame.Classes.UI.Internal;
+
+import java.util.Arrays;
+
+import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.UI.UIBase;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
+import JGamePackage.JGame.Types.Constants.Constants;
+import JGamePackage.JGame.Types.PointObjects.Vector2;
+
+public class UIBaseInternal {
+
+    public static Vector2 computePositionWithUIList(UIBase inst, UIListLayout layout, JGame game) {
+        UIBase[] childrenOfClass = inst.GetParent().GetChildrenOfClass(UIBase.class);
+        Vector2 paddingVec2 = layout.Padding.ToVector2(game.Services.WindowService.GetScreenSize());
+        boolean isHorizontal = layout.ItemAlignment == Constants.ListAlignment.Horizontal;
+
+        int posInChildren = Arrays.asList(childrenOfClass).indexOf(inst);
+        if (posInChildren == 0) {
+            return Vector2.zero;
+        } else {
+            UIBase childBefore = childrenOfClass[posInChildren - 1];
+            Vector2 absSize = childBefore.GetAbsoluteSize();
+
+            return childBefore.GetAbsolutePosition().add(isHorizontal ? absSize.X : 0, !isHorizontal ? absSize.Y : 0).add(paddingVec2.multiply(isHorizontal ? 1 : 0, !isHorizontal ? 1 : 0));
+        }
+    }
+
+}

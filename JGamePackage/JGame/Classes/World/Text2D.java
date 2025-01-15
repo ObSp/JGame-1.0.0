@@ -20,9 +20,9 @@ public class Text2D extends WorldBase{
     public Color TextColor = Color.black;
     public double TextTransparency = 0;
 
-    public int HorizontalTextAlignment = Constants.HorizontalTextAlignment.Center;
+    public Constants.HorizontalTextAlignment HorizontalTextAlignment = Constants.HorizontalTextAlignment.Center;
 
-    public double VerticalTextAlignment = Constants.VerticalTextAlignment.Center;
+    public Constants.VerticalTextAlignment VerticalTextAlignment = Constants.VerticalTextAlignment.Center;
 
     public int FontSize = 10;
     public String FontName = "Arial";

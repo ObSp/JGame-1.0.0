@@ -1,12 +1,11 @@
 package JGamePackage.JGame.Classes.UI.Modifiers;
 
-import JGamePackage.JGame.Classes.World.WorldBase;
 import JGamePackage.JGame.Types.Constants.Constants;
 
 public class UIAspectRatioConstraint extends UIModifier {
     public double AspectRatio = 1;
 
-    public int DominantAxis = Constants.Vector2Axis.X;
+    public Constants.Vector2Axis DominantAxis = Constants.Vector2Axis.X;
 
     @Override
     public UIAspectRatioConstraint Clone() {

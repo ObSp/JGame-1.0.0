@@ -18,7 +18,7 @@ public class UIFrame extends UIBase {
 
         if (cornerEffect != null) {
             double radius = cornerEffect.Radius;
-            radius *= renderSize.getAxisFromIndex(cornerEffect.RelativeTo);
+            radius *= renderSize.getAxisFromVector2Axis(cornerEffect.RelativeTo);
             graphics.fillRoundRect((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, (int) radius, (int) radius);
         } else {
             graphics.fillRect((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y);

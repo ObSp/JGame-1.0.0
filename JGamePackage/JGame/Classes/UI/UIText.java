@@ -21,9 +21,9 @@ public class UIText extends UIBase{
     public Color TextColor = Color.black;
     public double TextTransparency = 0;
 
-    public int HorizontalTextAlignment = Constants.HorizontalTextAlignment.Center;
+    public Constants.HorizontalTextAlignment HorizontalTextAlignment = Constants.HorizontalTextAlignment.Center;
 
-    public double VerticalTextAlignment = Constants.VerticalTextAlignment.Center;
+    public Constants.VerticalTextAlignment VerticalTextAlignment = Constants.VerticalTextAlignment.Center;
 
     public int FontSize = 10;
     public String FontName = "Arial";
@@ -48,7 +48,7 @@ public class UIText extends UIBase{
             UICorner cornerEffect = this.GetChildWhichIsA(UICorner.class);
             if (cornerEffect != null) {
                 double radius = cornerEffect.Radius;
-                radius *= renderSize.getAxisFromIndex(cornerEffect.RelativeTo);
+                radius *= renderSize.getAxisFromVector2Axis(cornerEffect.RelativeTo);
                 graphics.fillRoundRect((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, (int) radius, (int) radius);
             } else {
                 graphics.fillRect((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y);

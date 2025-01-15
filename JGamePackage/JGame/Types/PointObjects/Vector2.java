@@ -23,7 +23,6 @@ public class Vector2 extends BasePoint {
     /**Shorthand for {@code Vector2(0,-1)}.*/
     public static final Vector2 down = new Vector2(0, 1);
 
-
     /**The X component of this Vector2.
      * 
      */
@@ -160,16 +159,19 @@ public class Vector2 extends BasePoint {
         return origin.add(this);
     }
 
-
-
     public double getAxisFromIndex(int index) {
-        if (index == Constants.Vector2Axis.X ) return X;
-        if (index == Constants.Vector2Axis.Y) return Y;
+        if (index == 0) return X;
+        if (index == 1) return Y;
         ErrorAccessIndexOutOfBounds.Throw(new String[] {index+""});
         return 0; //will never reach this, just to satisfy compiler
     }
 
-
+    public double getAxisFromVector2Axis(Constants.Vector2Axis axis) {
+        if (axis == Constants.Vector2Axis.X) return X;
+        if (axis == Constants.Vector2Axis.Y) return Y;
+        ErrorAccessIndexOutOfBounds.Throw(new String[] {axis+""});
+        return 0; //will never reach this, just to satisfy compiler
+    }
 
     @Override
     public String toString(){

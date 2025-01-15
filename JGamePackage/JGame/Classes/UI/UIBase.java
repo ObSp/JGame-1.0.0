@@ -1,10 +1,13 @@
 package JGamePackage.JGame.Classes.UI;
 
 import java.awt.Color;
+import java.util.Arrays;
 
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Rendering.Renderable;
+import JGamePackage.JGame.Classes.UI.Internal.UIBaseInternal;
 import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
@@ -55,9 +58,27 @@ public abstract class UIBase extends Renderable {
     public Vector2 GetAbsolutePosition() {
         Instance parentInstance = this.GetParent();
 
-        if (!(parentInstance instanceof UIBase)) return Position.ToVector2(game.Services.WindowService.GetScreenSize()).subtract(GetAnchorPointOffset());
+        Vector2 realPos = null;
 
-        return Position.ToVector2(((UIBase) parentInstance).GetAbsoluteSize()).add(((UIBase) parentInstance).GetAbsolutePosition()).subtract(GetAnchorPointOffset());
+        UIListLayout layout = parentInstance.GetChildWhichIsA(UIListLayout.class);
+
+        if (layout != null) {
+            realPos = UIBaseInternal.computePositionWithUIList(this, layout, game);
+        } else {
+            if (!(parentInstance instanceof UIBase)) {
+                realPos = Position.ToVector2(game.Services.WindowService.GetScreenSize()).subtract(GetAnchorPointOffset());
+            } else {
+                realPos = Position.ToVector2(((UIBase) parentInstance).GetAbsoluteSize()).add(((UIBase) parentInstance).GetAbsolutePosition()).subtract(GetAnchorPointOffset());
+            }
+        }
+
+
+
+        if (parentInstance.GetChildWhichIsA(UIListLayout.class) != null) {
+
+        }
+
+        return realPos;
     }
 
     public Vector2 GetAbsoluteSize() {

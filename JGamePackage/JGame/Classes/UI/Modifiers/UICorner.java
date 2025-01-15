@@ -8,7 +8,7 @@ public class UICorner extends UIModifier {
     /**The {@code Vector2Axis} that the arc size of the UICorner is dependant on.
      * 
      */
-    public int RelativeTo = Constants.Vector2Axis.X;
+    public Constants.Vector2Axis RelativeTo = Constants.Vector2Axis.X;
 
     @Override
     public UICorner Clone() {
