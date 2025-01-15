@@ -285,7 +285,7 @@ class ASimulation {
 
             panel1.<UIText>GetTypedChild("Drag").Text = "Drag: "+format(plane1dragNewtons)+"N";
             panel1.<UIText>GetTypedChild("Lift").Text = "Lift: "+format(plane1liftNewtons)+"N";
-            if (!plane1Finished) panel1.<UIText>GetTypedChild("Weight").Text = "Weight: "+format(ExperimentData.planeWeight * (9.81 * secondsInAir * 15))+"N";
+            if (!plane1Finished) panel1.<UIText>GetTypedChild("Weight").Text = "Weight: "+format(getWeight(plane1, 0))+"N";
             panel1.<UIText>GetTypedChild("Height").Text = "Height: "+format(plane1height)+"m";
             panel1.<UIText>GetTypedChild("Displacement").Text = "Displacement: "+format(MSAUtil.toMeters(plane1.Position.X))+"m";
             panel1.<UIText>GetTypedChild("Angle").Text = "Angle of Attack(α): "+format(Math.toDegrees(plane1.Rotation))+"°";
