@@ -66,6 +66,7 @@ public class JGame {
     //--INITIALIZATION--//
     private Promise start() {
         return new Promise(self ->{
+            gameWindow.setSize(500, 500);
             gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
             gameWindow.setIconImage(new ImageIcon("JGamePackage\\JGame\\Assets\\icon.png").getImage());
             gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
