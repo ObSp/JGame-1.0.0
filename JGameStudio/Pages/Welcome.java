@@ -22,8 +22,14 @@ public class Welcome {
         UIFrame leftMenu = new UIFrame();
         leftMenu.ZIndex = 2;
         leftMenu.BackgroundColor = container.BackgroundColor.brighter().brighter();
-        leftMenu.Size = StudioUtil.UDim2ScaleToAbsolute(UDim2.fromScale(.10, 1));
+        leftMenu.Size = StudioUtil.UDim2ScaleToAbsolute(UDim2.fromScale(.15, 1));
         leftMenu.SetParent(container);
+
+        UIFrame innerContainer = new UIFrame();
+        innerContainer.Size = StudioUtil.UDim2ScaleToAbsolute(UDim2.fromScale(.85, 1));
+        innerContainer.Position = StudioUtil.UDim2ScaleToAbsolute(UDim2.fromScale(.15, 0));
+        innerContainer.BackgroundTransparency = 1;
+        innerContainer.SetParent(container);
 
         return container;
     }
