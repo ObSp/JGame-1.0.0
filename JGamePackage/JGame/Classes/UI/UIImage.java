@@ -6,6 +6,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import JGamePackage.JGame.Classes.Rendering.RenderUtil;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
 public class UIImage extends UIBase {
@@ -38,12 +39,10 @@ public class UIImage extends UIBase {
         if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPos)) return;
 
         if (this.BackgroundTransparency < 1) {
-            graphics.setColor(this.GetBackgroundRenderColor());
-
-            graphics.fillRect((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y);
+            RenderUtil.drawRectangle(this, renderSize, renderPos, GetBackgroundRenderColor());
         }
 
-        graphics.drawImage(this.Image, (int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, null);
+        RenderUtil.drawImage(this, renderSize, renderPos, Image);
     }
 
     @Override

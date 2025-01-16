@@ -55,7 +55,7 @@ public class Init {
         header.TextColor = new Color(0);
         header.SetParent(game.UINode);
 
-        game.Services.TimeService.DelaySeconds(5, ()-> {
+        game.Services.TimeService.DelaySeconds(1, ()-> {
             window.dispose();
             window.setSize(500, 500);
             window.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -63,6 +63,7 @@ public class Init {
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             window.setUndecorated(false);
             window.setResizable(true);
+            window.setAlwaysOnTop(false);
 
             window.setLocationRelativeTo(null);
 

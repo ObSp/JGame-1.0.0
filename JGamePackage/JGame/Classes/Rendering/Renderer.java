@@ -1,5 +1,6 @@
 package JGamePackage.JGame.Classes.Rendering;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -45,6 +46,8 @@ public class Renderer extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        RenderUtil.g = g2d;
 
         RenderWorld(g2d, game.WorldNode.GetDescendants());
         RenderUI(g2d, game.UINode.GetDescendants());

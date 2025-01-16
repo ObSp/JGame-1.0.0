@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
-import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
+import JGamePackage.JGame.Classes.Rendering.RenderUtil;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
@@ -44,17 +44,8 @@ public class UIText extends UIBase{
         int centerY = (int) (renderPos.Y + (renderSize.Y/2));
 
         //render background
-        Color backgroundRenderColor = this.GetBackgroundRenderColor();
-        if (backgroundRenderColor.getAlpha() > 0) {
-            graphics.setColor(backgroundRenderColor);
-            UICorner cornerEffect = this.GetChildWhichIsA(UICorner.class);
-            if (cornerEffect != null) {
-                double radius = cornerEffect.Radius;
-                radius *= renderSize.getAxisFromVector2Axis(cornerEffect.RelativeTo);
-                graphics.fillRoundRect((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, (int) radius, (int) radius);
-            } else {
-                graphics.fillRect((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y);
-            }
+        if (BackgroundTransparency < 1) {
+            RenderUtil.drawRectangle(this, renderSize, renderPos, GetBackgroundRenderColor());
         }
 
         Font font;

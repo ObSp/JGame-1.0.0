@@ -6,11 +6,14 @@ import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UIButton;
 import JGamePackage.JGame.Classes.UI.UIFrame;
+import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
 import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
 import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
+import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
 
@@ -24,6 +27,17 @@ public class Welcome {
 
         UICorner corner = new UICorner();
         corner.SetParent(frame);
+
+        UIImage preview = new UIImage();
+        preview.AnchorPoint = new Vector2(.5, 0);
+        preview.Size = StudioUtil.UDim2ScaleToAbsolute(UDim2.fromScale(.8, 1), frame);
+        preview.Position = UDim2.fromScale(.5, .1);
+        preview.BackgroundTransparency = 1;
+        preview.SetImage("JGameStudio\\Assets\\jgameBannerBackground.png");
+        preview.SetParent(frame);
+
+        new UIAspectRatioConstraint().SetParent(preview);
+        new UICorner().SetParent(preview);
 
         return frame;
     }
