@@ -1,7 +1,6 @@
 package JGamePackage.JGame.Classes.UI;
 
 import java.awt.Color;
-import java.util.Arrays;
 
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Rendering.Renderable;
@@ -66,7 +65,7 @@ public abstract class UIBase extends Renderable {
             realPos = UIBaseInternal.computePositionWithUIList(this, layout, game);
         } else {
             if (!(parentInstance instanceof UIBase)) {
-                realPos = Position.ToVector2(game.Services.WindowService.GetScreenSize()).subtract(GetAnchorPointOffset());
+                realPos = Position.ToVector2(game.Services.WindowService.GetWindowSize()).subtract(GetAnchorPointOffset());
             } else {
                 realPos = Position.ToVector2(((UIBase) parentInstance).GetAbsoluteSize()).add(((UIBase) parentInstance).GetAbsolutePosition()).subtract(GetAnchorPointOffset());
             }
@@ -80,7 +79,7 @@ public abstract class UIBase extends Renderable {
         Vector2 realSize = null;
         
         if (!(parentInstance instanceof UIBase)) {
-            realSize = Size.ToVector2(game.Services.WindowService.GetScreenSize());
+            realSize = Size.ToVector2(game.Services.WindowService.GetWindowSize());
         } else {
             realSize = Size.ToVector2(((UIBase) parentInstance).GetAbsoluteSize());
         }

@@ -1,6 +1,8 @@
 package JGamePackage.JGame.Classes.Services;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -15,22 +17,27 @@ public class WindowService extends Service {
 
     public WindowService(SignalWrapper<Double> onTick) {
         onTick.Connect(dt->{
-            screenSize = new Vector2(GetScreenWidth(), GetScreenHeight());
+            screenSize = new Vector2(GetWindowWidth(), GetWindowHeight());
         });
     }
 
-    public Vector2 GetScreenSize(){
-        return screenSize != null ? screenSize : new Vector2(GetScreenWidth(), GetScreenHeight());
+    public Vector2 GetWindowSize(){
+        return screenSize != null ? screenSize : new Vector2(GetWindowWidth(), GetWindowHeight());
     }
 
-    public int GetScreenHeight(){
+    public int GetWindowHeight(){
         checkForInit();
         return game.GetWindow().getContentPane().getHeight();
     }
 
-    public int GetScreenWidth(){
+    public int GetWindowWidth(){
         checkForInit();
         return game.GetWindow().getContentPane().getWidth();
+    }
+
+    public Vector2 GetScreenSize() {
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        return new Vector2(d.getWidth(), d.getHeight());
     }
 
     public void SetWindowTitle(String newTitle){

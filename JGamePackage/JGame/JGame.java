@@ -9,6 +9,7 @@ import JGamePackage.JGame.Classes.Misc.UINode;
 import JGamePackage.JGame.Classes.Misc.WorldNode;
 import JGamePackage.JGame.Classes.Rendering.Renderer;
 import JGamePackage.JGame.Types.Services.ServiceContainer;
+import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGamePackage.lib.Promise.Promise;
 import JGamePackage.lib.Signal.Signal;
 import JGamePackage.lib.Signal.SignalWrapper;
@@ -45,6 +46,10 @@ public class JGame {
 
     //--CONSTRUCTORS--//
     public JGame() {
+        this(new StartParams());
+    }
+
+    public JGame(StartParams params) {
         JGame.CurrentGame = this;
 
         WorldNode = new WorldNode();
@@ -57,21 +62,25 @@ public class JGame {
         renderer = new Renderer(this);
         Camera = new Camera();
 
-        Promise.await(this.start());
+        Promise.await(this.start(params));
     }
 
 
     //--INITIALIZATION--//
-    private Promise start() {
+    private Promise start(StartParams params) {
         return new Promise(self ->{
-            gameWindow.setSize(500, 500);
-            gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            gameWindow.setIconImage(new ImageIcon("JGamePackage\\JGame\\Assets\\icon.png").getImage());
-            gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            if (params.initializeWindow) {
+                gameWindow.setSize(500, 500);
+                gameWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                gameWindow.setIconImage(new ImageIcon("JGamePackage\\JGame\\Assets\\icon.png").getImage());
+                gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                gameWindow.setLocationRelativeTo(null);
 
+                gameWindow.setVisible(true);
+            }
+
+            
             gameWindow.add(renderer);
-
-            gameWindow.setVisible(true);
 
             self.resolve();
 

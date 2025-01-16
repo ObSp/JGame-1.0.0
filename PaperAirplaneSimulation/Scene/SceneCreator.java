@@ -79,13 +79,13 @@ public class SceneCreator {
         background.SetImage("PaperAirplaneSimulation\\Assets\\Sky.png");
         background.Size = new Vector2(800, 300).multiply(4.4);
         background.Pivot = Vector2.half;
-        background.Position = game.Services.WindowService.GetScreenSize().divide(2);
+        background.Position = game.Services.WindowService.GetWindowSize().divide(2);
         background.SetParent(game.WorldNode);
 
         Image2D b = new Image2D();
-        b.Size = new Vector2(game.Services.WindowService.GetScreenWidth()*1.5, 100);
+        b.Size = new Vector2(game.Services.WindowService.GetWindowWidth()*1.5, 100);
         b.Pivot = new Vector2(.5, 1);
-        b.Position = new Vector2(game.Services.WindowService.GetScreenWidth()/2, game.Services.WindowService.GetScreenHeight()+b.Size.Y/2 -15);
+        b.Position = new Vector2(game.Services.WindowService.GetWindowWidth()/2, game.Services.WindowService.GetWindowHeight()+b.Size.Y/2 -15);
         b.Transparency = 1;
         b.SetImage("PaperAirplaneSimulation\\Assets\\Ground.png");
         b.Name = "Ground";
@@ -101,7 +101,7 @@ public class SceneCreator {
         Image2D plane1 = new Image2D();
         plane1.Size = new Vector2(ExperimentData.meterInPixel*.3, ExperimentData.meterInPixel*.13);
         plane1.Pivot = Vector2.half;
-        plane1.Position = new Vector2(0, game.Services.WindowService.GetScreenHeight() - b.Size.Y/2 - ExperimentData.ref1throwHeight * ExperimentData.meterInPixel);
+        plane1.Position = new Vector2(0, game.Services.WindowService.GetWindowHeight() - b.Size.Y/2 - ExperimentData.ref1throwHeight * ExperimentData.meterInPixel);
         plane1.SetImage("PaperAirplaneSimulation\\Assets\\Airplane1.png");
         plane1.Transparency = 1;
         plane1.Name = "Plane1";
@@ -110,12 +110,12 @@ public class SceneCreator {
         Image2D plane2 = new Image2D();
         plane2.Size = new Vector2(ExperimentData.meterInPixel*.3, ExperimentData.meterInPixel*.13);
         plane2.Pivot = Vector2.half;
-        plane2.Position = new Vector2(0, game.Services.WindowService.GetScreenHeight() - b.Size.Y/2 - ExperimentData.ref2throwHeight * ExperimentData.meterInPixel);
+        plane2.Position = new Vector2(0, game.Services.WindowService.GetWindowHeight() - b.Size.Y/2 - ExperimentData.ref2throwHeight * ExperimentData.meterInPixel);
         plane2.SetImage("PaperAirplaneSimulation\\Assets\\Airplane2.png");
         plane2.Transparency = 1;
         plane2.Name = "Plane2";
         plane2.SetParent(game.WorldNode);
 
-        game.Camera.Position = game.Services.WindowService.GetScreenSize().divide(2);
+        game.Camera.Position = game.Services.WindowService.GetWindowSize().divide(2);
     }
 }

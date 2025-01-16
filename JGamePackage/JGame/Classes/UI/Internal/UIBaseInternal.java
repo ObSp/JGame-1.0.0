@@ -12,7 +12,7 @@ public class UIBaseInternal {
 
     public static Vector2 computePositionWithUIList(UIBase inst, UIListLayout layout, JGame game) {
         UIBase[] childrenOfClass = inst.GetParent().GetChildrenOfClass(UIBase.class);
-        Vector2 paddingVec2 = layout.Padding.ToVector2(game.Services.WindowService.GetScreenSize());
+        Vector2 paddingVec2 = layout.Padding.ToVector2(game.Services.WindowService.GetWindowSize());
         boolean isHorizontal = layout.ItemAlignment == Constants.ListAlignment.Horizontal;
 
         int posInChildren = Arrays.asList(childrenOfClass).indexOf(inst);

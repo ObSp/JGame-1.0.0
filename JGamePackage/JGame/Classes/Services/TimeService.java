@@ -1,5 +1,8 @@
 package JGamePackage.JGame.Classes.Services;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import JGamePackage.lib.Signal.Signal;
 import JGamePackage.lib.Signal.SignalWrapper;
 import JGamePackage.lib.Signal.Signal.Connection;
@@ -65,8 +68,9 @@ public class TimeService extends Service {
             con = OnTick.Connect(dt->{
                 elapsed += dt;
                 if (elapsed > seconds){
+                    ExecutorService es = Executors.newVirtualThreadPerTaskExecutor();
+                    es.submit(ex);
                     con.Disconnect();
-                    ex.run();
                 }
             });
         }

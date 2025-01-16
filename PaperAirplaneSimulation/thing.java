@@ -121,7 +121,7 @@ class bSimulation {
                 MSAUtil.positionSpecialCamera(game, plane1.Position, plane2.Position);
             } else {
                 game.Camera.DepthFactor = 1.1;
-                game.Camera.Position = game.Services.WindowService.GetScreenSize().divide(2);
+                game.Camera.Position = game.Services.WindowService.GetWindowSize().divide(2);
             }
         });
 
@@ -224,8 +224,8 @@ class bSimulation {
 
                 plane1RealPos = plane1RealPos.add(plane1Velocity);
 
-                if (MSAUtil.toMeters(game.Services.WindowService.GetScreenHeight() - plane1.Size.Y/2 - plane1RealPos.Y) <= 0 && !plane1Finished) {
-                    plane1RealPos = new Vector2(plane1RealPos.X, game.Services.WindowService.GetScreenHeight() - 25);
+                if (MSAUtil.toMeters(game.Services.WindowService.GetWindowHeight() - plane1.Size.Y/2 - plane1RealPos.Y) <= 0 && !plane1Finished) {
+                    plane1RealPos = new Vector2(plane1RealPos.X, game.Services.WindowService.GetWindowHeight() - 25);
                     
                     plane1Finished = true;
                     System.out.println("PLANE 1:");
@@ -263,8 +263,8 @@ class bSimulation {
 
                 plane2RealPos = plane2RealPos.add(plane2Velocity.multiply(1));
 
-                if (MSAUtil.toMeters(game.Services.WindowService.GetScreenHeight() - plane2.Size.Y/2 - plane2RealPos.Y) <= 0 && !plane2Finished) {
-                    plane2RealPos = new Vector2(plane2RealPos.X, game.Services.WindowService.GetScreenHeight() -25);
+                if (MSAUtil.toMeters(game.Services.WindowService.GetWindowHeight() - plane2.Size.Y/2 - plane2RealPos.Y) <= 0 && !plane2Finished) {
+                    plane2RealPos = new Vector2(plane2RealPos.X, game.Services.WindowService.GetWindowHeight() -25);
                     plane2Finished = true;
                     System.out.println("PLANE 2:");
                     System.out.println("TIME: " +  String.valueOf(game.Services.TimeService.GetElapsedSeconds() - startTime));
@@ -279,7 +279,7 @@ class bSimulation {
             plane1dragNewtons = Math.abs(plane1dragNewtons);
             plane1liftNewtons = Math.abs(plane1liftNewtons);
 
-            double plane1height = MSAUtil.toMeters(game.Services.WindowService.GetScreenHeight() - plane1.Size.Y/2 - plane1.Position.Y);
+            double plane1height = MSAUtil.toMeters(game.Services.WindowService.GetWindowHeight() - plane1.Size.Y/2 - plane1.Position.Y);
 
             panel1.<UIText>GetTypedChild("Drag").Text = "Drag: "+format(plane1dragNewtons)+"N";
             panel1.<UIText>GetTypedChild("Lift").Text = "Lift: "+format(plane1liftNewtons)+"N";
@@ -297,7 +297,7 @@ class bSimulation {
             plane2dragNewtons = Math.abs(plane2dragNewtons);
             plane2liftNewtons = Math.abs(plane2liftNewtons);
 
-            double plane2height = MSAUtil.toMeters(game.Services.WindowService.GetScreenHeight() - plane2.Size.Y/2 - plane2.Position.Y);
+            double plane2height = MSAUtil.toMeters(game.Services.WindowService.GetWindowHeight() - plane2.Size.Y/2 - plane2.Position.Y);
 
             panel2.<UIText>GetTypedChild("Drag").Text = "Drag: "+format(plane2dragNewtons)+"N";
             panel2.<UIText>GetTypedChild("Lift").Text = "Lift: "+format(plane2liftNewtons)+"N";

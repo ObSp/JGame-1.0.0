@@ -100,9 +100,9 @@ public class Renderer extends JPanel {
 
     public void RenderWorld(Graphics2D g, Instance[] World) {
         g.setColor(game.Services.WindowService.BackgroundColor);
-        g.fillRect(0, 0, game.Services.WindowService.GetScreenWidth(), game.Services.WindowService.GetScreenHeight());
+        g.fillRect(0, 0, game.Services.WindowService.GetWindowWidth(), game.Services.WindowService.GetWindowHeight());
 
-        Vector2 cameraPos = game.Services.WindowService.GetScreenSize().divide(2);
+        Vector2 cameraPos = game.Services.WindowService.GetWindowSize().divide(2);
 
         g.rotate(game.Camera.Rotation, cameraPos.X, cameraPos.Y);
 

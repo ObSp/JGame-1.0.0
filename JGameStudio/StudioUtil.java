@@ -13,7 +13,7 @@ public class StudioUtil {
     }
 
     public static double ScaleToAbsoluteX(double scale) {
-        return scale/game.Services.WindowService.GetScreenWidth();
+        return scale/game.Services.WindowService.GetWindowWidth();
     }
 
     public static UDim2 UDim2ScaleToAbsolute(UDim2 im2) {

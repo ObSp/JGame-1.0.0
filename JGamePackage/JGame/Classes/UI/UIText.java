@@ -29,6 +29,8 @@ public class UIText extends UIBase{
     public String FontName = "Arial";
     public int FontStyle = Font.PLAIN;
 
+    public Font CustomFont = null;
+
     @Override
     public void render(Graphics2D graphics) {
         if (Text == null) return;
@@ -56,12 +58,8 @@ public class UIText extends UIBase{
         }
 
         Font font;
-        
-        if (TextScaled) {
-            font = new Font(this.FontName, this.FontStyle, (int) (renderSize.Y*1.3));
-        } else {
-            font = new Font(this.FontName, this.FontStyle, this.FontSize);
-        }
+        int fontRenderSize = TextScaled ? (int) (renderSize.Y * 1.3) : this.FontSize;
+        font = this.CustomFont == null ? new Font(this.FontName, this.FontStyle, fontRenderSize) : this.CustomFont.deriveFont(this.FontStyle, fontRenderSize);
 
         graphics.setFont(font);
 

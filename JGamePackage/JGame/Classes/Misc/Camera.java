@@ -42,17 +42,17 @@ public class Camera extends Instance {
     }
 
     private Vector2 getCenterPos() {
-        return game.Services.WindowService.GetScreenSize().divide(2);
+        return game.Services.WindowService.GetWindowSize().divide(2);
     }
     
     public Vector2 GetWorldBaseRenderPosition(WorldBase object) {
         checkOutOfBounds();
-        return getWorldBaseTopLeftCorner(object).subtract(this.Position).divide(DepthFactor).add(getCenterPos()).subtract(0, game.Services.WindowService.IsFullscreen() ? 50 : 0);//Position.add(object.Position.subtract(object.GetPivotOffset())).divide(DepthFactor).add(game.Services.WindowService.GetScreenSize().divide(2));
+        return getWorldBaseTopLeftCorner(object).subtract(this.Position).divide(DepthFactor).add(getCenterPos()).subtract(0, game.Services.WindowService.IsFullscreen() ? 50 : 0);//Position.add(object.Position.subtract(object.GetPivotOffset())).divide(DepthFactor).add(game.Services.WindowService.GetWindowSize().divide(2));
     }
 
 
     public boolean AreBoundsInCameraBounds(Vector2 size, Vector2 position) {
-        Vector2 screenSize = game.Services.WindowService.GetScreenSize();
+        Vector2 screenSize = game.Services.WindowService.GetWindowSize();
 
         double left = 0;
         double top = 0;
