@@ -81,7 +81,7 @@ public class InfoPanelCreator {
 
         UIText wind = time.Clone();
         wind.Name = "Wind";
-        wind.Text = "Wind: 0m/s";
+        wind.Text = "Wind: 0.300m/s";
         time.Position = wind.Position.add(UDim2.fromScale(0, drag.Size.Y.Scale * 2));
         wind.SetParent(panel1);
 
@@ -91,6 +91,7 @@ public class InfoPanelCreator {
         panel2.<UIText>GetTypedChild("Header").Text = "Plane 2";
         panel2.<UIText>GetTypedChild("Header").TextColor = Color.yellow;
         panel2.<UIText>GetTypedChild("Height").Text = "Height: "+ExperimentData.ref2throwHeight+"m";
+        panel2.<UIText>GetTypedChild("Wind").Text = "Wind: 0.500m/s";
         panel2.SetParent(game.UINode);
     }
 }

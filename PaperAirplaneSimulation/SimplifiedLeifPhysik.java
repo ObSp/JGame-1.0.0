@@ -34,7 +34,7 @@ class ASimulation {
     Image2D plane1;
     Image2D plane2;
 
-    Vector2 plane1Velocity = new Vector2(MSAUtil.toPixels(ExperimentData.ref1InitialVelocityX)/14.526, -MSAUtil.toPixels(ExperimentData.ref1InitialVelocityY)/100); //new Vector2(90, -1); //pixels/second
+    Vector2 plane1Velocity = new Vector2(MSAUtil.toPixels(ExperimentData.ref1InitialVelocityX)/15.4, -MSAUtil.toPixels(ExperimentData.ref1InitialVelocityY)/100); //new Vector2(90, -1); //pixels/second
     Vector2 plane2Velocity = new Vector2(MSAUtil.toPixels(ExperimentData.ref2InitialVelocityX)/14.526, -MSAUtil.toPixels(ExperimentData.ref2InitialVelocityY)/50);
 
     Vector2 plane1RealPos;
