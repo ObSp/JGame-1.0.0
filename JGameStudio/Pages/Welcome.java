@@ -32,7 +32,7 @@ public class Welcome {
         preview.AnchorPoint = new Vector2(.5, 0);
         preview.Size = StudioUtil.UDim2ScaleToAbsolute(UDim2.fromScale(.8, 1), frame);
         preview.Position = UDim2.fromScale(.5, .1);
-        preview.BackgroundTransparency = 1;
+        preview.BackgroundTransparency = 0;
         preview.SetImage("JGameStudio\\Assets\\jgameBannerBackground.png");
         preview.SetParent(frame);
 

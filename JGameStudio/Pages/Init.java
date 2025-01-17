@@ -37,9 +37,8 @@ public class Init {
         UIImage bannerImage = new UIImage();
         bannerImage.Size = UDim2.fromScale(1,1);
         bannerImage.SetImage("JGameStudio\\Assets\\jgameBannerBackground.png");
+        bannerImage.BackgroundTransparency = 1;
         bannerImage.SetParent(game.UINode);
-
-        new UICorner().SetParent(bannerImage);
 
         UIText header = new UIText();
         header.CustomFont = StudioGlobals.GlobalFont;

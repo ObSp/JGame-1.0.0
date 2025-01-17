@@ -2,7 +2,9 @@ package JGamePackage.JGame.Classes.Rendering;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.TexturePaint;
 import java.awt.geom.Rectangle2D;
@@ -55,6 +57,35 @@ public class RenderUtil {
     }
 
     public static void drawRoundImage(Instance inst, Vector2 renderSize, Vector2 renderPos, BufferedImage image, UICorner corner) {
-        g.drawImage(image, (int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, null);
+        double radius = corner.Radius;
+        radius *= renderSize.getAxisFromVector2Axis(corner.RelativeTo);
+
+        int w = (int) renderSize.X;
+        int h = (int) renderSize.Y;
+
+        int x = (int) renderPos.X;
+        int y = (int) renderPos.Y;
+
+        /**
+        Shape rounded = new RoundRectangle2D.Double(x, y, w, h, radius, radius);
+        g.setClip(rounded);
+
+        g.drawImage(image, x, y, w, h,  null);
+
+        g.setClip(null); */
+
+        g.setColor(new Color(0,0,0,0));
+
+        Shape clipShape = new RoundRectangle2D.Double(x, y, w, h, 20, 20);
+        //WORKS BUT LAGGY
+        g.setComposite(AlphaComposite.Clear);
+        g.fillRect(x, y, w, h);
+        g.setComposite(AlphaComposite.SrcOver);
+
+        g.setPaint(new TexturePaint(image, new Rectangle2D.Float(x, y, w, h)));
+
+        g.fill(clipShape);
+
+        //g.drawImage(image, (int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, null);
     }
 }
