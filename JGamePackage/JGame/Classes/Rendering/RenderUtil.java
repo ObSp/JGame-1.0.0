@@ -66,11 +66,14 @@ public class RenderUtil {
         int x = (int) renderPos.X;
         int y = (int) renderPos.Y;
 
-        
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         Shape rounded = new RoundRectangle2D.Double(x, y, w, h, radius, radius);
+
+        g.setColor(new Color(0,0,0,0));
+        g.fillRect(x, y, w, h);
         g.setClip(rounded);
 
-        g.drawImage(image, x, y, w, h,  null);
+        g.drawImage(image, x, y, w, h, null);
 
         g.setClip(null);
 
