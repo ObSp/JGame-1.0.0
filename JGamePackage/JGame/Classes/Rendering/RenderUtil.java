@@ -66,15 +66,15 @@ public class RenderUtil {
         int x = (int) renderPos.X;
         int y = (int) renderPos.Y;
 
-        /**
+        
         Shape rounded = new RoundRectangle2D.Double(x, y, w, h, radius, radius);
         g.setClip(rounded);
 
         g.drawImage(image, x, y, w, h,  null);
 
-        g.setClip(null); */
+        g.setClip(null);
 
-        g.setColor(new Color(0,0,0,0));
+        /**g.setColor(new Color(0,0,0,0));
 
         Shape clipShape = new RoundRectangle2D.Double(x, y, w, h, 20, 20);
         //WORKS BUT LAGGY
@@ -84,7 +84,7 @@ public class RenderUtil {
 
         g.setPaint(new TexturePaint(image, new Rectangle2D.Float(x, y, w, h)));
 
-        g.fill(clipShape);
+        g.fill(clipShape);*/
 
         //g.drawImage(image, (int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, null);
     }
