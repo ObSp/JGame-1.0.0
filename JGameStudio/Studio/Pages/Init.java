@@ -1,4 +1,4 @@
-package JGameStudio.Pages;
+package JGameStudio.Studio.Pages;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
-import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGamePackage.lib.Signal.VoidSignal;

@@ -12,6 +12,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 import JGamePackage.JGame.Classes.Instance;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIBorder;
 import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
@@ -29,8 +30,15 @@ public class RenderUtil {
     }
 
     public static void drawRoundedRect(Vector2 size, Vector2 pos, Color color, UICorner corner) {
+        UIBorder borderEffect = corner.GetParent().GetChildWhichIsA(UIBorder.class);
+
         double radius = corner.Radius;
         radius *= size.getAxisFromVector2Axis(corner.RelativeTo);
+
+        if (borderEffect != null) {
+            g.setColor(borderEffect.BorderColor);
+            g.fillRoundRect((int)( pos.X - borderEffect.Width), (int) (pos.Y - borderEffect.Width), (int) (size.X + borderEffect.Width*2), (int) (size.Y + borderEffect.Width*2), (int) radius, (int) radius);
+        }
 
         g.setColor(color);
 

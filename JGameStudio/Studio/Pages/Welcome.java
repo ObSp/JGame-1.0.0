@@ -1,4 +1,4 @@
-package JGameStudio.Pages;
+package JGameStudio.Studio.Pages;
 
 import java.awt.Color;
 
