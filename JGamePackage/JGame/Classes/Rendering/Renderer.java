@@ -1,6 +1,5 @@
 package JGamePackage.JGame.Classes.Rendering;
 
-import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;

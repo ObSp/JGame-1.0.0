@@ -1,22 +1,18 @@
 package JGameStudio.JGameHub;
 
 import java.awt.Color;
-import java.awt.Font;
 
 import javax.swing.JFrame;
-import javax.swing.UIManager;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLaf;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIText;
+import JGamePackage.JGame.Classes.UI.UITextButton;
 import JGamePackage.JGame.Classes.UI.Modifiers.UIBorder;
 import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
-import JGamePackage.JGame.Classes.World.Box2D;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
@@ -116,6 +112,29 @@ public class JGameHub {
         return container;
     }
 
+    private UITextButton createCreateButton(UIFrame area) {
+        UITextButton create = new UITextButton();
+        create.BackgroundColor = StudioGlobals.BackgroundColor;
+        create.Size = UDim2.fromAbsolute(150, 37);
+        create.Position = im2ScaleToAbs(.8, .009, area);
+        create.Text = "Create";
+        create.FontSize = 20;
+        create.CustomFont = StudioGlobals.GlobalFont;
+        create.TextColor = StudioGlobals.TextColor;
+
+        UIBorder border = new UIBorder();
+        border.BorderColor = StudioGlobals.ForegroundColor;
+        border.Width = 1;
+        border.SetParent(create);
+
+        UICorner corner = new UICorner();
+        corner.Radius = .2;
+        corner.RelativeTo = Constants.Vector2Axis.Y;
+        corner.SetParent(create);
+
+        return create;
+    }
+
     private void createMainArea() {
         UIFrame container = new UIFrame();
         container.Position = UDim2.fromAbsolute(250, 1);
@@ -123,10 +142,13 @@ public class JGameHub {
         container.BackgroundTransparency = .95;
         container.SetParent(game.UINode);
         
-        UIText header = createText(im2Scale(.5, 0).add(im2Abs(0, 15)), im2ScaleToAbs(.95, .04, container) , Color.lightGray.brighter(), "My Games");
+        UIText header = createText(im2Scale(.5, 0).add(im2Abs(0, 15)), im2ScaleToAbs(.95, .03, container) , Color.lightGray.brighter(), "My Games");
         header.AnchorPoint = new Vector2(.5, 0);
         header.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
         header.SetParent(container);
+
+        UITextButton create = createCreateButton(container);
+        create.SetParent(container);
 
         UIFrame searchBar = createSearchBar(container);
         searchBar.SetParent(container);
