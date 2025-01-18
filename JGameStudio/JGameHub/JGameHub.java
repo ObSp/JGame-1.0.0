@@ -1,6 +1,7 @@
 package JGameStudio.JGameHub;
 
 import java.awt.Color;
+import java.io.File;
 
 import javax.swing.JFrame;
 
@@ -25,6 +26,7 @@ import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
 import JGameStudio.Classes.DataReader;
+import JGameStudio.JGameHub.ProjectHandler.ProjectHandler;
 
 public class JGameHub {
     
@@ -34,6 +36,17 @@ public class JGameHub {
 
     int windowWidth;
     int windowHeight;
+
+    private void createProj() {
+        File dir = ProjectHandler.Create("test", jsonData.Data.creation_path);
+        String[] newArr = new String[jsonData.Data.projects.length + 1];
+
+        for (int i = 0; i < newArr.length - 1; i++) {
+            newArr[i] = jsonData.Data.projects[i];
+        }
+        newArr[newArr.length - 1] = dir.getAbsolutePath();
+        jsonData.UpdateJSON(newArr, jsonData.Data.hub_version, jsonData.Data.editor_version, jsonData.Data.creation_path);
+    }
 
     private void initWindow() {
         JFrame window = game.GetWindow();
@@ -142,6 +155,7 @@ public class JGameHub {
         create.FontSize = 23;
         create.CustomFont = StudioGlobals.GlobalFont;
         create.TextColor = StudioGlobals.TextColor;
+        create.ZIndex = 2;
         create.HoverColor = create.BackgroundColor.darker();
 
         UIBorder border = new UIBorder();
@@ -228,6 +242,8 @@ public class JGameHub {
 
         UIFrame searchBar = createSearchBar(container);
         searchBar.SetParent(container);
+
+        create.Mouse1Down.Connect(()->createProj());
     }
 
     private UIButton[] createNavbarButtons(UIFrame area) {

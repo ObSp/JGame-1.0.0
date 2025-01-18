@@ -47,6 +47,7 @@ public class DataReader {
         String[] projects = null;
         String hub_version = null;
         String editor_version = null;
+        String creation_path = null;
 
         try {
             JSONParser parser = new JSONParser();
@@ -57,11 +58,12 @@ public class DataReader {
             projects = jsonArrayToArray((JSONArray) baseObject.get("projects"), String.class);
             hub_version = (String) baseObject.get("hub_version");
             editor_version = (String) baseObject.get("editor_version");
+            creation_path = (String) baseObject.get("creation_path");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        this.Data = new JSONData(projects, hub_version, editor_version);
+        this.Data = new JSONData(projects, hub_version, editor_version, creation_path);
         return this.Data;
     }
 
@@ -69,11 +71,12 @@ public class DataReader {
      * 
      */
     @SuppressWarnings("unchecked")
-    public void UpdateJSON(String[] projects, String hubVersion, String editorVersion) {
+    public void UpdateJSON(String[] projects, String hubVersion, String editorVersion, String creationPath) {
         JSONObject baseObject = new JSONObject();
         baseObject.put("projects", arrayToJSONArray(projects));
         baseObject.put("hub_version", hubVersion);
         baseObject.put("editor_version", editorVersion);
+        baseObject.put("creation_path", creationPath);
 
         try (FileWriter writer = new FileWriter(path)){
             writer.write(baseObject.toJSONString());
@@ -88,11 +91,13 @@ public class DataReader {
         public final String[] projects;
         public final String hub_version;
         public final String editor_version;
+        public final String creation_path;
 
-        public JSONData(String[] projectArr, String hubVersion, String editorVersion) {
+        public JSONData(String[] projectArr, String hubVersion, String editorVersion, String creationPath) {
             this.projects = projectArr;
             this.hub_version = hubVersion;
             this.editor_version = editorVersion;
+            this.creation_path = creationPath;
         }
     }
 }
