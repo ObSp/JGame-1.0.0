@@ -55,7 +55,6 @@ public class RenderUtil {
         UICorner cornerEffect = inst.GetChildWhichIsA(UICorner.class);
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         if (cornerEffect != null) {
             RenderUtil.drawRoundImage(inst, renderSize, renderPos, image, cornerEffect);
