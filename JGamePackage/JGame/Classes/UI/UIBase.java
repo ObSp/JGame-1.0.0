@@ -53,6 +53,13 @@ public abstract class UIBase extends Renderable {
      */
     public boolean Visible = true;
 
+    /**Whether or not the object can be detected as the current mouse target.
+     * If set to false, the mouse will ignore this object, effectively making it
+     * "pass through."
+     * 
+     */
+    public boolean MouseTargetable = true;
+
     //--ABSOLUTE STUFF--//
     public Vector2 GetAbsolutePosition() {
         Instance parentInstance = this.GetParent();
@@ -134,6 +141,7 @@ public abstract class UIBase extends Renderable {
         base.Size = this.Size;
         base.Visible = this.Visible;
         base.ZIndex = this.ZIndex;
+        base.MouseTargetable = this.MouseTargetable;
     }
 
     public abstract UIBase Clone();

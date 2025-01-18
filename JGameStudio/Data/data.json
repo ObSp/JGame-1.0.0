@@ -1,3 +1,6 @@
 {
-    "projects": ["Hello!"]
+    "projects": ["Hello!"],
+    "hub_version": "ALPHA v0.0.1",
+    "editor_version": "ALPHA v0.0.1"
+    
 }

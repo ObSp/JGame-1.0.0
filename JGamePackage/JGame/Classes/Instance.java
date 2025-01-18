@@ -2,6 +2,8 @@ package JGamePackage.JGame.Classes;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.lib.CustomError.CustomError;
@@ -55,6 +57,9 @@ public abstract class Instance {
     protected ArrayList<Instance> children = new ArrayList<>();
     protected Instance parent;
     protected boolean parentLocked = false;
+
+    //--Custom Properties--//
+    protected Map<String, Object> cprops = new HashMap<>();
 
     //--UTIL--//
     private Instance[] instanceListToArray(ArrayList<Instance> list){
@@ -276,9 +281,23 @@ public abstract class Instance {
         }
     }
 
-    /**Clone all children from this Instance to the new instance */
+    /**Clone all children from this Instance to the new instance, also clones CProps */
     protected void cloneHierarchyToNewParent(Instance newParent) {
+        newParent.cprops = new HashMap<>(this.cprops);
         duplicateChildren(this, newParent);
+    }
+
+    public Object GetCProp(String name) {
+        return cprops.get(name);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T GetTypedCProp(String name) {
+        return (T) cprops.get(name);
+    }
+
+    public void SetCProp(String name, Object value) {
+        cprops.put(name, value);
     }
 
     //--OVERRIDES--//

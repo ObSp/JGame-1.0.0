@@ -8,21 +8,29 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.UI.UIBase;
+import JGamePackage.JGame.Classes.UI.UIButton;
 import JGamePackage.JGame.Classes.UI.UIFrame;
+import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.UI.UITextButton;
+import JGamePackage.JGame.Classes.UI.UITextInput;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
 import JGamePackage.JGame.Classes.UI.Modifiers.UIBorder;
 import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
+import JGameStudio.Classes.DataReader;
 
 public class JGameHub {
     
     JGame game;
+
+    private DataReader jsonData = new DataReader(StudioGlobals.jsonData);
 
     int windowWidth;
     int windowHeight;
@@ -109,18 +117,32 @@ public class JGameHub {
         corner.Radius = .5;
         corner.RelativeTo = Constants.Vector2Axis.Y;
         corner.SetParent(container);
+
+        UITextInput input = new UITextInput();
+        input.Size = UDim2.fromScale(.9, 1);
+        input.AnchorPoint = Vector2.half;
+        input.Position = UDim2.fromScale(.5, .5);
+        input.BackgroundTransparency = 1;
+        input.CustomFont = StudioGlobals.GlobalFont;
+        input.TextColor = StudioGlobals.TextColor;
+        input.PlaceholderText = "Search Projects";
+        input.FontSize = 25;
+        input.SetParent(container);
+
+
         return container;
     }
 
     private UITextButton createCreateButton(UIFrame area) {
         UITextButton create = new UITextButton();
-        create.BackgroundColor = StudioGlobals.BackgroundColor;
-        create.Size = UDim2.fromAbsolute(150, 37);
-        create.Position = im2ScaleToAbs(.8, .009, area);
+        create.BackgroundColor = StudioGlobals.GreenColor;
+        create.Size = UDim2.fromAbsolute(100, 34);
+        create.Position = im2ScaleToAbs(.87, .011, area);
         create.Text = "Create";
-        create.FontSize = 20;
+        create.FontSize = 23;
         create.CustomFont = StudioGlobals.GlobalFont;
         create.TextColor = StudioGlobals.TextColor;
+        create.HoverColor = create.BackgroundColor.darker();
 
         UIBorder border = new UIBorder();
         border.BorderColor = StudioGlobals.ForegroundColor;
@@ -135,14 +157,65 @@ public class JGameHub {
         return create;
     }
 
-    private void createMainArea() {
+    private UITextButton createAddButton(UIFrame area) {
+        UITextButton button = createCreateButton(area);
+        button.Position = button.Position.subtract(UDim2.fromAbsolute(85, 0));
+        button.Size = button.Size.subtract(UDim2.fromAbsolute(30, 0));
+        button.Text = "Add";
+        button.BackgroundColor = StudioGlobals.BackgroundColor;
+        button.HoverColor = button.BackgroundColor.brighter();
+        return button;
+    }
+
+    private void createSettingssPage() {
         UIFrame container = new UIFrame();
         container.Position = UDim2.fromAbsolute(250, 1);
         container.Size = UDim2.fromAbsolute(windowWidth-250, windowHeight-1);
         container.BackgroundTransparency = .95;
+        container.Name = "Settings";
+        container.Visible = false;
         container.SetParent(game.UINode);
         
-        UIText header = createText(im2Scale(.5, 0).add(im2Abs(0, 15)), im2ScaleToAbs(.95, .03, container) , Color.lightGray.brighter(), "My Games");
+        UIText header = createText(im2Scale(.5, 0).add(im2Abs(0, 10)), im2ScaleToAbs(.95, .04, container) , Color.lightGray.brighter(), "Settings");
+        header.AnchorPoint = new Vector2(.5, 0);
+        header.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        header.SetParent(container);
+
+        UIFrame searchBar = createSearchBar(container);
+        searchBar.GetChildWhichIsA(UITextInput.class).PlaceholderText = "Search Settings";
+        searchBar.SetParent(container);
+    }
+
+    private void createInstallsPage() {
+        UIFrame container = new UIFrame();
+        container.Position = UDim2.fromAbsolute(250, 1);
+        container.Size = UDim2.fromAbsolute(windowWidth-250, windowHeight-1);
+        container.BackgroundTransparency = .95;
+        container.Name = "Installs";
+        container.Visible = false;
+        container.SetParent(game.UINode);
+        
+        UIText header = createText(im2Scale(.5, 0).add(im2Abs(0, 10)), im2ScaleToAbs(.95, .04, container) , Color.lightGray.brighter(), "JGame Installation");
+        header.AnchorPoint = new Vector2(.5, 0);
+        header.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        header.SetParent(container);
+
+        UITextButton add = createAddButton(container);
+        add.Text = "Locate";
+        add.Size = add.Size.add(UDim2.fromAbsolute(50, 0));
+        add.Position = add.Position.add(UDim2.fromAbsolute(67, 0));
+        add.SetParent(container);
+    }
+
+    private void createHomeArea() {
+        UIFrame container = new UIFrame();
+        container.Position = UDim2.fromAbsolute(250, 1);
+        container.Size = UDim2.fromAbsolute(windowWidth-250, windowHeight-1);
+        container.BackgroundTransparency = .95;
+        container.Name = "Home";
+        container.SetParent(game.UINode);
+        
+        UIText header = createText(im2Scale(.5, 0).add(im2Abs(0, 10)), im2ScaleToAbs(.95, .04, container) , Color.lightGray.brighter(), "My Projects");
         header.AnchorPoint = new Vector2(.5, 0);
         header.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
         header.SetParent(container);
@@ -150,8 +223,152 @@ public class JGameHub {
         UITextButton create = createCreateButton(container);
         create.SetParent(container);
 
+        UITextButton add = createAddButton(container);
+        add.SetParent(container);
+
         UIFrame searchBar = createSearchBar(container);
         searchBar.SetParent(container);
+    }
+
+    private UIButton[] createNavbarButtons(UIFrame area) {
+        UIButton[] buttons = new UIButton[3];
+
+        UIButton home = new UIButton();
+        home.Size = UDim2.fromScale(1, .1);
+        home.BackgroundTransparency = 1;
+
+        UIImage homeIcon = new UIImage();
+        homeIcon.AnchorPoint = new Vector2(0, .5);
+        homeIcon.SetImage("JGameStudio\\Assets\\Icons\\HomeEmpty.png");
+        homeIcon.Name = "Home";
+        homeIcon.Size = UDim2.fromScale(.1, .7);
+        homeIcon.Position = UDim2.fromScale(.05, .5);
+        homeIcon.BackgroundTransparency = 1;
+        homeIcon.SetCProp("Selected", false);
+        homeIcon.MouseTargetable = false;
+        homeIcon.SetParent(home);
+
+        UIAspectRatioConstraint constraint = new UIAspectRatioConstraint();
+        constraint.DominantAxis = Constants.Vector2Axis.Y;
+        constraint.SetParent(homeIcon);
+
+        UIText homeText = new UIText();
+        homeText.MouseTargetable = false;
+        homeText.Size = UDim2.fromScale(.6, 1);
+        homeText.Position = UDim2.fromScale(.25, 0);
+        homeText.Text = "Home";
+        homeText.CustomFont = StudioGlobals.GlobalFont;
+        homeText.BackgroundTransparency = 1;
+        homeText.TextColor = StudioGlobals.TextColor;
+        homeText.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        homeText.FontSize = 20;
+        homeText.SetParent(home);
+
+        UICorner homeCorner = new UICorner();
+        homeCorner.Radius = .5;
+        homeCorner.RelativeTo = Constants.Vector2Axis.Y;
+        homeCorner.SetParent(home);
+
+        buttons[0] = home;
+        home.SetParent(area);
+
+        UIButton installs = home.Clone();
+        installs.GetChildWhichIsA(UIText.class).Text = "Installation";
+        installs.GetChildWhichIsA(UIImage.class).SetImage("JGameStudio\\Assets\\Icons\\InstallsEmpty.png");
+        installs.SetParent(area);
+        buttons[1] = installs;
+
+        UIButton settings = home.Clone();
+        settings.GetChildWhichIsA(UIText.class).Text = "Settings";
+        settings.GetChildWhichIsA(UIImage.class).SetImage("JGameStudio\\Assets\\Icons\\SettingsEmpty.png");
+        settings.SetParent(area);
+        buttons[2] = settings;
+
+        return buttons;
+    }
+
+    private UIButton curSelected;
+    private UIFrame curFrame;
+
+    private void setNavBarButtonSelected(UIButton b) {
+        b.SetCProp("Selected", true);
+        b.HoverEffectsEnabled = false;
+
+        b.BackgroundTransparency = .9;
+    }
+
+    private void setNavBarButtonDeselected(UIButton b) {
+        b.SetCProp("Selected", false);
+        b.HoverEffectsEnabled = true;
+
+        b.BackgroundTransparency = 1;
+    }
+
+    private void createNavBar() {
+        String[] menus = new String[] {"Home", "Installs", "Settings"};
+
+        UIFrame container = new UIFrame();
+        container.Size = UDim2.fromAbsolute(250, windowHeight);
+        container.BackgroundTransparency = 1;
+        container.SetParent(game.UINode);
+
+        UIFrame list = new UIFrame();
+        list.Position = UDim2.fromScale(.5, .05);
+        list.Size = UDim2.fromScale(.9, .7);
+        list.AnchorPoint = new Vector2(.5, 0);
+        list.BackgroundTransparency = 1;
+        list.SetParent(container);
+
+        UIListLayout layout = new UIListLayout();
+        layout.SetParent(list);
+
+        UIButton[] buttons = createNavbarButtons(list);
+
+        curSelected = buttons[0];
+        curFrame = game.UINode.GetTypedChild(menus[0]);
+        
+        setNavBarButtonSelected(curSelected);
+
+        for (int i = 0; i < buttons.length; i++) {
+            UIButton button = buttons[i];
+
+            int index = i;
+
+            if (button == null) continue;
+
+            button.MouseEnter.Connect(()-> {
+                if (curSelected == button) return;
+                button.BackgroundTransparency = .9;
+            });
+
+            button.MouseLeave.Connect(()-> {
+                if (curSelected == button) return;
+                button.BackgroundTransparency = 1;
+            });
+
+            button.Mouse1Down.Connect(()-> {
+                setNavBarButtonDeselected(curSelected);
+                curFrame.Visible = false;
+
+                curSelected = button;
+                setNavBarButtonSelected(button);
+                
+                curFrame = game.UINode.<UIFrame>GetTypedChild(menus[index]);
+                curFrame.Visible = true;
+            });
+        }
+
+        UIText version = new UIText();
+        version.AnchorPoint = new Vector2(.5, 1);
+        version.Position = UDim2.fromScale(.5, .99);
+        version.Size = UDim2.fromScale(.95, .015);
+        version.BackgroundTransparency = 1;
+        version.CustomFont = StudioGlobals.GlobalFont;
+        version.TextColor = StudioGlobals.TextColor;
+        version.Text = jsonData.Data.hub_version;
+        version.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        version.TextScaled = true;
+        version.SetParent(container);
     }
 
     public JGameHub() {
@@ -159,6 +376,7 @@ public class JGameHub {
 
         game = new JGame(new StartParams(false));
         StudioUtil.game = game;
+        StudioGlobals.construct();
 
         initWindow();
 
@@ -166,8 +384,12 @@ public class JGameHub {
         windowHeight = game.Services.WindowService.GetWindowHeight();
 
         createLines();
-        
-        createMainArea();
+
+        createHomeArea();
+        createInstallsPage();
+        createSettingssPage();
+
+        createNavBar();
     }
 
 }

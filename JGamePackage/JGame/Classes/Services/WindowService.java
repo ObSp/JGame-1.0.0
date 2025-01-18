@@ -1,6 +1,7 @@
 package JGamePackage.JGame.Classes.Services;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -62,6 +63,10 @@ public class WindowService extends Service {
 
     public boolean IsFullscreen() {
         return game.GetWindow().isUndecorated();
+    }
+
+    public void SetMouseCursor(int cursorID) {
+        game.GetWindow().getContentPane().setCursor(new Cursor(cursorID));
     }
 
     private void checkForInit() {

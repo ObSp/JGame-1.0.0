@@ -2,7 +2,6 @@ package JGamePackage.JGame.Classes.UI;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
 import JGamePackage.JGame.Classes.Rendering.RenderUtil;
@@ -33,56 +32,22 @@ public class UIText extends UIBase{
 
     @Override
     public void render(Graphics2D graphics) {
-        if (Text == null) return;
-
         Vector2 renderSize = GetAbsoluteSize();
         Vector2 renderPos = GetAbsolutePosition();
 
         if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPos)) return;
-
-        int centerX = (int) (renderPos.X + (renderSize.X/2));
-        int centerY = (int) (renderPos.Y + (renderSize.Y/2));
 
         //render background
         if (BackgroundTransparency < 1) {
             RenderUtil.drawRectangle(this, renderSize, renderPos, GetBackgroundRenderColor());
         }
 
-        Font font;
-        int fontRenderSize = TextScaled ? (int) (renderSize.Y * 1.3) : this.FontSize;
-        font = this.CustomFont == null ? new Font(this.FontName, this.FontStyle, fontRenderSize) : this.CustomFont.deriveFont(this.FontStyle, fontRenderSize);
+        if (Text == null || Text.equals("")) return;
 
-        graphics.setFont(font);
-
-        FontMetrics fm = graphics.getFontMetrics();
-
-        int pixelHeight = (int) Math.round((double) font.getSize()*.75);
-        int pixelWidth = fm.stringWidth(Text);
-
-        int xStringPos;
-        int yStringPos;
-
-        if (HorizontalTextAlignment == Constants.HorizontalTextAlignment.Left) {
-            xStringPos = (int) renderPos.X;
-        } else if (HorizontalTextAlignment == Constants.HorizontalTextAlignment.Center) {
-            xStringPos = (int) (centerX-pixelWidth/2);
-        } else { //right alignment
-            xStringPos = (int) (renderPos.X + renderSize.X - pixelWidth);
-        }
-
-        if (VerticalTextAlignment == Constants.VerticalTextAlignment.Top) {
-            yStringPos = (int) (renderPos.Y + pixelHeight*2.2);
-        } else if (VerticalTextAlignment == Constants.VerticalTextAlignment.Center) {
-            yStringPos = (int) (centerY + pixelHeight/2);
-        } else { //bottom alignment
-            yStringPos = (int) (renderPos.Y + renderSize.Y);
-        }
-
-        graphics.setColor(GetTextRenderColor());
-        graphics.drawString(Text, xStringPos, yStringPos);
+        RenderUtil.drawText(Text, renderSize, renderPos, GetTextRenderColor(), FontSize, FontStyle, FontName, CustomFont, TextScaled, HorizontalTextAlignment, VerticalTextAlignment);
     }
 
-    private Color GetTextRenderColor(){
+    protected Color GetTextRenderColor(){
         return new Color(TextColor.getRed(), TextColor.getGreen(), TextColor.getBlue(), (int) (255*(1-TextTransparency)));
     }
 
@@ -106,6 +71,7 @@ public class UIText extends UIBase{
         text.FontName = this.FontName;
         text.FontStyle = this.FontStyle;
         text.TextScaled = this.TextScaled;
+        text.CustomFont = this.CustomFont;
         return text;
     }
 }

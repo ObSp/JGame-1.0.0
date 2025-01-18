@@ -13,11 +13,13 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.UI.UIBase;
+import JGamePackage.JGame.Classes.UI.UITextInput;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGamePackage.lib.Signal.Signal;
 import JGamePackage.lib.Signal.SignalWrapper;
@@ -47,6 +49,8 @@ public class InputService extends Service {
 
     private ArrayList<UIBase> hoveringUIItems = new ArrayList<>();
 
+    private UITextInput selectedUIInput = null;
+
 
     private boolean isMouse1Down = false;
     private boolean isMouse2Down = false;
@@ -61,6 +65,17 @@ public class InputService extends Service {
 
             @Override
             public void keyPressed(KeyEvent e) {
+                if (selectedUIInput != null) {
+                    int code = e.getKeyCode();
+                    char keyChar = e.getKeyChar();
+                    if (code == KeyEvent.VK_BACK_SPACE) {
+                        selectedUIInput.Text =  selectedUIInput.Text.length() > 0 ? selectedUIInput.Text.substring(0, selectedUIInput.Text.length()-1) : "";
+                        
+                    } else if (Character.isLetterOrDigit(keyChar) || Pattern.matches("\\p{Punct}", new String(new char[] {keyChar})) || code == KeyEvent.VK_SPACE){
+                        selectedUIInput.Text += e.getKeyChar();
+                    }
+                }
+
                 if (heldKeys.indexOf(KeyEvent.getKeyText(e.getKeyCode()))!=-1) return;
 
                 if (e.getKeyCode() == FullscreenHotKey) {
@@ -96,6 +111,8 @@ public class InputService extends Service {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1){
+                    selectedUIInput = null;
+
                     isMouse1Down = true;
                     onclick.Fire();
 
@@ -268,18 +285,18 @@ public class InputService extends Service {
         //first find an UI instance that (SHOULD BE) diplayed on top
         //the one issue with this is that children are always displayed on TOP of parents, therefore step 2 is needed 
         for (UIBase v : game.UINode.GetChildrenOfClass(UIBase.class)) {
-            if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos)) continue;
+            if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos) || !v.Visible) continue;
             if (curTarget != null && v.ZIndex <= curTarget.ZIndex) continue;
             curTarget = v;
         }
         if (curTarget == null) return null;
-        //to fix the above mentioned issue, repeadedly loop through children
+        //to fix the above mentioned issue, repeatedly loop through children
         while (true) {
             UIBase[] children = curTarget.GetChildrenOfClass(UIBase.class);
             if (children.length == 0) break;
             UIBase lastChild = null;
             for (UIBase child : children) {
-                if (!isPointInBounds(child.GetAbsolutePosition(), child.GetAbsoluteSize(), mousePos)) continue;
+                if (!isPointInBounds(child.GetAbsolutePosition(), child.GetAbsoluteSize(), mousePos) || !child.MouseTargetable) continue;
                 if (lastChild != null && child.ZIndex <= lastChild.ZIndex) continue;
                 lastChild = child;
             }
@@ -306,8 +323,15 @@ public class InputService extends Service {
         return arr;
     }
 
+    public UITextInput GetFocusedUITextInput() {
+        return selectedUIInput;
+    }
 
-    //--FULLSCREEN--//
+    public void SetFocusedUITextInput(UITextInput input) {
+        selectedUIInput = input;
+    }
+
+
     private boolean isPointInBounds(Vector2 pos, Vector2 size, Vector2 point) {
         double left = pos.X;
         double right = left + size.X;
