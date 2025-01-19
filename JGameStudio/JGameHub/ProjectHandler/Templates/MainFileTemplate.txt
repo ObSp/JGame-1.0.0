@@ -1,0 +1,9 @@
+import JGamePackage.JGame.JGame;
+
+public class %s {
+    static JGame game = new JGame();
+    
+    public static void main(String[] args) {
+        
+    }
+}

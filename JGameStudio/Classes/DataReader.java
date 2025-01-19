@@ -4,19 +4,28 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Array;
+import java.util.HashMap;
 
 import JGameStudio.lib.JSONSimple.JSONArray;
 import JGameStudio.lib.JSONSimple.JSONObject;
 import JGameStudio.lib.JSONSimple.parser.JSONParser;
 
 public class DataReader {
+    private static HashMap<String, DataReader> activeReaders = new HashMap<>();
+
     private String path;
 
     public JSONData Data;
 
+    public static DataReader GetActiveReaderFromPath(String path) {
+        return activeReaders.get(path);
+    }
+
     public DataReader(String pathToJSON) {
         this.path = pathToJSON;
         ReadJSON();
+
+        activeReaders.put(pathToJSON, this);
     }
 
     @SuppressWarnings("unchecked")

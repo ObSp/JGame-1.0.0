@@ -38,7 +38,7 @@ public class JGameHub {
     int windowHeight;
 
     private void createProj() {
-        File dir = ProjectHandler.Create("test", jsonData.Data.creation_path);
+        File dir = ProjectHandler.Create("test", jsonData.Data.creation_path, "JGamePackage");
         String[] newArr = new String[jsonData.Data.projects.length + 1];
 
         for (int i = 0; i < newArr.length - 1; i++) {

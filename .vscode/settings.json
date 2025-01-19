@@ -1,6 +1,6 @@
 {
     "files.exclude": {
-        "JGamePackage": false
+        "JGamePackage": false,
     },
 
     "java.project.referencedLibraries": [
