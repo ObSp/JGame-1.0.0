@@ -199,7 +199,7 @@ class RealSimulation {
         viY = getSettingsInputText("InitialYVel");
         wind = getSettingsInputText("Wind");
    
-        plane1Velocity = new Vector2(MSAUtil.toPixels(viX)/10, -MSAUtil.toPixels(viY)/100);
+        plane1Velocity = new Vector2(MSAUtil.toPixels(viX)/11, -MSAUtil.toPixels(viY)/100);
         plane1.Position = new Vector2(0, game.Services.WindowService.GetWindowHeight() - game.WorldNode.<Image2D>GetTypedChild("Ground").Size.Y/2 - throwHeight * ExperimentData.meterInPixel);
         plane1RealPos = plane1.Position;
 
@@ -239,7 +239,7 @@ class RealSimulation {
                     dragVelPixels = plane1Velocity.X;
 
                 plane1Velocity = plane1Velocity.add(-dragVelPixels, -liftVelPixels);
-                plane1Velocity = plane1Velocity.add(0, weightVelPixels*.9);
+                plane1Velocity = plane1Velocity.add(0, weightVelPixels*1.1);
                 plane1Velocity = plane1Velocity.subtract(MSAUtil.toPixels(wind) * jgame.SecondsPerTick, 0);
 
                 plane1RealPos = plane1RealPos.add(plane1Velocity);
