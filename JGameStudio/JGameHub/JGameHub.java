@@ -107,7 +107,7 @@ public class JGameHub {
 
     private void createLines() {
         Color color = StudioGlobals.ForegroundColor;
-        int zIndex = 10;
+        int zIndex = 100;
 
         createFrame(UDim2.zero, UDim2.fromAbsolute(windowWidth, 1), color, zIndex).SetParent(game.UINode);
         createFrame(UDim2.fromAbsolute(250, 0), UDim2.fromAbsolute(1, windowHeight), color, zIndex).SetParent(game.UINode);
@@ -221,6 +221,86 @@ public class JGameHub {
         add.SetParent(container);
     }
 
+    private UIFrame createProjectTable(UIFrame area) {
+        UIFrame container = new UIFrame();
+        container.Size = UDim2.fromScale(1, .73);
+        container.BackgroundTransparency = 1;
+        container.Position = UDim2.fromScale(.005, .27);
+
+        UIListLayout layout = new UIListLayout();
+        layout.SetParent(container);
+
+        UIButton test = new UIButton();
+        test.Size = UDim2.fromScale(.99, .1);
+        test.BackgroundTransparency = .9;
+        test.HoverEffectsEnabled = false;
+        test.SetParent(container);
+
+        UICorner corner = new UICorner();
+        corner.RelativeTo = Constants.Vector2Axis.Y;
+        corner.Radius = .5;
+        corner.SetParent(test);
+
+        return container;
+    }
+
+    private UIFrame createProjTableHead() {
+        UIFrame bg = new UIFrame();
+        bg.BackgroundColor = StudioGlobals.BackgroundColor;
+        bg.Size = UDim2.fromScale(1, 0).add(im2Abs(0, 43));
+        bg.Position = UDim2.fromAbsolute(1, 118);
+
+        //top + bottom lines
+        createFrame(UDim2.zero, UDim2.fromAbsolute(1000, 1), StudioGlobals.ForegroundColor, 1).SetParent(bg);
+        createFrame(UDim2.fromScale(0, 1), UDim2.fromAbsolute(1000, 1), StudioGlobals.ForegroundColor, 1).SetParent(bg);
+
+        //seperators
+        createFrame(im2Abs(71, 0), im2Scale(0, 1).add(im2Abs(1, 0)), StudioGlobals.ForegroundColor, 1).SetParent(bg);
+        createFrame(im2Abs(220, 0), im2Scale(0, 1).add(im2Abs(1, 0)), StudioGlobals.ForegroundColor, 1).SetParent(bg);
+        createFrame(im2Abs(458-50, 0), im2Scale(0, 1).add(im2Abs(1, 0)), StudioGlobals.ForegroundColor, 1).SetParent(bg);
+        createFrame(im2Abs(670-50, 0), im2Scale(0, 1).add(im2Abs(1, 0)), StudioGlobals.ForegroundColor, 1).SetParent(bg);
+
+        //star icon
+        UIImage star = new UIImage();
+        star.SetImage("JGameStudio\\Assets\\Icons\\Star.png");
+        star.Size = im2Abs(28, 28);
+        star.BackgroundTransparency = 1;
+        star.AnchorPoint = Vector2.half;
+        star.Position = UDim2.fromScale(.043, .5);
+        star.SetParent(bg);
+
+        //name text
+        UIText name = new UIText();
+        name.Text = "Name";
+        name.BackgroundTransparency = 1;
+        name.AnchorPoint = new Vector2(0, .5);
+        name.Position = UDim2.fromScale(.1, .5);
+        name.CustomFont = StudioGlobals.GlobalFont;
+        name.Size = UDim2.fromScale(.16, 1);
+        name.FontSize = 22;
+        name.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        name.TextColor = StudioGlobals.TextColor;
+        name.SetParent(bg);
+
+        
+        UIText modified = name.Clone();
+        modified.Text = "Modified";
+        modified.Position = modified.Position.add(im2Scale(.177, 0));
+        modified.SetParent(bg);
+
+        UIText created = modified.Clone();
+        created.Text = "Created";
+        created.Position = created.Position.add(im2Scale(.224, 0));
+        created.SetParent(bg);
+
+        UIText path = created.Clone();
+        path.Text = "Location";
+        path.Position = path.Position.add(im2Scale(.26, 0));
+        path.SetParent(bg);
+
+        return bg;
+    }
+
     private void createHomeArea() {
         UIFrame container = new UIFrame();
         container.Position = UDim2.fromAbsolute(250, 1);
@@ -241,7 +321,14 @@ public class JGameHub {
         add.SetParent(container);
 
         UIFrame searchBar = createSearchBar(container);
+        searchBar.Position = searchBar.Position.add(UDim2.fromAbsolute(0, 5));
         searchBar.SetParent(container);
+
+        UIFrame tblHead = createProjTableHead();
+        tblHead.SetParent(container);
+        
+        UIFrame tbl = createProjectTable(container);
+        tbl.SetParent(container);
 
         create.Mouse1Down.Connect(()->createProj());
     }
