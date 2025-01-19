@@ -66,6 +66,9 @@ public abstract class UIBase extends Renderable {
 
         Vector2 realPos = null;
 
+        if (parentInstance == null) 
+            return realPos = Position.ToVector2(game.Services.WindowService.GetWindowSize()).subtract(GetAnchorPointOffset());
+
         UIListLayout layout = parentInstance.GetChildWhichIsA(UIListLayout.class);
 
         if (layout != null) {

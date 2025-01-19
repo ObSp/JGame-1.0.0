@@ -57,5 +57,32 @@ public class UITextInput extends UIText {
 
         RenderUtil.drawText(renderText, renderSize, renderPos, renderColor, FontSize, FontStyle, FontName, CustomFont, TextScaled, HorizontalTextAlignment, VerticalTextAlignment, focused && showInTextCursor ? "I" : "");
     }
+
+    @Override
+    public UITextInput Clone() {
+        UITextInput clone = cloneWithoutChildren();
+        this.cloneHierarchyToNewParent(clone);
+        return clone;
+    }
+
+    @Override
+    protected UITextInput cloneWithoutChildren() {
+        UITextInput text = new UITextInput();
+        this.cloneHelper(text);
+        text.Text = this.Text;
+        text.TextColor = this.TextColor;
+        text.TextTransparency = this.TextTransparency;
+        text.HorizontalTextAlignment = this.HorizontalTextAlignment;
+        text.VerticalTextAlignment = this.VerticalTextAlignment;
+        text.FontSize = this.FontSize;
+        text.FontName = this.FontName;
+        text.FontStyle = this.FontStyle;
+        text.TextScaled = this.TextScaled;
+        text.CustomFont = this.CustomFont;
+        text.PlaceholderText = this.PlaceholderText;
+        text.PlaceholderColor = this.PlaceholderColor;
+        text.ClearTextOnFocus = this.ClearTextOnFocus;
+        return text;
+    }
     
 }

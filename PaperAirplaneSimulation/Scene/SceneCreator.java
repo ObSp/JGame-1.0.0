@@ -3,10 +3,13 @@ package PaperAirplaneSimulation.Scene;
 import java.awt.Color;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
+import JGamePackage.JGame.Classes.UI.UITextInput;
 import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
 import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Classes.World.Box2D;
 import JGamePackage.JGame.Classes.World.Image2D;
 import JGamePackage.JGame.Types.Constants.Constants;
@@ -50,8 +53,86 @@ public class SceneCreator {
         cam.Name = "CamButton";
         cam.SetParent(game.UINode);
 
+        new UIAspectRatioConstraint().SetParent(cam);
+
+        UIImage settings = cam.Clone();
+        settings.SetImage("PaperAirplaneSimulation\\Assets\\Settings.png");
+        settings.Position = settings.Position.subtract(UDim2.fromScale(.02, 0));
+        settings.Name = "Settings";
+        settings.SetParent(game.UINode);
+
         UIAspectRatioConstraint camConstraint = new UIAspectRatioConstraint();
         camConstraint.SetParent(cam);
+
+        UIFrame settingsFrame = new UIFrame();
+        settingsFrame.Size = UDim2.fromScale(.3, .6);
+        settingsFrame.BackgroundColor = Color.black;
+        settingsFrame.BackgroundTransparency = .5;
+        settingsFrame.AnchorPoint = Vector2.half;
+        settingsFrame.Position = UDim2.fromScale(.5, .5);
+        settingsFrame.Name = "SettingsFrame";
+        settingsFrame.SetParent(game.UINode);
+
+        UIListLayout layout =  new UIListLayout();
+        layout.Padding = UDim2.fromScale(0, .02);
+        layout.SetParent(settingsFrame);
+
+        UIText settingsHeader = new UIText();
+        settingsHeader.Text = "Settings";
+        settingsHeader.Size = UDim2.fromScale(1, .05);
+        settingsHeader.TextScaled = true;
+        settingsHeader.BackgroundTransparency = 1;
+        settingsHeader.TextColor = Color.white;
+        settingsHeader.SetParent(settingsFrame);
+
+        UIFrame throwHeight = new UIFrame();
+        throwHeight.Size = UDim2.fromScale(1, .05);
+        throwHeight.Position = UDim2.fromScale(.5, .1);
+        throwHeight.AnchorPoint = new Vector2(.5, 0);
+        throwHeight.Name = "ThrowHeight";
+        throwHeight.BackgroundTransparency = 1;
+        
+        throwHeight.SetParent(settingsFrame);
+
+        UIText throwHeightLabel = new UIText();
+        throwHeightLabel.Text = "Throw Height(m)";
+        throwHeightLabel.Size = UDim2.fromScale(.5, .7);
+        throwHeightLabel.TextScaled = true;
+        throwHeightLabel.BackgroundTransparency = 1;
+        throwHeightLabel.TextColor = Color.white;
+        throwHeightLabel.SetParent(throwHeight);
+
+        UITextInput throwHeightInput = new UITextInput();
+        throwHeightInput.Position = UDim2.fromScale(.5,0);
+        throwHeightInput.FontSize = 25;
+        throwHeightInput.Size = UDim2.fromScale(.3, 1);
+        throwHeightInput.SetParent(throwHeight);
+
+        UICorner throwHeightCorner = new UICorner();
+        throwHeightCorner.RelativeTo = Constants.Vector2Axis.Y;
+        throwHeightCorner.Radius = .4;
+        throwHeightCorner.SetParent(throwHeightInput);
+
+        UIFrame initialXVel = throwHeight.Clone();
+        initialXVel.GetChildWhichIsA(UIText.class).Text = "Initial X Velocity (m/s)";
+        initialXVel.Name = "InitialXVel";
+        initialXVel.SetParent(settingsFrame);
+
+        UIFrame initialYVel = throwHeight.Clone();
+        initialYVel.GetChildWhichIsA(UIText.class).Text = "Initial Y Velocity (m/s)";
+        initialYVel.Name = "InitialYVel";
+        initialYVel.SetParent(settingsFrame);
+
+        UIFrame wind = throwHeight.Clone();
+        wind.GetChildWhichIsA(UIText.class).Text = "Wind (m/s)";
+        wind.Name = "Wind";
+        wind.SetParent(settingsFrame);
+
+        settingsFrame.Visible = false;
+
+        settings.Mouse1Down.Connect(()->{
+            settingsFrame.Visible = !settingsFrame.Visible;
+        });
 
         UIText start = new UIText();
         start.AnchorPoint = new Vector2(.5, 0);
