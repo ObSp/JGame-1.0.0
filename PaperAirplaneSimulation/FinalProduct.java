@@ -47,6 +47,8 @@ class RealSimulation {
 
     UIFrame panel1;
 
+    static boolean first = true;
+
     boolean pauseSim = false;
     boolean finished = false;
 
