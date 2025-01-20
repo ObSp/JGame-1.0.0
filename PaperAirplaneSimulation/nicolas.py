@@ -70,6 +70,7 @@ def updateRot():
     yDiff = v_y;
     return math.atan(yDiff/xDiff);
 
+v_x/= 11;v_y/=100
 def tick(): #run this code very frame
     global ticks, v_x, v_y, X, Y, lastTick, secondsInAir
     ticks += 1

@@ -1,6 +1,7 @@
 package JGameStudio.JGameHub;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 
 import javax.swing.JFrame;
@@ -225,14 +226,14 @@ public class JGameHub {
         UIFrame container = new UIFrame();
         container.Size = UDim2.fromScale(1, .73);
         container.BackgroundTransparency = 1;
-        container.Position = UDim2.fromScale(.005, .27);
+        container.Position = UDim2.fromScale(.006, .27);
 
         UIListLayout layout = new UIListLayout();
         layout.SetParent(container);
 
         UIButton test = new UIButton();
         test.Size = UDim2.fromScale(.99, .1);
-        test.BackgroundTransparency = .9;
+        test.BackgroundTransparency = 1;
         test.HoverEffectsEnabled = false;
         test.SetParent(container);
 
@@ -240,6 +241,24 @@ public class JGameHub {
         corner.RelativeTo = Constants.Vector2Axis.Y;
         corner.Radius = .5;
         corner.SetParent(test);
+
+        UIText testName = new UIText();
+        testName.Text = "Name";
+        testName.BackgroundTransparency = 1;
+        testName.AnchorPoint = new Vector2(0, .5);
+        testName.Position = UDim2.fromScale(.1, .5);
+        testName.CustomFont = StudioGlobals.GlobalFont;
+        testName.Size = UDim2.fromScale(.16, 1);
+        testName.FontSize = 18;
+        testName.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        testName.TextColor = StudioGlobals.TextColor;
+        testName.FontStyle = Font.BOLD;
+        testName.SetParent(test);
+
+        UIText testModified = testName.Clone();
+        testModified.Text = "2 days ago";
+        testModified.Position = UDim2.fromScale(.28, .5);
+        testModified.SetParent(test);
 
         return container;
     }

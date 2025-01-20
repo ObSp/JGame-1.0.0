@@ -295,10 +295,10 @@ class RealSimulation {
         tickConnection.Disconnect();
         camConnection.Disconnect();
 
-        setSettingsInputText("ThrowHeight", throwHeight);
-        setSettingsInputText("Wind", wind);
-        setSettingsInputText("InitialXVel", viX);
-        setSettingsInputText("InitialYVel", viY);
+        throwHeight = getSettingsInputText("ThrowHeight");
+        viX = getSettingsInputText("InitialXVel");
+        viY = getSettingsInputText("InitialYVel");
+        wind = getSettingsInputText("Wind");
 
         Cleanup();
     }
