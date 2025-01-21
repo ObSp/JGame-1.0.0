@@ -19,6 +19,7 @@ public class UITextButton extends UIText {
 
         this.MouseLeave.Connect(()-> {
             this.isHovering = false;
+            if (game.Services.InputService.GetMouseUITarget() instanceof UITextButton || game.Services.InputService.GetMouseUITarget() instanceof UIButton) return;
             game.Services.WindowService.SetMouseCursor(Cursor.DEFAULT_CURSOR);
         });
 

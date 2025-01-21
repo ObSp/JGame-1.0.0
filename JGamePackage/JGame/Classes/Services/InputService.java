@@ -285,7 +285,7 @@ public class InputService extends Service {
         //first find an UI instance that (SHOULD BE) diplayed on top
         //the one issue with this is that children are always displayed on TOP of parents, therefore step 2 is needed 
         for (UIBase v : game.UINode.GetChildrenOfClass(UIBase.class)) {
-            if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos) || !v.Visible) continue;
+            if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos) || !v.Visible || !v.MouseTargetable) continue;
             if (curTarget != null && v.ZIndex <= curTarget.ZIndex) continue;
             curTarget = v;
         }
