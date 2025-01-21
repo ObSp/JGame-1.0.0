@@ -54,8 +54,6 @@ public class RenderUtil {
     public static void drawImage(Instance inst, Vector2 renderSize, Vector2 renderPos, BufferedImage image) {
         UICorner cornerEffect = inst.GetChildWhichIsA(UICorner.class);
 
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
         if (cornerEffect != null) {
             RenderUtil.drawRoundImage(inst, renderSize, renderPos, image, cornerEffect);
         } else {
@@ -64,6 +62,8 @@ public class RenderUtil {
     }
 
     public static void drawSharpImage(Instance inst, Vector2 renderSize, Vector2 renderPos, BufferedImage image) {
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
         g.drawImage(image, (int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, null);
     }
 
@@ -77,7 +77,7 @@ public class RenderUtil {
         int x = (int) renderPos.X;
         int y = (int) renderPos.Y;
 
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
         Shape rounded = new RoundRectangle2D.Double(x, y, w, h, radius, radius);
 
         g.setColor(new Color(0,0,0,0));

@@ -226,7 +226,7 @@ public class JGameHub {
         UIFrame container = new UIFrame();
         container.Size = UDim2.fromScale(1, .73);
         container.BackgroundTransparency = 1;
-        container.Position = UDim2.fromScale(.006, .27);
+        container.Position = UDim2.fromScale(.006, .28);
 
         UIListLayout layout = new UIListLayout();
         layout.SetParent(container);
@@ -259,6 +259,48 @@ public class JGameHub {
         testModified.Text = "2 days ago";
         testModified.Position = UDim2.fromScale(.28, .5);
         testModified.SetParent(test);
+
+        UIText testCreated = testName.Clone();
+        testCreated.Text = "02.07.2025";
+        testCreated.Position = UDim2.fromScale(.505, .5);
+        testCreated.SetParent(test);
+
+        UITextButton testPath = new UITextButton();
+        testPath.Text = "C:\\Users\\Paul\\Documents\\Test";
+        testPath.Position = UDim2.fromScale(.75, .5);
+        testPath.AnchorPoint = new Vector2(0, .5);
+        testPath.BackgroundTransparency = 1;
+        testPath.CustomFont = StudioGlobals.GlobalFont;
+        testPath.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        testPath.TextColor = StudioGlobals.TextColor;
+        testPath.FontSize = 18;
+        testPath.HoverEffectsEnabled = false;
+        testPath.Size = UDim2.fromScale(.24, .7);
+        testPath.SetParent(test);
+
+        corner.Clone().SetParent(testPath);
+
+        if (testPath.Text.length() > 21) {
+            testPath.Text = testPath.Text.substring(0, 20) +"...";
+        }
+
+        //21 lenght
+
+        testPath.MouseEnter.Connect(()->{
+            testPath.BackgroundTransparency = .9;
+        });
+
+        testPath.MouseLeave.Connect(()->{
+            testPath.BackgroundTransparency = 1;
+        });
+
+        test.MouseEnter.Connect(()->{
+            test.BackgroundTransparency = .95;
+        });
+
+        test.MouseLeave.Connect(()->{
+            test.BackgroundTransparency = 1;
+        });
 
         return container;
     }
