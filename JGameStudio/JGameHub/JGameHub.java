@@ -28,6 +28,7 @@ import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
 import JGameStudio.Classes.DataReader;
 import JGameStudio.JGameHub.ProjectHandler.ProjectHandler;
+import JGameStudio.JGameHub.ProjectHandler.ProjectHandler.ProjectData;
 
 public class JGameHub {
     
@@ -222,20 +223,11 @@ public class JGameHub {
         add.SetParent(container);
     }
 
-    private UIFrame createProjectTable(UIFrame area) {
-        UIFrame container = new UIFrame();
-        container.Size = UDim2.fromScale(1, .73);
-        container.BackgroundTransparency = 1;
-        container.Position = UDim2.fromScale(.006, .28);
-
-        UIListLayout layout = new UIListLayout();
-        layout.SetParent(container);
-
+    private UIButton createProjectTableItem(ProjectData projData) {
         UIButton test = new UIButton();
         test.Size = UDim2.fromScale(.99, .1);
         test.BackgroundTransparency = 1;
         test.HoverEffectsEnabled = false;
-        test.SetParent(container);
 
         UICorner corner = new UICorner();
         corner.RelativeTo = Constants.Vector2Axis.Y;
@@ -243,7 +235,7 @@ public class JGameHub {
         corner.SetParent(test);
 
         UIText testName = new UIText();
-        testName.Text = "Name";
+        testName.Text = projData.name();
         testName.BackgroundTransparency = 1;
         testName.AnchorPoint = new Vector2(0, .5);
         testName.Position = UDim2.fromScale(.1, .5);
@@ -256,17 +248,17 @@ public class JGameHub {
         testName.SetParent(test);
 
         UIText testModified = testName.Clone();
-        testModified.Text = "2 days ago";
+        testModified.Text = projData.modifiedDate();
         testModified.Position = UDim2.fromScale(.28, .5);
         testModified.SetParent(test);
 
         UIText testCreated = testName.Clone();
-        testCreated.Text = "02.07.2025";
+        testCreated.Text = projData.creationDate();
         testCreated.Position = UDim2.fromScale(.505, .5);
         testCreated.SetParent(test);
 
         UITextButton testPath = new UITextButton();
-        testPath.Text = "C:\\Users\\Paul\\Documents\\Test";
+        testPath.Text = projData.path();
         testPath.Position = UDim2.fromScale(.75, .5);
         testPath.AnchorPoint = new Vector2(0, .5);
         testPath.BackgroundTransparency = 1;
@@ -301,6 +293,23 @@ public class JGameHub {
         test.MouseLeave.Connect(()->{
             test.BackgroundTransparency = 1;
         });
+
+        return test;
+    }
+
+    private UIFrame createProjectTable(UIFrame area) {
+        UIFrame container = new UIFrame();
+        container.Size = UDim2.fromScale(1, .73);
+        container.BackgroundTransparency = 1;
+        container.Position = UDim2.fromScale(.006, .28);
+
+        UIListLayout layout = new UIListLayout();
+        layout.SetParent(container);
+
+        for (String projPath : jsonData.Data.projects) {
+            ProjectData proj = ProjectHandler.ReadProjectDir(projPath);
+            createProjectTableItem(proj).SetParent(container);
+        }
 
         return container;
     }

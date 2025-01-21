@@ -72,11 +72,11 @@ public class ProjectHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ;
+        
 
         // write project json
         JSONObject projectJSONDict = new JSONObject();
-        projectJSONDict.put("jgame_src", jgameSrc);
+        projectJSONDict.put("jgame_src", new File(jgameSrc).getAbsolutePath());
         projectJSONDict.put("creation_date", OffsetDateTime.now().toString());
         projectJSONDict.put("modified_date", OffsetDateTime.now().toString());
         projectJSONDict.put("name", name);
@@ -101,9 +101,9 @@ public class ProjectHandler {
         return dir;
     }
 
-    public ProjectData ReadProjectDir(String path) {
+    public static ProjectData ReadProjectDir(String path) {
         File dotJGame = new File(path + "\\.jgame");
-        File settingsJSON = new File(dotJGame.getPath()+"\\settings.json");
+        File settingsJSON = new File(dotJGame.getPath()+"\\project.json");
 
         try {
             JSONParser parser = new JSONParser();
@@ -114,7 +114,7 @@ public class ProjectHandler {
             String creationDate; String modifiedDate; String name;
 
             creationDate = (String) baseObject.get("creation_date");
-            modifiedDate = (String) baseObject.get("creation_date");
+            modifiedDate = (String) baseObject.get("creation_date"); //TODO: change
             name = (String) baseObject.get("name");
             return new ProjectData(creationDate, modifiedDate, name, path);
         } catch (Exception e) {
