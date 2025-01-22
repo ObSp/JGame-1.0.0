@@ -11,8 +11,6 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
@@ -47,7 +45,8 @@ public class InputService extends Service {
 
     private ArrayList<String> heldKeys = new ArrayList<>();
 
-    private ArrayList<UIBase> hoveringUIItems = new ArrayList<>();
+    //private ArrayList<UIBase> hoveringUIItems = new ArrayList<>();
+    private UIBase currentHover = null;
 
     private UITextInput selectedUIInput = null;
 
@@ -187,6 +186,17 @@ public class InputService extends Service {
         });
 
         onTick.Connect(dt->{
+            UIBase newTarget = GetMouseUITarget();
+            
+            if (newTarget == currentHover) return;
+
+            UIBase oldTarget = currentHover;
+            currentHover = newTarget;
+
+            if (oldTarget != null) oldTarget.MouseLeave.Fire();
+            if (currentHover != null) currentHover.MouseEnter.Fire();
+
+            /**
             List<UIBase> mouseTargets = Arrays.asList(GetMouseUITargetList());
             for (UIBase v : game.UINode.GetDescendantsOfClass(UIBase.class)) {
                 boolean inList = hoveringUIItems.contains(v);
@@ -201,7 +211,7 @@ public class InputService extends Service {
                     hoveringUIItems.remove(v);
                 }
 
-            }
+            } */
         });
     }
 

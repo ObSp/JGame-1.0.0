@@ -10,7 +10,7 @@ public class StudioGlobals{
     public static Font GlobalFont;
     public static Font StartupFont;
 
-    public static Color BackgroundColor = new Color(42,44,45);
+    public static Color BackgroundColor = new Color(42,44,45, 255);
     public static Color ForegroundColor = new Color(85, 88, 91);
     public static Color TextColor = Color.lightGray.brighter();
 

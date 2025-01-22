@@ -1,10 +1,15 @@
 package JGameStudio.JGameHub;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.io.File;
+import java.io.IOException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 
@@ -35,6 +40,8 @@ public class JGameHub {
     JGame game;
 
     private DataReader jsonData = new DataReader(StudioGlobals.jsonData);
+
+    private UIFrame newProjectPrompt;
 
     int windowWidth;
     int windowHeight;
@@ -223,6 +230,19 @@ public class JGameHub {
         add.SetParent(container);
     }
 
+    private UIFrame createNewProjectPrompt() {
+        UIFrame frame = new UIFrame();
+        frame.BackgroundTransparency = .6;
+        frame.BackgroundColor = Color.black;
+        frame.Size = UDim2.fromScale(1,1);
+        frame.ZIndex = 100;
+
+        UIFrame container = new UIFrame();
+        
+
+        return frame;
+    }
+
     private UIButton createProjectTableItem(ProjectData projData) {
         UIButton test = new UIButton();
         test.Size = UDim2.fromScale(.99, .1);
@@ -276,14 +296,20 @@ public class JGameHub {
             testPath.Text = testPath.Text.substring(0, 20) +"...";
         }
 
-        //21 lenght
-
         testPath.MouseEnter.Connect(()->{
             testPath.BackgroundTransparency = .9;
         });
 
         testPath.MouseLeave.Connect(()->{
             testPath.BackgroundTransparency = 1;
+        });
+
+        testPath.Mouse1Down.Connect(()->{
+            try {
+                Desktop.getDesktop().open(new File(projData.path()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         test.MouseEnter.Connect(()->{
@@ -400,7 +426,9 @@ public class JGameHub {
         UIFrame tbl = createProjectTable(container);
         tbl.SetParent(container);
 
-        create.Mouse1Down.Connect(()->createProj());
+        create.Mouse1Down.Connect(()-> {
+            newProjectPrompt.Visible = true;
+        });
     }
 
     private UIButton[] createNavbarButtons(UIFrame area) {
@@ -563,6 +591,9 @@ public class JGameHub {
         createSettingssPage();
 
         createNavBar();
+
+        newProjectPrompt = createNewProjectPrompt();
+        newProjectPrompt.SetParent(game.UINode);
     }
 
 }

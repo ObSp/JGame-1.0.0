@@ -9,7 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.OffsetDateTime;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 import JGameStudio.lib.JSONSimple.JSONObject;
 import JGameStudio.lib.JSONSimple.parser.JSONParser;
@@ -77,10 +80,12 @@ public class ProjectHandler {
         // write project json
         JSONObject projectJSONDict = new JSONObject();
         projectJSONDict.put("jgame_src", new File(jgameSrc).getAbsolutePath());
-        projectJSONDict.put("creation_date", OffsetDateTime.now().toString());
-        projectJSONDict.put("modified_date", OffsetDateTime.now().toString());
+        projectJSONDict.put("creation_date", Instant.now().toString());
+        projectJSONDict.put("modified_date", Instant.now().toString());
         projectJSONDict.put("name", name);
         writeToFile(projectJson, projectJSONDict.toJSONString());
+
+        
 
         // write to VS Code settings
         JSONObject settingsJSONDict = new JSONObject();
@@ -111,12 +116,16 @@ public class ProjectHandler {
 
             JSONObject baseObject = (JSONObject) parser.parse(reader);
 
-            String creationDate; String modifiedDate; String name;
+            String creationDateString; String modifiedDateString; String name;
 
-            creationDate = (String) baseObject.get("creation_date");
-            modifiedDate = (String) baseObject.get("creation_date"); //TODO: change
+            creationDateString = (String) baseObject.get("creation_date");
+            modifiedDateString = (String) baseObject.get("creation_date"); //TODO: change
             name = (String) baseObject.get("name");
-            return new ProjectData(creationDate, modifiedDate, name, path);
+
+            Instant creationInstant = Instant.parse(creationDateString);
+            Instant modifiedInstant = Instant.parse(modifiedDateString);
+
+            return new ProjectData(convertInstantToDayMonthYear(creationInstant) , convertInstantToDayMonthYear(modifiedInstant), name, path);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -124,6 +133,14 @@ public class ProjectHandler {
     }
 
     public record ProjectData (String creationDate, String modifiedDate, String name, String path) {}
+
+    private static String convertInstantToDayMonthYear(Instant instant) {
+        DateTimeFormatter formatter = DateTimeFormatter
+        .ofPattern("dd-MM-uuuu")
+        .withZone(ZoneOffset.systemDefault());
+
+        return LocalDateTime.ofInstant(instant, formatter.getZone()).format(formatter).replaceAll("-", ".");
+    }
 
     private static void copyDir(String src, String dest, boolean overwrite) { //courtesy of stack overflow :)
         try {

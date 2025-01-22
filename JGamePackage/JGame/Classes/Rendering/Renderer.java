@@ -8,7 +8,6 @@ import java.awt.geom.AffineTransform;
 import javax.swing.JPanel;
 
 import JGamePackage.JGame.JGame;
-import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.World.WorldBase;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
@@ -45,13 +44,11 @@ public class Renderer extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         
-
         RenderUtil.g = g2d;
 
-        RenderWorld(g2d, game.WorldNode.GetDescendants());
-        RenderUI(g2d, game.UINode.GetDescendants());
+        RenderWorld(g2d);
+        RenderUI(g2d);
     }
 
     private void renderUIRecursive(UIBase[] curChildren, Graphics2D g) {
@@ -59,15 +56,11 @@ public class Renderer extends JPanel {
         for (UIBase child : curChildren) {
             if (!child.Visible) continue;
             child.render(g);
-        }
-
-        for (UIBase child : curChildren) {
-            if (!child.Visible) continue;
             renderUIRecursive(child.GetChildrenOfClass(UIBase.class), g);
         }
     }
 
-    public void RenderUI(Graphics2D g, Instance[] UI) {
+    public void RenderUI(Graphics2D g) {
         renderUIRecursive(game.UINode.GetChildrenOfClass(UIBase.class), g);
     }
 
@@ -102,7 +95,7 @@ public class Renderer extends JPanel {
         }
     } 
 
-    public void RenderWorld(Graphics2D g, Instance[] World) {
+    public void RenderWorld(Graphics2D g) {
         g.setColor(game.Services.WindowService.BackgroundColor);
         g.fillRect(0, 0, game.Services.WindowService.GetWindowWidth(), game.Services.WindowService.GetWindowHeight());
 
