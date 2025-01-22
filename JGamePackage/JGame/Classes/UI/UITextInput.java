@@ -6,10 +6,13 @@ import java.awt.Graphics2D;
 
 import JGamePackage.JGame.Classes.Rendering.RenderUtil;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
+import JGamePackage.lib.Signal.VoidSignal;
 
 public class UITextInput extends UIText {
     public String PlaceholderText = "Type Here";
     public Color PlaceholderColor = Color.gray;
+
+    public VoidSignal TextUpdated = new VoidSignal();
 
     public boolean ClearTextOnFocus = true;
 

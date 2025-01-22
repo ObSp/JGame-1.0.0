@@ -30,4 +30,30 @@ public class UITextButton extends UIText {
         Color curColor = (isHovering && HoverEffectsEnabled) ? HoverColor : BackgroundColor;
         return new Color(curColor.getRed(), curColor.getGreen(), curColor.getBlue(), (int) (255*(1-BackgroundTransparency)));
     }
+
+    @Override
+    public UITextButton Clone() {
+        UITextButton clone = cloneWithoutChildren();
+        this.cloneHierarchyToNewParent(clone);
+        return clone;
+    }
+
+    @Override
+    protected UITextButton cloneWithoutChildren() {
+        UITextButton text = new UITextButton();
+        this.cloneHelper(text);
+        text.Text = this.Text;
+        text.TextColor = this.TextColor;
+        text.TextTransparency = this.TextTransparency;
+        text.HorizontalTextAlignment = this.HorizontalTextAlignment;
+        text.VerticalTextAlignment = this.VerticalTextAlignment;
+        text.FontSize = this.FontSize;
+        text.FontName = this.FontName;
+        text.FontStyle = this.FontStyle;
+        text.TextScaled = this.TextScaled;
+        text.CustomFont = this.CustomFont;
+        text.HoverColor = this.HoverColor;
+        text.HoverEffectsEnabled = this.HoverEffectsEnabled;
+        return text;
+    }
 }

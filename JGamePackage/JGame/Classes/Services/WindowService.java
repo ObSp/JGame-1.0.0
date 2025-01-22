@@ -56,11 +56,6 @@ public class WindowService extends Service {
         gameWindow.setVisible(true);
     }
 
-    public void SetTopbarEnabled(boolean topbar) {
-        JFrame gameWindow = game.GetWindow();
-        
-    }
-
     public boolean IsFullscreen() {
         return game.GetWindow().isUndecorated();
     }
