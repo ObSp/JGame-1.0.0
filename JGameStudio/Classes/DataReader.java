@@ -3,7 +3,7 @@ package JGameStudio.Classes;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import JGameStudio.lib.JSONSimple.JSONArray;
@@ -28,35 +28,17 @@ public class DataReader {
         activeReaders.put(pathToJSON, this);
     }
 
-    @SuppressWarnings("unchecked")
-    private <T extends Object> T[] jsonArrayToArray(JSONArray jsonArr, Class<T> arrClass) {
-        T[] arr = (T[]) Array.newInstance(arrClass, jsonArr.size());
-
-        for (int i = 0; i < arr.length; i++) 
-            arr[i] = (T) jsonArr.get(i);
-        
-        return arr;
-    }
-
-    @SuppressWarnings("unchecked")
-    private JSONArray arrayToJSONArray(Object[] arr) {
-        JSONArray jsonArr = new JSONArray();
-
-        for (Object v : arr)
-            jsonArr.add(v);
-        
-        return jsonArr;
-    }
-
     /**Reads the JSON file located at {@code this.path} and sets {@code this.Data} to a {@code JSONData} object created from the JSON file.
      * 
      * @return The created JSONData object
      */
+    @SuppressWarnings("unchecked")
     public JSONData ReadJSON() {
-        String[] projects = null;
+        ArrayList<String> projects = null;
         String hub_version = null;
         String editor_version = null;
         String creation_path = null;
+        String default_jgame_installation = null;
 
         try {
             JSONParser parser = new JSONParser();
@@ -64,15 +46,16 @@ public class DataReader {
 
             JSONObject baseObject = (JSONObject) parser.parse(reader);
 
-            projects = jsonArrayToArray((JSONArray) baseObject.get("projects"), String.class);
+            projects = (JSONArray) baseObject.get("projects");
             hub_version = (String) baseObject.get("hub_version");
             editor_version = (String) baseObject.get("editor_version");
             creation_path = (String) baseObject.get("creation_path");
+            default_jgame_installation = (String) baseObject.get("default_jgame_installation");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        this.Data = new JSONData(projects, hub_version, editor_version, creation_path);
+        this.Data = new JSONData(projects, hub_version, editor_version, creation_path, default_jgame_installation);
         return this.Data;
     }
 
@@ -80,12 +63,31 @@ public class DataReader {
      * 
      */
     @SuppressWarnings("unchecked")
-    public void UpdateJSON(String[] projects, String hubVersion, String editorVersion, String creationPath) {
+    public void UpdateJSON(ArrayList<String> projects, String hubVersion, String editorVersion, String creationPath, String default_jgame_installation) {
         JSONObject baseObject = new JSONObject();
-        baseObject.put("projects", arrayToJSONArray(projects));
+        baseObject.put("projects", (JSONArray) projects);
         baseObject.put("hub_version", hubVersion);
         baseObject.put("editor_version", editorVersion);
         baseObject.put("creation_path", creationPath);
+        baseObject.put("default_jgame_installation", default_jgame_installation);
+
+        try (FileWriter writer = new FileWriter(path)){
+            writer.write(baseObject.toJSONString());
+            writer.flush();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void UpdateJSON() {
+        JSONObject baseObject = new JSONObject();
+        baseObject.put("projects", (JSONArray) Data.projects);
+        baseObject.put("hub_version", Data.hub_version);
+        baseObject.put("editor_version", Data.editor_version);
+        baseObject.put("creation_path", Data.creation_path);
+        baseObject.put("default_jgame_installation", Data.default_jgame_installation);
 
         try (FileWriter writer = new FileWriter(path)){
             writer.write(baseObject.toJSONString());
@@ -97,16 +99,18 @@ public class DataReader {
     }
 
     public class JSONData {
-        public final String[] projects;
+        public final ArrayList<String> projects;
         public final String hub_version;
         public final String editor_version;
         public final String creation_path;
+        public final String default_jgame_installation;
 
-        public JSONData(String[] projectArr, String hubVersion, String editorVersion, String creationPath) {
+        public JSONData(ArrayList<String> projectArr, String hubVersion, String editorVersion, String creationPath, String default_jgame_installation) {
             this.projects = projectArr;
             this.hub_version = hubVersion;
             this.editor_version = editorVersion;
             this.creation_path = creationPath;
+            this.default_jgame_installation = default_jgame_installation;
         }
     }
 }

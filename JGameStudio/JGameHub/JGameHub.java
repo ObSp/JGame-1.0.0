@@ -32,6 +32,7 @@ import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
 import JGameStudio.Classes.DataReader;
+import JGameStudio.JGameHub.Instances.UIFileButton;
 import JGameStudio.JGameHub.ProjectHandler.ProjectHandler;
 import JGameStudio.JGameHub.ProjectHandler.ProjectHandler.ProjectData;
 
@@ -43,18 +44,18 @@ public class JGameHub {
 
     private UIFrame newProjectPrompt;
 
+    private UIFrame projectTable;
+
     int windowWidth;
     int windowHeight;
 
-    private void createProj() {
-        File dir = ProjectHandler.Create("test", jsonData.Data.creation_path, "JGamePackage");
-        String[] newArr = new String[jsonData.Data.projects.length + 1];
-
-        for (int i = 0; i < newArr.length - 1; i++) {
-            newArr[i] = jsonData.Data.projects[i];
-        }
-        newArr[newArr.length - 1] = dir.getAbsolutePath();
-        jsonData.UpdateJSON(newArr, jsonData.Data.hub_version, jsonData.Data.editor_version, jsonData.Data.creation_path);
+    private void createProj(String name, String location, String packageLocation) {
+        File dir = ProjectHandler.Create(name, location, packageLocation);
+        
+        jsonData.Data.projects.add(dir.getAbsolutePath());
+        
+        jsonData.UpdateJSON();
+        createProjectTableItem(ProjectHandler.ReadProjectDir(dir.getAbsolutePath())).SetParent(projectTable);
     }
 
     private void initWindow() {
@@ -232,13 +233,88 @@ public class JGameHub {
 
     private UIFrame createNewProjectPrompt() {
         UIFrame frame = new UIFrame();
-        frame.BackgroundTransparency = .6;
+        frame.BackgroundTransparency = .3;
         frame.BackgroundColor = Color.black;
         frame.Size = UDim2.fromScale(1,1);
         frame.ZIndex = 100;
+        frame.Visible = false;
 
         UIFrame container = new UIFrame();
+        container.BackgroundColor = StudioGlobals.BackgroundColor;
+        container.AnchorPoint = Vector2.half;
+        container.Position = UDim2.fromScale(.5, .5);
+        container.Size = UDim2.fromScale(.4, .7);
+        container.SetParent(frame);
+
+        UIBorder border = new UIBorder();
+        border.Width = 1;
+        border.BorderColor = StudioGlobals.ForegroundColor;
+        border.SetParent(container);
+
+        UICorner corner = new UICorner();
+        corner.Radius = .05;
+        corner.SetParent(container);
+
+        UIText header = createText(im2Scale(.5, 0).add(im2Abs(0, 10)), im2ScaleToAbs(.95, .05, container) , Color.lightGray.brighter(), "Create Project");
+        header.AnchorPoint = new Vector2(.5, 0);
+        header.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        header.SetParent(container);
+
+        UITextInput nameInput = new UITextInput();
+        nameInput.AnchorPoint = Vector2.half;
+        nameInput.Size = UDim2.fromScale(.8, .1);
+        nameInput.Position = UDim2.fromScale(.5, .17);
+        nameInput.BackgroundColor = StudioGlobals.BackgroundColor;
+        nameInput.FontSize = 20;
+        nameInput.PlaceholderText = "Project Name";
+        nameInput.CustomFont = StudioGlobals.GlobalFont;
+        nameInput.TextColor = StudioGlobals.TextColor;
+        nameInput.SetParent(container);
         
+        UICorner inpCorner = new UICorner();
+        inpCorner.Radius = .3;
+        inpCorner.SetParent(nameInput);
+
+        border.Clone().SetParent(nameInput);
+        
+        UIFileButton pathToProj = new UIFileButton();
+        pathToProj.AnchorPoint = Vector2.half;
+        pathToProj.Size = UDim2.fromScale(.8, .16);
+        pathToProj.Position = UDim2.fromScale(.5, .37);
+        pathToProj.ConfirmButtonText = "Pick Folder";
+        pathToProj.SetCurrentPath(jsonData.Data.creation_path);
+        pathToProj.SetParent(container);
+
+        UIFileButton pathToInstallation = pathToProj.Clone();
+        pathToInstallation.Position = pathToInstallation.Position.add(UDim2.fromScale(0, .2));
+        pathToInstallation.SetLocationHeaderText("JGame Installation Location");
+        pathToInstallation.SetCurrentPath(jsonData.Data.default_jgame_installation);
+        pathToInstallation.SetParent(container);
+
+        UITextButton create = createCreateButton(container);
+        create.Size = UDim2.fromScale(.8, .1);
+        create.AnchorPoint = Vector2.half;
+        create.Position = pathToInstallation.Position.add(UDim2.fromScale(0, .2));
+        create.GetChildWhichIsA(UICorner.class).Radius = inpCorner.Radius;
+        create.SetParent(container);
+
+        UITextButton cancel = create.Clone();
+        cancel.Position = create.Position.add(UDim2.fromScale(0, .13));
+        cancel.Text = "Cancel";
+        cancel.BackgroundColor = StudioGlobals.RedColor;
+        cancel.HoverColor = cancel.BackgroundColor.darker();
+        cancel.SetParent(container);
+
+        create.Mouse1Down.Connect(()-> {
+            createProj(nameInput.Text, pathToProj.GetCurrentPath(), pathToInstallation.GetCurrentPath());
+            frame.Visible = false;
+            nameInput.Text = "";
+        });
+
+        cancel.Mouse1Down.Connect(()->{
+            frame.Visible = false;
+            nameInput.Text = "";
+        });
 
         return frame;
     }
@@ -265,6 +341,7 @@ public class JGameHub {
         testName.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
         testName.TextColor = StudioGlobals.TextColor;
         testName.FontStyle = Font.BOLD;
+        testName.MouseTargetable = false;
         testName.SetParent(test);
 
         UIText testModified = testName.Clone();
@@ -423,8 +500,8 @@ public class JGameHub {
         UIFrame tblHead = createProjTableHead();
         tblHead.SetParent(container);
         
-        UIFrame tbl = createProjectTable(container);
-        tbl.SetParent(container);
+        projectTable = createProjectTable(container);
+        projectTable.SetParent(container);
 
         create.Mouse1Down.Connect(()-> {
             newProjectPrompt.Visible = true;
