@@ -6,10 +6,7 @@ import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 
@@ -52,7 +49,7 @@ public class JGameHub {
     private void createProj(String name, String location, String packageLocation) {
         File dir = ProjectHandler.Create(name, location, packageLocation);
         
-        jsonData.Data.projects.add(dir.getAbsolutePath());
+        jsonData.Data.projects.add(0, dir.getAbsolutePath());
         
         jsonData.UpdateJSON();
         createProjectTableItem(ProjectHandler.ReadProjectDir(dir.getAbsolutePath())).SetParent(projectTable);
