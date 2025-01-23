@@ -285,6 +285,7 @@ public class JGameHub {
         UIFileButton pathToInstallation = pathToProj.Clone();
         pathToInstallation.Position = pathToInstallation.Position.add(UDim2.fromScale(0, .2));
         pathToInstallation.SetLocationHeaderText("JGame Installation Location");
+        pathToInstallation.ConfirmButtonText = "Select JGame Installation";
         pathToInstallation.SetCurrentPath(jsonData.Data.default_jgame_installation);
         pathToInstallation.SetParent(container);
 
