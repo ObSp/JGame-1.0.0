@@ -54,7 +54,7 @@ public class JGameHub {
         jsonData.Data.projects.add(0, dir.getAbsolutePath());
         
         jsonData.UpdateJSON();
-        createProjectTableItem(ProjectHandler.ReadProjectDir(dir.getAbsolutePath())).SetParent(projectTable);
+        reloadProjectTableItems();
     }
 
     private Image getImageFromPath(String path) {
@@ -409,21 +409,29 @@ public class JGameHub {
         return test;
     }
 
+    private void reloadProjectTableItems() {
+        for (UIBase v : projectTable.GetChildrenOfClass(UIBase.class))
+            v.Destroy();
+
+        for (int i = 0; i < jsonData.Data.projects.size(); i++) {
+            String projPath = jsonData.Data.projects.get(i);
+            ProjectData proj = ProjectHandler.ReadProjectDir(projPath);
+            createProjectTableItem(proj).SetParent(projectTable);
+        }
+    }
+
     private UIFrame createProjectTable(UIFrame area) {
-        UIFrame container = new UIFrame();
-        container.Size = UDim2.fromScale(1, .73);
-        container.BackgroundTransparency = 1;
-        container.Position = UDim2.fromScale(.006, .28);
+        projectTable = new UIFrame();
+        projectTable.Size = UDim2.fromScale(1, .73);
+        projectTable.BackgroundTransparency = 1;
+        projectTable.Position = UDim2.fromScale(.006, .28);
 
         UIListLayout layout = new UIListLayout();
-        layout.SetParent(container);
+        layout.SetParent(projectTable);
 
-        for (String projPath : jsonData.Data.projects) {
-            ProjectData proj = ProjectHandler.ReadProjectDir(projPath);
-            createProjectTableItem(proj).SetParent(container);
-        }
+        reloadProjectTableItems();
 
-        return container;
+        return projectTable;
     }
 
     private UIFrame createProjTableHead() {
