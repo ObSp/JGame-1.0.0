@@ -4,9 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
 
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.UI.Modifiers.UIBorder;
@@ -50,8 +51,10 @@ public class RenderUtil {
         g.fillRect((int) pos.X, (int) pos.Y, (int) size.X, (int) size.Y);
     }
 
-    public static void drawImage(Instance inst, Vector2 renderSize, Vector2 renderPos, BufferedImage image) {
+    public static void drawImage(Instance inst, Vector2 renderSize, Vector2 renderPos, Image image) {
         UICorner cornerEffect = inst.GetChildWhichIsA(UICorner.class);
+
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         if (cornerEffect != null) {
             RenderUtil.drawRoundImage(inst, renderSize, renderPos, image, cornerEffect);
@@ -60,11 +63,11 @@ public class RenderUtil {
         }
     }
 
-    public static void drawSharpImage(Instance inst, Vector2 renderSize, Vector2 renderPos, BufferedImage image) {
+    public static void drawSharpImage(Instance inst, Vector2 renderSize, Vector2 renderPos, Image image) {
         g.drawImage(image, (int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, null);
     }
 
-    public static void drawRoundImage(Instance inst, Vector2 renderSize, Vector2 renderPos, BufferedImage image, UICorner corner) {
+    public static void drawRoundImage(Instance inst, Vector2 renderSize, Vector2 renderPos, Image image, UICorner corner) {
         double radius = corner.Radius;
         radius *= renderSize.getAxisFromVector2Axis(corner.RelativeTo);
 

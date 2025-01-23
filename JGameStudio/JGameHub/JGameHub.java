@@ -3,9 +3,11 @@ package JGameStudio.JGameHub;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
@@ -55,6 +57,15 @@ public class JGameHub {
         createProjectTableItem(ProjectHandler.ReadProjectDir(dir.getAbsolutePath())).SetParent(projectTable);
     }
 
+    private Image getImageFromPath(String path) {
+        try {
+            return ImageIO.read(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private void initWindow() {
         JFrame window = game.GetWindow();
 
@@ -70,7 +81,7 @@ public class JGameHub {
 
         window.setAlwaysOnTop(true);
 
-        game.Services.WindowService.SetWindowIcon("JGameStudio\\Assets\\Logo.png");
+        game.Services.WindowService.SetWindowIcon(getImageFromPath("JGameStudio\\Assets\\Logo.png"));
         game.Services.WindowService.BackgroundColor = StudioGlobals.BackgroundColor;
 
         game.Services.WindowService.SetWindowTitle("JGame Studio Hub");
@@ -518,6 +529,7 @@ public class JGameHub {
         homeIcon.SetImage("JGameStudio\\Assets\\Icons\\HomeEmpty.png");
         homeIcon.Name = "Home";
         homeIcon.Size = UDim2.fromScale(.1, .7);
+        homeIcon.SetImageScale(new Vector2(50));
         homeIcon.Position = UDim2.fromScale(.05, .5);
         homeIcon.BackgroundTransparency = 1;
         homeIcon.SetCProp("Selected", false);

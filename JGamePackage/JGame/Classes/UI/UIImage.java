@@ -1,7 +1,6 @@
 package JGamePackage.JGame.Classes.UI;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -11,12 +10,14 @@ import JGamePackage.JGame.Types.PointObjects.Vector2;
 
 public class UIImage extends UIBase {
 
-    /**The BufferedImage that is rendered with this object.
+    /**The Image that is rendered with this object.
      * 
      */
-    public BufferedImage Image;
+    public java.awt.Image Image;
 
     private String imagePath = "JGamePackage\\JGame\\Assets\\imageDefault.png";
+
+    private Vector2 scale = null;
 
     public UIImage() {
         SetImage(imagePath);
@@ -26,9 +27,19 @@ public class UIImage extends UIBase {
         try {
             this.Image = ImageIO.read(new File(path));
             imagePath = path;
+            if (scale != null) SetImageScale(scale);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**Downsizes the BufferedImage of this instance while making sure the render quality of the image
+     * is not impacted.
+     * 
+     */
+    public void SetImageScale(Vector2 scale) {
+        this.Image = this.Image.getScaledInstance((int) scale.X, (int) scale.Y, java.awt.Image.SCALE_SMOOTH);
+        this.scale = scale;
     }
 
     @Override
@@ -56,6 +67,10 @@ public class UIImage extends UIBase {
     protected UIImage cloneWithoutChildren() {
         UIImage img = new UIImage();
         img.SetImage(this.imagePath);
+
+        if (this.scale != null)
+            img.SetImageScale(scale);
+
         this.cloneHelper(img);
         return img;
     }
