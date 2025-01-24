@@ -18,6 +18,8 @@ public class Init {
     public static VoidSignal showLoadingFrame(JGame game) {
         VoidSignal finished = new VoidSignal();
 
+        game.Services.WindowService.SetWindowIcon("JGameStudio\\Assets\\Logo.png");
+
         JFrame window = game.GetWindow();
         window.dispose();
 

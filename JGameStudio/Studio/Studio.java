@@ -13,6 +13,8 @@ import JGameStudio.Studio.Pages.Init;
 
 public class Studio {
     JGame game;
+    
+    static String path;
 
     private DisplayWindow displayWindow;
     private Sidebar sideBar;
@@ -46,6 +48,7 @@ public class Studio {
     }
 
     public static void main(String[] args) {
+        path = args[0];
         new Studio();
     }
 }

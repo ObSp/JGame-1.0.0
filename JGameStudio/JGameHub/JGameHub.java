@@ -69,6 +69,16 @@ public class JGameHub {
         reloadProjectTableItems();
     }
 
+    private void launchProject(String projPath) {
+        try {
+            Runtime.getRuntime().exec(
+                "powershell.exe cd 'c:\\Users\\Paul\\Documents\\GitHub\\JGame-1.0.0'; & 'C:\\Program Files\\Java\\jdk-21\\bin\\java.exe' '@C:\\Users\\Paul\\AppData\\Local\\Temp\\cp_b1tap17rzruuy5jvwumf417xx.argfile' 'JGameStudio.Studio.Studio' \"" + projPath + "\""
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Image getImageFromPath(String path) {
         try {
             return ImageIO.read(new File(path));
@@ -344,6 +354,7 @@ public class JGameHub {
         UIButton test = new UIButton();
         test.Size = UDim2.fromScale(.99, .1);
         test.BackgroundTransparency = 1;
+        test.Name = projData.name();
         test.HoverEffectsEnabled = false;
 
         UICorner corner = new UICorner();
@@ -419,12 +430,7 @@ public class JGameHub {
         });
 
         test.Mouse1Down.Connect(()-> {
-            try {
-                Runtime.getRuntime().exec("JGameStudio\\Studio\\Studio.java");
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            launchProject(projData.path());
         });
 
         return test;
@@ -540,6 +546,12 @@ public class JGameHub {
         
         projectTable = createProjectTable(container);
         projectTable.SetParent(container);
+
+        searchBar.GetChildWhichIsA(UITextInput.class).TextUpdated.Connect(()-> {
+            for (UIBase c : projectTable.GetChildrenOfClass(UIBase.class)) {
+                c.Visible = c.Name.toLowerCase().contains(searchBar.GetChildWhichIsA(UITextInput.class).Text.toLowerCase());
+            }
+        });
 
         create.Mouse1Down.Connect(()-> {
             newProjectPrompt.Visible = true;
