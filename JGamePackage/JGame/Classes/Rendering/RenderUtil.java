@@ -26,7 +26,7 @@ public class RenderUtil {
         if (cornerEffect != null) {
             RenderUtil.drawRoundedRect(renderSize, renderPos, color, cornerEffect);
         } else {
-            RenderUtil.drawSharpRect(renderSize, renderPos, color);
+            RenderUtil.drawSharpRect(renderSize, renderPos, color, inst);
         }
     }
 
@@ -46,15 +46,22 @@ public class RenderUtil {
         g.fillRoundRect((int) pos.X, (int) pos.Y, (int) size.X, (int) size.Y, (int) radius, (int) radius);
     }
 
-    public static void drawSharpRect(Vector2 size, Vector2 pos, Color color) {
+    public static void drawSharpRect(Vector2 size, Vector2 pos, Color color, Instance inst) {
+        UIBorder borderEffect = inst.GetChildWhichIsA(UIBorder.class);
+
+        if (borderEffect != null) {
+            g.setColor(borderEffect.BorderColor);
+            g.fillRect((int)( pos.X - borderEffect.Width), (int) (pos.Y - borderEffect.Width), (int) (size.X + borderEffect.Width*2), (int) (size.Y + borderEffect.Width*2));
+        }
+
         g.setColor(color);
         g.fillRect((int) pos.X, (int) pos.Y, (int) size.X, (int) size.Y);
     }
 
-    public static void drawImage(Instance inst, Vector2 renderSize, Vector2 renderPos, Image image) {
+    public static void drawImage(Instance inst, Vector2 renderSize, Vector2 renderPos, Image image, boolean pixelPerfect) {
         UICorner cornerEffect = inst.GetChildWhichIsA(UICorner.class);
 
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        if (!pixelPerfect) g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         if (cornerEffect != null) {
             RenderUtil.drawRoundImage(inst, renderSize, renderPos, image, cornerEffect);

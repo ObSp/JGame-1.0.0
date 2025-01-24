@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
@@ -50,6 +51,17 @@ public class JGameHub {
 
     private void createProj(String name, String location, String packageLocation) {
         File dir = ProjectHandler.Create(name, location, packageLocation);
+        
+        jsonData.Data.projects.add(0, dir.getAbsolutePath());
+        
+        jsonData.UpdateJSON();
+        reloadProjectTableItems();
+    }
+
+    private void addProj(String location) {
+        File dir = new File(location);
+
+        if (jsonData.Data.projects.contains(location)) return;
         
         jsonData.Data.projects.add(0, dir.getAbsolutePath());
         
@@ -406,6 +418,15 @@ public class JGameHub {
             test.BackgroundTransparency = 1;
         });
 
+        test.Mouse1Down.Connect(()-> {
+            try {
+                Runtime.getRuntime().exec("JGameStudio\\Studio\\Studio.java");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+
         return test;
     }
 
@@ -522,6 +543,17 @@ public class JGameHub {
 
         create.Mouse1Down.Connect(()-> {
             newProjectPrompt.Visible = true;
+        });
+
+        add.Mouse1Down.Connect(()-> {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setAcceptAllFileFilterUsed(false);
+            int returnVal = chooser.showDialog(game.GetWindow(), "Add Project");
+
+            if (returnVal != JFileChooser.APPROVE_OPTION) return;
+
+            addProj(chooser.getSelectedFile().getAbsolutePath());
         });
     }
 

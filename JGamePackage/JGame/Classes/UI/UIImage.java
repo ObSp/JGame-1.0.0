@@ -19,8 +19,22 @@ public class UIImage extends UIBase {
 
     private Vector2 scale = null;
 
+    public boolean PixelPerfect = false;
+
     public UIImage() {
         SetImage(imagePath);
+
+        PixelPerfect = game.Camera.GlobalPixelPerfect;
+    }
+
+    public void SetImage(String path, Vector2 scale) {
+        try {
+            this.Image = ImageIO.read(new File(path));
+            imagePath = path;
+            if (scale != null) SetImageScale(scale);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void SetImage(String path) {
@@ -53,7 +67,7 @@ public class UIImage extends UIBase {
             RenderUtil.drawRectangle(this, renderSize, renderPos, GetBackgroundRenderColor());
         }
 
-        RenderUtil.drawImage(this, renderSize, renderPos, Image);
+        RenderUtil.drawImage(this, renderSize, renderPos, Image, PixelPerfect);
     }
 
     @Override

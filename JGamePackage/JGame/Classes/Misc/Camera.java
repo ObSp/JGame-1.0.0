@@ -14,6 +14,11 @@ public class Camera extends Instance {
      */
     public Vector2 Position = Vector2.zero;
 
+    /**Affects the value all PixelPerfect values of Images upon creation
+     * 
+     */
+    public boolean GlobalPixelPerfect = false;
+
     /**The Z-Offset factor of the Camera. Increasing this will increase the camera's view size.
      * 
      */

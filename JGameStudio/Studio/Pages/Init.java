@@ -37,6 +37,7 @@ public class Init {
         bannerImage.Size = UDim2.fromScale(1,1);
         bannerImage.SetImage("JGameStudio\\Assets\\jgameBannerBackground.png");
         bannerImage.BackgroundTransparency = 1;
+        bannerImage.PixelPerfect = true;
         bannerImage.SetParent(game.UINode);
 
         UIText header = new UIText();
@@ -53,7 +54,7 @@ public class Init {
         header.TextColor = new Color(0);
         header.SetParent(game.UINode);
 
-        game.Services.TimeService.DelaySeconds(1, ()-> {
+        game.Services.TimeService.DelaySeconds(.5, ()-> {
             window.dispose();
             window.setSize(500, 500);
             window.setExtendedState(JFrame.MAXIMIZED_BOTH);
