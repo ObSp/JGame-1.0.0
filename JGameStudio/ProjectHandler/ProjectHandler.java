@@ -95,7 +95,7 @@ public class ProjectHandler {
         settingsJSONDict.put("files.exclude", settingsExclude);
         writeToFile(settingsJSON, settingsJSONDict.toJSONString());
 
-        File mainSrcFile = new File("JGameStudio\\JGameHub\\ProjectHandler\\Templates\\MainFileTemplate.txt");
+        File mainSrcFile = new File("JGameStudio\\ProjectHandler\\Templates\\MainFileTemplate.txt");
         String mainSrc = readFile(mainSrcFile);
         mainSrc = mainSrc.replaceFirst("%s", name); // replace class name arg with actual class nam;
         writeToFile(javaFile, mainSrc);
