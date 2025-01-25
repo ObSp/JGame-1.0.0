@@ -70,6 +70,8 @@ public class InputService extends Service {
                     if (code == KeyEvent.VK_BACK_SPACE) {
                         selectedUIInput.Text =  selectedUIInput.Text.length() > 0 ? selectedUIInput.Text.substring(0, selectedUIInput.Text.length()-1) : "";
                         selectedUIInput.TextUpdated.Fire();
+                    } else if (code == KeyEvent.VK_ENTER) {
+                        selectedUIInput = null;
                     } else if (Character.isLetterOrDigit(keyChar) || Pattern.matches("\\p{Punct}", new String(new char[] {keyChar})) || code == KeyEvent.VK_SPACE){
                         selectedUIInput.Text += e.getKeyChar();
                         selectedUIInput.TextUpdated.Fire();

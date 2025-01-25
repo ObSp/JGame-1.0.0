@@ -55,7 +55,7 @@ public class Studio {
         StudioUtil.game = game;
         StudioGlobals.construct();
         
-        game.Services.WindowService.BackgroundColor = StudioGlobals.BackgroundColor;
+        game.Services.WindowService.BackgroundColor = StudioGlobals.BackgroundColor.darker();
         game.Services.WindowService.SetWindowIcon(new ImageIcon("JGameStudio/Assets/Logo.png").getImage());
 
         game.Services.TimeService.WaitSeconds(1);
