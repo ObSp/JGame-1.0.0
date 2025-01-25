@@ -1,4 +1,4 @@
-package JGameStudio.JGameHub.ProjectHandler;
+package JGameStudio.ProjectHandler;
 
 import java.io.File;
 import java.io.FileReader;

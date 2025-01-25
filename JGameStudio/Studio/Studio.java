@@ -8,6 +8,8 @@ import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
+import JGameStudio.ProjectHandler.ProjectHandler;
+import JGameStudio.ProjectHandler.ProjectHandler.ProjectData;
 import JGameStudio.Studio.Components.DisplayWindow;
 import JGameStudio.Studio.Components.Sidebar;
 import JGameStudio.Studio.Components.Topbar;
@@ -17,6 +19,8 @@ public class Studio {
     JGame game;
     
     private String path;
+
+    private ProjectData projectData;
 
     private DisplayWindow displayWindow;
     private Sidebar sideBar;
@@ -39,6 +43,11 @@ public class Studio {
         FlatDarculaLaf.setup();
 
         game = new JGame(new StartParams(false));
+
+        if (path != null) {
+            projectData = ProjectHandler.ReadProjectDir(path);
+            game.Services.WindowService.SetWindowTitle(projectData.name() + " - JGame Studio");
+        }
 
         StudioGlobals.construct();
         Init.showLoadingFrame(game).Wait();

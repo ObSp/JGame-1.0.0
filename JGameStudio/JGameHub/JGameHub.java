@@ -34,8 +34,8 @@ import JGameStudio.StudioUtil;
 import JGameStudio.Classes.DataReader;
 import JGameStudio.HubStudioBridge.HubStudioBridge;
 import JGameStudio.JGameHub.Instances.UIFileButton;
-import JGameStudio.JGameHub.ProjectHandler.ProjectHandler;
-import JGameStudio.JGameHub.ProjectHandler.ProjectHandler.ProjectData;
+import JGameStudio.ProjectHandler.ProjectHandler;
+import JGameStudio.ProjectHandler.ProjectHandler.ProjectData;
 
 public class JGameHub {
     
