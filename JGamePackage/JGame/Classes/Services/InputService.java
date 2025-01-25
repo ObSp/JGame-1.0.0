@@ -307,7 +307,7 @@ public class InputService extends Service {
             if (children.length == 0) break;
             UIBase lastChild = null;
             for (UIBase child : children) {
-                if (!isPointInBounds(child.GetAbsolutePosition(), child.GetAbsoluteSize(), mousePos) || !child.MouseTargetable) continue;
+                if (!isPointInBounds(child.GetAbsolutePosition(), child.GetAbsoluteSize(), mousePos) || !child.Visible || !child.MouseTargetable) continue;
                 if (lastChild != null && child.ZIndex <= lastChild.ZIndex) continue;
                 lastChild = child;
             }

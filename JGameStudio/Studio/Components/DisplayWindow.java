@@ -10,8 +10,8 @@ import JGameStudio.StudioGlobals;
 public class DisplayWindow extends UIFrame {
 
     public DisplayWindow() {
-        this.Size = UDim2.fromAbsolute(game.Services.WindowService.GetWindowWidth()-350, 0).add(UDim2.fromScale(0, .85));
-        this.Position = UDim2.fromScale(0, .15);
+        this.Size = UDim2.fromAbsolute(game.Services.WindowService.GetWindowWidth()-350, 0).add(UDim2.fromScale(0, .91));
+        this.Position = UDim2.fromAbsolute(0, 105);
         this.BackgroundColor = new Color(46, 46, 46);
 
         UIBorder border = new UIBorder();

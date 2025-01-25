@@ -30,7 +30,6 @@ public class Init {
         window.setUndecorated(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
-        window.setIconImage(new ImageIcon("JGamePackage\\JGame\\Assets\\icon.png").getImage());
         window.setVisible(true);
 
         game.Services.WindowService.BackgroundColor = new Color(0, 0, 0, 0);

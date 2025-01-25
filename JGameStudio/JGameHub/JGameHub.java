@@ -32,6 +32,7 @@ import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
 import JGameStudio.Classes.DataReader;
+import JGameStudio.HubStudioBridge.HubStudioBridge;
 import JGameStudio.JGameHub.Instances.UIFileButton;
 import JGameStudio.JGameHub.ProjectHandler.ProjectHandler;
 import JGameStudio.JGameHub.ProjectHandler.ProjectHandler.ProjectData;
@@ -70,13 +71,7 @@ public class JGameHub {
     }
 
     private void launchProject(String projPath) {
-        try {
-            Runtime.getRuntime().exec(
-                "powershell.exe cd 'c:\\Users\\Paul\\Documents\\GitHub\\JGame-1.0.0'; & 'C:\\Program Files\\Java\\jdk-21\\bin\\java.exe' '@C:\\Users\\Paul\\AppData\\Local\\Temp\\cp_b1tap17rzruuy5jvwumf417xx.argfile' 'JGameStudio.Studio.Studio' \"" + projPath + "\""
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        HubStudioBridge.openProjectInStudio(projPath);
     }
 
     private Image getImageFromPath(String path) {

@@ -1,6 +1,8 @@
 package JGamePackage.JGame.Classes.UI.Internal;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.UI.UIBase;
@@ -15,7 +17,18 @@ public class UIBaseInternal {
         Vector2 paddingVec2 = layout.Padding.ToVector2(game.Services.WindowService.GetWindowSize());
         boolean isHorizontal = layout.ItemAlignment == Constants.ListAlignment.Horizontal;
 
-        int posInChildren = Arrays.asList(childrenOfClass).indexOf(inst);
+        List<UIBase> asList = new ArrayList<>(Arrays.asList(childrenOfClass));
+        for (int i = asList.size() - 1; i >= 0; i --) {
+            if (!asList.get(i).Visible) {
+                asList.remove(i);
+            }
+        }
+
+        int posInChildren = asList.indexOf(inst);
+        if (posInChildren == -1) {
+            return new Vector2(-1000, -1000);
+        }
+
         if (posInChildren == 0) {
             return ((UIBase) inst.GetParent()).GetAbsolutePosition().subtract(inst.GetAnchorPointOffset());
         } else {

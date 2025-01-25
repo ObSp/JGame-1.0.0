@@ -1,5 +1,7 @@
 package JGameStudio.Studio;
 
+import javax.swing.ImageIcon;
+
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import JGamePackage.JGame.JGame;
@@ -14,7 +16,7 @@ import JGameStudio.Studio.Pages.Init;
 public class Studio {
     JGame game;
     
-    static String path;
+    private String path;
 
     private DisplayWindow displayWindow;
     private Sidebar sideBar;
@@ -27,9 +29,13 @@ public class Studio {
 
         displayWindow.SetParent(game.UINode);
         sideBar.SetParent(game.UINode);
+        topBar.SetParent(game.UINode);
     }
 
-    public Studio() {
+    public Studio(String[] args) {
+        if (args.length > 0)
+            path = args[0];
+
         FlatDarculaLaf.setup();
 
         game = new JGame(new StartParams(false));
@@ -41,6 +47,7 @@ public class Studio {
         StudioGlobals.construct();
         
         game.Services.WindowService.BackgroundColor = StudioGlobals.BackgroundColor;
+        game.Services.WindowService.SetWindowIcon(new ImageIcon("JGameStudio/Assets/Logo.png").getImage());
 
         game.Services.TimeService.WaitSeconds(1);
 
@@ -48,7 +55,6 @@ public class Studio {
     }
 
     public static void main(String[] args) {
-        path = args[0];
-        new Studio();
+        new Studio(args);
     }
 }
