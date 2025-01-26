@@ -1,6 +1,6 @@
 package JGameStudio.Studio;
 
-import javax.swing.ImageIcon;
+import java.io.IOException;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 
@@ -36,7 +36,7 @@ public class Studio {
         topBar.SetParent(game.UINode);
     }
 
-    public Studio(String[] args) {
+    public Studio(String[] args) throws IOException {
         if (args.length > 0)
             path = args[0];
 
@@ -56,14 +56,14 @@ public class Studio {
         StudioGlobals.construct();
         
         game.Services.WindowService.BackgroundColor = StudioGlobals.BackgroundColor.darker();
-        game.Services.WindowService.SetWindowIcon(new ImageIcon("JGameStudio/Assets/Logo.png").getImage());
+        game.Services.WindowService.SetWindowIcon("JGameStudio\\Assets\\Logo.png");
 
         game.Services.TimeService.WaitSeconds(1);
 
         initComponents();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new Studio(args);
     }
 }
