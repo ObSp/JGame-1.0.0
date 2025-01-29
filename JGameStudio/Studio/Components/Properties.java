@@ -64,6 +64,6 @@ public class Properties extends UIFrame {
         filter.Position = UDim2.fromAbsolute(10, 0);
         filter.SetParent(filterBackground);
 
-        filterBackground.GetChildWhichIsA(UIText.class).Destroy();
+        filterBackground.GetChildOfClass(UIText.class).Destroy();
     }
 }

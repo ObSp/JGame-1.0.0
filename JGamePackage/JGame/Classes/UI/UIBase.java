@@ -69,7 +69,7 @@ public abstract class UIBase extends Renderable {
         if (parentInstance == null) 
             return realPos = Position.ToVector2(game.Services.WindowService.GetWindowSize()).subtract(GetAnchorPointOffset());
 
-        UIListLayout layout = parentInstance.GetChildWhichIsA(UIListLayout.class);
+        UIListLayout layout = parentInstance.GetChildOfClass(UIListLayout.class);
 
         if (layout != null) {
             realPos = UIBaseInternal.computePositionWithUIList(this, layout, game);
@@ -94,7 +94,7 @@ public abstract class UIBase extends Renderable {
             realSize = Size.ToVector2(((UIBase) parentInstance).GetAbsoluteSize());
         }
 
-        UIAspectRatioConstraint aspectConstr = this.GetChildWhichIsA(UIAspectRatioConstraint.class);
+        UIAspectRatioConstraint aspectConstr = this.GetChildOfClass(UIAspectRatioConstraint.class);
 
         if (aspectConstr != null) {
             if (aspectConstr.DominantAxis == Constants.Vector2Axis.X) {

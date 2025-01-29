@@ -231,7 +231,7 @@ public class JGameHub {
         header.SetParent(container);
 
         UIFrame searchBar = createSearchBar(container);
-        searchBar.GetChildWhichIsA(UITextInput.class).PlaceholderText = "Search Settings";
+        searchBar.GetChildOfClass(UITextInput.class).PlaceholderText = "Search Settings";
         searchBar.SetParent(container);
     }
 
@@ -321,7 +321,7 @@ public class JGameHub {
         create.Size = UDim2.fromScale(.8, .1);
         create.AnchorPoint = Vector2.half;
         create.Position = pathToInstallation.Position.add(UDim2.fromScale(0, .2));
-        create.GetChildWhichIsA(UICorner.class).Radius = inpCorner.Radius;
+        create.GetChildOfClass(UICorner.class).Radius = inpCorner.Radius;
         create.SetParent(container);
 
         UITextButton cancel = create.Clone();
@@ -542,9 +542,9 @@ public class JGameHub {
         projectTable = createProjectTable(container);
         projectTable.SetParent(container);
 
-        searchBar.GetChildWhichIsA(UITextInput.class).TextUpdated.Connect(()-> {
+        searchBar.GetChildOfClass(UITextInput.class).TextUpdated.Connect(()-> {
             for (UIBase c : projectTable.GetChildrenOfClass(UIBase.class)) {
-                c.Visible = c.Name.toLowerCase().contains(searchBar.GetChildWhichIsA(UITextInput.class).Text.toLowerCase());
+                c.Visible = c.Name.toLowerCase().contains(searchBar.GetChildOfClass(UITextInput.class).Text.toLowerCase());
             }
         });
 
@@ -608,14 +608,14 @@ public class JGameHub {
         home.SetParent(area);
 
         UIButton installs = home.Clone();
-        installs.GetChildWhichIsA(UIText.class).Text = "Installation";
-        installs.GetChildWhichIsA(UIImage.class).SetImage("JGameStudio\\Assets\\Icons\\InstallsEmpty.png");
+        installs.GetChildOfClass(UIText.class).Text = "Installation";
+        installs.GetChildOfClass(UIImage.class).SetImage("JGameStudio\\Assets\\Icons\\InstallsEmpty.png");
         installs.SetParent(area);
         buttons[1] = installs;
 
         UIButton settings = home.Clone();
-        settings.GetChildWhichIsA(UIText.class).Text = "Settings";
-        settings.GetChildWhichIsA(UIImage.class).SetImage("JGameStudio\\Assets\\Icons\\SettingsEmpty.png");
+        settings.GetChildOfClass(UIText.class).Text = "Settings";
+        settings.GetChildOfClass(UIImage.class).SetImage("JGameStudio\\Assets\\Icons\\SettingsEmpty.png");
         settings.SetParent(area);
         buttons[2] = settings;
 

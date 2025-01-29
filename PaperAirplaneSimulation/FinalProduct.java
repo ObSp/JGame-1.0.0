@@ -62,12 +62,12 @@ class RealSimulation {
     static DecimalFormat format3Digit = new DecimalFormat("#.##");
 
     private void setSettingsInputText(String name, double value) {
-        game.UINode.<UIFrame>GetTypedChild("SettingsFrame").<UIFrame>GetTypedChild(name).GetChildWhichIsA(UITextInput.class).Text = Double.toString(value);
-        game.UINode.<UIFrame>GetTypedChild("SettingsFrame").<UIFrame>GetTypedChild(name).GetChildWhichIsA(UITextInput.class).PlaceholderText = Double.toString(value);
+        game.UINode.<UIFrame>GetTypedChild("SettingsFrame").<UIFrame>GetTypedChild(name).GetChildOfClass(UITextInput.class).Text = Double.toString(value);
+        game.UINode.<UIFrame>GetTypedChild("SettingsFrame").<UIFrame>GetTypedChild(name).GetChildOfClass(UITextInput.class).PlaceholderText = Double.toString(value);
     }
 
     private double getSettingsInputText(String name) {
-        return Double.valueOf(game.UINode.<UIFrame>GetTypedChild("SettingsFrame").<UIFrame>GetTypedChild(name).GetChildWhichIsA(UITextInput.class).Text);
+        return Double.valueOf(game.UINode.<UIFrame>GetTypedChild("SettingsFrame").<UIFrame>GetTypedChild(name).GetChildOfClass(UITextInput.class).Text);
     }
 
     static double getDragCoefficient(Image2D plane, Vector2 velocity) {

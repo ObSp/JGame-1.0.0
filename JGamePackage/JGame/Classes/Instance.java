@@ -9,6 +9,8 @@ import JGamePackage.JGame.JGame;
 import JGamePackage.lib.CustomError.CustomError;
 import JGamePackage.lib.Signal.Signal;
 import JGamePackage.lib.Signal.SignalWrapper;
+import JGamePackage.lib.Signal.VoidSignal;
+import JGamePackage.lib.Signal.VoidSignalWrapper;
 
 public abstract class Instance {
     //--CUSTOM ERRORS--//
@@ -50,6 +52,12 @@ public abstract class Instance {
      */
     public SignalWrapper<Instance> DescendantRemoved = new SignalWrapper<>(descendantRemovedSignal);
 
+    private VoidSignal destroyingSignal = new VoidSignal();
+    /**Fires when a descendant of this instance is parented to an instance that's not an ancestor of this instance
+     * 
+     */
+    public VoidSignalWrapper Destroying = new VoidSignalWrapper(destroyingSignal);
+
     //--MISC--//
     protected JGame game;
 
@@ -90,6 +98,8 @@ public abstract class Instance {
 
         this.SetParent(null);
         this.parentLocked = true;
+
+        this.destroyingSignal.Fire();
 
         for (Instance child : GetChildren())
             child.Destroy();
@@ -187,7 +197,7 @@ public abstract class Instance {
      * @param className
      * @return
      */
-    public Instance GetChildOfClass(String className) {
+    public Instance GetChildWhichIsA(String className) {
         for (Instance child : GetChildren()) {
             if (child.getClass().getSimpleName().equals(className))
                 return child;
@@ -202,7 +212,7 @@ public abstract class Instance {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <T> T GetChildWhichIsA(Class<T> childClass) {
+    public <T> T GetChildOfClass(Class<T> childClass) {
         for (Instance child : GetChildren()) {
             if (childClass.isInstance(child))
                 return (T) child;

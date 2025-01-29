@@ -21,7 +21,7 @@ public class RenderUtil {
     public static Graphics2D g;
 
     public static void drawRectangle(Instance inst, Vector2 renderSize, Vector2 renderPos, Color color) {
-        UICorner cornerEffect = inst.GetChildWhichIsA(UICorner.class);
+        UICorner cornerEffect = inst.GetChildOfClass(UICorner.class);
 
         if (cornerEffect != null) {
             RenderUtil.drawRoundedRect(renderSize, renderPos, color, cornerEffect);
@@ -31,7 +31,7 @@ public class RenderUtil {
     }
 
     public static void drawRoundedRect(Vector2 size, Vector2 pos, Color color, UICorner corner) {
-        UIBorder borderEffect = corner.GetParent().GetChildWhichIsA(UIBorder.class);
+        UIBorder borderEffect = corner.GetParent().GetChildOfClass(UIBorder.class);
 
         double radius = corner.Radius;
         radius *= size.getAxisFromVector2Axis(corner.RelativeTo);
@@ -47,7 +47,7 @@ public class RenderUtil {
     }
 
     public static void drawSharpRect(Vector2 size, Vector2 pos, Color color, Instance inst) {
-        UIBorder borderEffect = inst.GetChildWhichIsA(UIBorder.class);
+        UIBorder borderEffect = inst.GetChildOfClass(UIBorder.class);
 
         if (borderEffect != null) {
             g.setColor(borderEffect.BorderColor);
@@ -59,7 +59,7 @@ public class RenderUtil {
     }
 
     public static void drawImage(Instance inst, Vector2 renderSize, Vector2 renderPos, Image image, boolean pixelPerfect) {
-        UICorner cornerEffect = inst.GetChildWhichIsA(UICorner.class);
+        UICorner cornerEffect = inst.GetChildOfClass(UICorner.class);
 
         if (!pixelPerfect) g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 

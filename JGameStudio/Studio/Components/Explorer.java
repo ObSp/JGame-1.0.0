@@ -1,14 +1,15 @@
 package JGameStudio.Studio.Components;
 
+import java.awt.Font;
+
 import JGamePackage.JGame.Classes.Instance;
+import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.UI.UITextInput;
 import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
 import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
-import JGamePackage.JGame.Classes.World.Box2D;
-import JGamePackage.JGame.Classes.World.Image2D;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
@@ -25,14 +26,22 @@ public class Explorer extends UIFrame {
         createHeader();
         createList();
 
-        this.AddInstance(new Box2D());
-        this.AddInstance(new Image2D());
+        this.filter.TextUpdated.Connect(()-> {
+            for (UIBase c : this.listFrame.GetChildrenOfClass(UIBase.class)) {
+                c.Visible = c.Name.toLowerCase().contains(filter.Text.toLowerCase());
+            }
+        });
+
+        this.AddInstance(game.WorldNode);
+        this.AddInstance(game.UINode);
+        this.AddInstance(game.StorageNode);
     }
 
     public void AddInstance(Instance obj) {
         UIFrame frame = new UIFrame();
         frame.Size = UDim2.fromScale(1,0).add(UDim2.fromAbsolute(0, 20));
         frame.BackgroundTransparency = 1;
+        frame.Name = obj.Name;
         frame.SetParent(listFrame);
 
         UIImage img = new UIImage();
@@ -40,6 +49,7 @@ public class Explorer extends UIFrame {
         img.Size = UDim2.fromScale(.1, .9);
         img.SetParent(frame);
         img.Position = UDim2.fromScale(.04, .5);
+        img.MouseTargetable = false;
 
         new UIAspectRatioConstraint().SetParent(img);
 
@@ -51,8 +61,22 @@ public class Explorer extends UIFrame {
         name.BackgroundTransparency = 1;
         name.TextColor = StudioGlobals.TextColor;
         name.CustomFont = StudioGlobals.GlobalFont;
-        name.FontSize = 17;
+        name.FontSize = 15;
+        name.FontStyle = Font.BOLD;
+        name.MouseTargetable = false;
         name.SetParent(frame);
+
+        frame.MouseEnter.Connect(()->{
+            frame.BackgroundTransparency = .8;
+        });
+
+        frame.MouseLeave.Connect(()->{
+            frame.BackgroundTransparency = 1;
+        });
+
+        obj.Destroying.Connect(()->{
+            frame.Destroy();
+        });
     }
 
     private void createList() {
@@ -110,7 +134,7 @@ public class Explorer extends UIFrame {
         filter.Position = UDim2.fromAbsolute(10, 0);
         filter.SetParent(filterBackground);
 
-        filterBackground.GetChildWhichIsA(UIText.class).Destroy();
+        filterBackground.GetChildOfClass(UIText.class).Destroy();
     }
 
 }

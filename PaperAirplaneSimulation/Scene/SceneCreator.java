@@ -114,17 +114,17 @@ public class SceneCreator {
         throwHeightCorner.SetParent(throwHeightInput);
 
         UIFrame initialXVel = throwHeight.Clone();
-        initialXVel.GetChildWhichIsA(UIText.class).Text = "Initial X Velocity (m/s)";
+        initialXVel.GetChildOfClass(UIText.class).Text = "Initial X Velocity (m/s)";
         initialXVel.Name = "InitialXVel";
         initialXVel.SetParent(settingsFrame);
 
         UIFrame initialYVel = throwHeight.Clone();
-        initialYVel.GetChildWhichIsA(UIText.class).Text = "Initial Y Velocity (m/s)";
+        initialYVel.GetChildOfClass(UIText.class).Text = "Initial Y Velocity (m/s)";
         initialYVel.Name = "InitialYVel";
         initialYVel.SetParent(settingsFrame);
 
         UIFrame wind = throwHeight.Clone();
-        wind.GetChildWhichIsA(UIText.class).Text = "Wind (m/s)";
+        wind.GetChildOfClass(UIText.class).Text = "Wind (m/s)";
         wind.Name = "Wind";
         wind.SetParent(settingsFrame);
 

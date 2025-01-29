@@ -20,7 +20,10 @@ public class UITextInput extends UIText {
 
     public UITextInput() {
         this.Mouse1Down.Connect(()-> {
-            if (ClearTextOnFocus) Text = "";
+            if (ClearTextOnFocus) {
+                Text = "";
+                TextUpdated.Fire();
+            }
 
             game.Services.InputService.SetFocusedUITextInput(this);
         });
