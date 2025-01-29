@@ -1,22 +1,73 @@
 package JGameStudio.Studio.Components;
 
+import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.UI.UIFrame;
+import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.UI.UITextInput;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
+import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
+import JGamePackage.JGame.Classes.World.Box2D;
+import JGamePackage.JGame.Classes.World.Image2D;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
+import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGameStudio.StudioGlobals;
 
 public class Explorer extends UIFrame {
 
     public UITextInput filter;
+    public UIFrame listFrame;
 
     public Explorer() {
         this.Size = UDim2.fromScale(1, .55);
         this.BackgroundTransparency = 1;
         createHeader();
+        createList();
+
+        this.AddInstance(new Box2D());
+        this.AddInstance(new Image2D());
     }
-        
+
+    public void AddInstance(Instance obj) {
+        UIFrame frame = new UIFrame();
+        frame.Size = UDim2.fromScale(1,0).add(UDim2.fromAbsolute(0, 20));
+        frame.BackgroundTransparency = 1;
+        frame.SetParent(listFrame);
+
+        UIImage img = new UIImage();
+        img.AnchorPoint = new Vector2(0, .5);
+        img.Size = UDim2.fromScale(.1, .9);
+        img.SetParent(frame);
+        img.Position = UDim2.fromScale(.04, .5);
+
+        new UIAspectRatioConstraint().SetParent(img);
+
+        UIText name = new UIText();
+        name.Size = UDim2.fromScale(.9, 1);
+        name.Position = UDim2.fromScale(.1, 0);
+        name.Text = obj.Name;
+        name.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        name.BackgroundTransparency = 1;
+        name.TextColor = StudioGlobals.TextColor;
+        name.CustomFont = StudioGlobals.GlobalFont;
+        name.FontSize = 17;
+        name.SetParent(frame);
+    }
+
+    private void createList() {
+        listFrame = new UIFrame();
+        listFrame.Size = UDim2.fromScale(1, 1);
+        listFrame.Position = UDim2.fromAbsolute(0, 50);
+        listFrame.BackgroundTransparency = 1;
+        listFrame.SetParent(this);
+
+        UIListLayout layout = new UIListLayout();
+        layout.Padding = UDim2.zero;
+        layout.SetParent(listFrame);
+    }
+
+
     private void createHeader() {
         UIFrame headerBackground = new UIFrame();
         headerBackground.Size = UDim2.fromScale(1, 0).add(UDim2.fromAbsolute(0, 25));

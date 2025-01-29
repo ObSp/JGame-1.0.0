@@ -72,6 +72,8 @@ public class UIFileButton extends UIButton {
             chooser.setAcceptAllFileFilterUsed(false);
             int returnVal = chooser.showDialog(game.GetWindow(), ConfirmButtonText);
 
+            pickerOpen = false;
+
             if (returnVal != JFileChooser.APPROVE_OPTION) return;
 
             String pickedPath = chooser.getSelectedFile().getAbsolutePath();
@@ -79,7 +81,6 @@ public class UIFileButton extends UIButton {
             this.SetCurrentPath(pickedPath);
 
             this.FilePicked.Fire(pickedPath);
-            pickerOpen = false;
         });
     }
 
