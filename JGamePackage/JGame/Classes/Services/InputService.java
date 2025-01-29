@@ -120,7 +120,7 @@ public class InputService extends Service {
 
                     UIBase uiTarget = GetMouseUITarget();
                     if (uiTarget != null) {
-                        uiTarget.Mouse1Down.Fire();
+                        new Thread(()->uiTarget.Mouse1Down.Fire()).start();
                     }
 
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
