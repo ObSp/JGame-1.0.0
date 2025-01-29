@@ -14,7 +14,8 @@ public class Properties extends UIFrame {
     public Properties() {
         this.Size = UDim2.fromScale(1, .45);
         this.Position = UDim2.fromScale(0, .55);
-        this.BackgroundTransparency = 1;
+        this.BackgroundColor = StudioGlobals.BackgroundColor;
+        this.ZIndex = 2;
         createHeader();
     }
         

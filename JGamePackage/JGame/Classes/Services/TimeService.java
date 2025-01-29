@@ -68,9 +68,11 @@ public class TimeService extends Service {
             con = OnTick.Connect(dt->{
                 elapsed += dt;
                 if (elapsed > seconds){
-                    ExecutorService es = Executors.newVirtualThreadPerTaskExecutor();
-                    es.submit(ex);
+                    new Thread(()-> ex.run()).start();
                     con.Disconnect();
+                    /**ExecutorService es = Executors.newVirtualThreadPerTaskExecutor();
+                    es.submit(ex);
+                    con.Disconnect();*/
                 }
             });
         }

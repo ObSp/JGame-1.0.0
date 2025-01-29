@@ -10,13 +10,23 @@ import JGameStudio.StudioGlobals;
 public class Explorer extends UIFrame {
 
     public UITextInput filter;
+    public UIFrame listFrame;
 
     public Explorer() {
         this.Size = UDim2.fromScale(1, .55);
         this.BackgroundTransparency = 1;
         createHeader();
+        createList();
     }
-        
+
+    private void createList() {
+        listFrame = new UIFrame();
+        listFrame.Size = UDim2.fromScale(1, 1000);
+        listFrame.Position = UDim2.fromAbsolute(0, 25+23);
+        listFrame.SetParent(this);
+    }
+
+
     private void createHeader() {
         UIFrame headerBackground = new UIFrame();
         headerBackground.Size = UDim2.fromScale(1, 0).add(UDim2.fromAbsolute(0, 25));
