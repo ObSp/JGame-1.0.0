@@ -88,10 +88,10 @@ public class InfoPanelCreator {
         UIFrame panel2 = panel1.Clone();
         panel2.Position = UDim2.fromScale(1, .5);
         panel2.Name = "Panel2";
-        panel2.<UIText>GetTypedChild("Header").Text = "Plane 2";
-        panel2.<UIText>GetTypedChild("Header").TextColor = Color.yellow;
-        panel2.<UIText>GetTypedChild("Height").Text = "Height: "+ExperimentData.ref2throwHeight+"m";
-        panel2.<UIText>GetTypedChild("Wind").Text = "Wind: 0.500m/s";
+        panel2.<UIText>GetChild("Header").Text = "Plane 2";
+        panel2.<UIText>GetChild("Header").TextColor = Color.yellow;
+        panel2.<UIText>GetChild("Height").Text = "Height: "+ExperimentData.ref2throwHeight+"m";
+        panel2.<UIText>GetChild("Wind").Text = "Wind: 0.500m/s";
         panel2.SetParent(game.UINode);
     }
 }

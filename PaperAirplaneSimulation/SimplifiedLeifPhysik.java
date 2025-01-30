@@ -130,8 +130,8 @@ class ASimulation {
         plane1 = (Image2D) game.WorldNode.GetChild("Plane1");
         plane2 = (Image2D) game.WorldNode.GetChild("Plane2");
 
-        panel1 = game.UINode.<UIFrame>GetTypedChild("Panel1");
-        panel2 = game.UINode.<UIFrame>GetTypedChild("Panel2");
+        panel1 = game.UINode.<UIFrame>GetChild("Panel1");
+        panel2 = game.UINode.<UIFrame>GetChild("Panel2");
 
         plane1RealPos = plane1.Position;
         plane2RealPos = plane2.Position;
@@ -281,13 +281,13 @@ class ASimulation {
 
             double plane1height = MSAUtil.toMeters(game.Services.WindowService.GetWindowHeight() - plane1.Size.Y/2 - plane1.Position.Y);
 
-            panel1.<UIText>GetTypedChild("Drag").Text = "Drag: "+format(plane1dragNewtons)+"N";
-            panel1.<UIText>GetTypedChild("Lift").Text = "Lift: "+format(plane1liftNewtons)+"N";
-            if (!plane1Finished) panel1.<UIText>GetTypedChild("Weight").Text = "Weight: "+format(getWeight(plane1, 0))+"N";
-            panel1.<UIText>GetTypedChild("Height").Text = "Height: "+format(plane1height)+"m";
-            panel1.<UIText>GetTypedChild("Displacement").Text = "Displacement: "+format(MSAUtil.toMeters(plane1.Position.X))+"m";
-            panel1.<UIText>GetTypedChild("Angle").Text = "Angle of Attack(α): "+format(Math.toDegrees(plane1.Rotation))+"°";
-            if (!plane1Finished) panel1.<UIText>GetTypedChild("Time").Text = "Time: "+format(realFlyingTime)+"s";
+            panel1.<UIText>GetChild("Drag").Text = "Drag: "+format(plane1dragNewtons)+"N";
+            panel1.<UIText>GetChild("Lift").Text = "Lift: "+format(plane1liftNewtons)+"N";
+            if (!plane1Finished) panel1.<UIText>GetChild("Weight").Text = "Weight: "+format(getWeight(plane1, 0))+"N";
+            panel1.<UIText>GetChild("Height").Text = "Height: "+format(plane1height)+"m";
+            panel1.<UIText>GetChild("Displacement").Text = "Displacement: "+format(MSAUtil.toMeters(plane1.Position.X))+"m";
+            panel1.<UIText>GetChild("Angle").Text = "Angle of Attack(α): "+format(Math.toDegrees(plane1.Rotation))+"°";
+            if (!plane1Finished) panel1.<UIText>GetChild("Time").Text = "Time: "+format(realFlyingTime)+"s";
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             double plane2dragNewtons = getDrag(plane2, plane2Velocity);
@@ -299,13 +299,13 @@ class ASimulation {
 
             double plane2height = MSAUtil.toMeters(game.Services.WindowService.GetWindowHeight() - plane2.Size.Y/2 - plane2.Position.Y);
 
-            panel2.<UIText>GetTypedChild("Drag").Text = "Drag: "+format(plane2dragNewtons)+"N";
-            panel2.<UIText>GetTypedChild("Lift").Text = "Lift: "+format(plane2liftNewtons)+"N";
-            if (!plane2Finished) panel2.<UIText>GetTypedChild("Weight").Text = "Weight: "+format(weightNewtons)+"N";
-            panel2.<UIText>GetTypedChild("Height").Text = "Height: "+format(plane2height)+"m";
-            panel2.<UIText>GetTypedChild("Displacement").Text = "Displacement: "+format(MSAUtil.toMeters(plane2.Position.X))+"m";
-            panel2.<UIText>GetTypedChild("Angle").Text = "Angle of Attack(α): "+format(Math.toDegrees(plane2.Rotation))+"°";
-            if (!plane2Finished) panel2.<UIText>GetTypedChild("Time").Text = "Time: "+format(realFlyingTime)+"s";
+            panel2.<UIText>GetChild("Drag").Text = "Drag: "+format(plane2dragNewtons)+"N";
+            panel2.<UIText>GetChild("Lift").Text = "Lift: "+format(plane2liftNewtons)+"N";
+            if (!plane2Finished) panel2.<UIText>GetChild("Weight").Text = "Weight: "+format(weightNewtons)+"N";
+            panel2.<UIText>GetChild("Height").Text = "Height: "+format(plane2height)+"m";
+            panel2.<UIText>GetChild("Displacement").Text = "Displacement: "+format(MSAUtil.toMeters(plane2.Position.X))+"m";
+            panel2.<UIText>GetChild("Angle").Text = "Angle of Attack(α): "+format(Math.toDegrees(plane2.Rotation))+"°";
+            if (!plane2Finished) panel2.<UIText>GetChild("Time").Text = "Time: "+format(realFlyingTime)+"s";
 
             Box2D track = new Box2D();
             track.Size = new Vector2(25, 5);

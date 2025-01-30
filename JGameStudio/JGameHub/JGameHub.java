@@ -660,7 +660,7 @@ public class JGameHub {
         UIButton[] buttons = createNavbarButtons(list);
 
         curSelected = buttons[0];
-        curFrame = game.UINode.GetTypedChild(menus[0]);
+        curFrame = game.UINode.GetChild(menus[0]);
         
         setNavBarButtonSelected(curSelected);
 
@@ -688,7 +688,7 @@ public class JGameHub {
                 curSelected = button;
                 setNavBarButtonSelected(button);
                 
-                curFrame = game.UINode.<UIFrame>GetTypedChild(menus[index]);
+                curFrame = game.UINode.<UIFrame>GetChild(menus[index]);
                 curFrame.Visible = true;
             });
         }

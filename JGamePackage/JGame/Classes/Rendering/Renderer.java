@@ -55,7 +55,23 @@ public class Renderer extends JPanel {
         sortRenderableArrayByZIndex(curChildren);
         for (UIBase child : curChildren) {
             if (!child.Visible) continue;
+            Vector2 renderPos = child.GetAbsolutePosition();
+            Vector2 renderSize = child.GetAbsoluteSize();
+            
+            double rotation = child.Rotation;
+            int rotPointX = (int) (renderPos.X + .5 * renderSize.X);
+            int rotPointY = (int) (renderPos.Y + .5 * renderSize.Y);
+
+            AffineTransform previous = g.getTransform();
+            AffineTransform rotated = new AffineTransform();
+            rotated.rotate(rotation, rotPointX, rotPointY);
+
+            g.transform(rotated);
+
+            //rotation
             child.render(g);
+
+            g.setTransform(previous);
             renderUIRecursive(child.GetChildrenOfClass(UIBase.class), g);
         }
     }
@@ -87,10 +103,7 @@ public class Renderer extends JPanel {
             child.render(g);
 
             g.setTransform(previous);
-        }
 
-        for (WorldBase child : curChildren) {
-            if (!child.Visible) continue;
             renderWorldRecursive(child.GetChildrenOfClass(WorldBase.class), g);
         }
     } 

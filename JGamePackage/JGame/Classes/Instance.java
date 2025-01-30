@@ -121,6 +121,14 @@ public abstract class Instance {
     }
 
     @SuppressWarnings("unchecked")
+    public <T extends Instance> T GetDescendant(String name) {
+        for (Instance desc : GetDescendants()) {
+            if (desc.Name.equals(name)) return (T) desc;
+        }
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
     private <T extends Instance> void addDescendantsOfClassRecursive(Instance curInstance, ArrayList<T> list, Class<T> classToFind){
         for (Instance child : curInstance.GetChildren()) {
             if (!(classToFind.isInstance(child))) continue;
@@ -173,17 +181,8 @@ public abstract class Instance {
         return arrayChildren;
     }
 
-    public Instance GetChild(String name){
-        for (Instance child : GetChildren()) {
-            if (child.Name.equals(name)) {
-                return child;
-            }
-        }
-        return null;
-    }
-
     @SuppressWarnings("unchecked")
-    public <T extends Instance> T GetTypedChild(String name){
+    public <T extends Instance> T GetChild(String name){
         for (Instance child : GetChildren()) {
             if (child.Name.equals(name)) {
                 return ((T) child);

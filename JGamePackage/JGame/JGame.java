@@ -8,6 +8,9 @@ import JGamePackage.JGame.Classes.Misc.StorageNode;
 import JGamePackage.JGame.Classes.Misc.UINode;
 import JGamePackage.JGame.Classes.Misc.WorldNode;
 import JGamePackage.JGame.Classes.Rendering.Renderer;
+import JGamePackage.JGame.Classes.Services.InputService;
+import JGamePackage.JGame.Classes.Services.TimeService;
+import JGamePackage.JGame.Classes.Services.WindowService;
 import JGamePackage.JGame.Types.Services.ServiceContainer;
 import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGamePackage.lib.Promise.Promise;
@@ -32,6 +35,10 @@ public class JGame {
 
     //--SERVICES--//
     public final ServiceContainer Services;
+
+    public final InputService InputService;
+    public final TimeService TimeService;
+    public final WindowService WindowService;
 
     //--CAMERA--//
     public Camera Camera;
@@ -59,6 +66,10 @@ public class JGame {
         gameWindow = new JFrame("JGame");
 
         Services = new ServiceContainer(servicesOnTick);
+        InputService = Services.InputService;
+        TimeService = Services.TimeService;
+        WindowService = Services.WindowService;
+
         renderer = new Renderer(this);
         Camera = new Camera();
 

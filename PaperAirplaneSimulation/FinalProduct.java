@@ -62,12 +62,12 @@ class RealSimulation {
     static DecimalFormat format3Digit = new DecimalFormat("#.##");
 
     private void setSettingsInputText(String name, double value) {
-        game.UINode.<UIFrame>GetTypedChild("SettingsFrame").<UIFrame>GetTypedChild(name).GetChildOfClass(UITextInput.class).Text = Double.toString(value);
-        game.UINode.<UIFrame>GetTypedChild("SettingsFrame").<UIFrame>GetTypedChild(name).GetChildOfClass(UITextInput.class).PlaceholderText = Double.toString(value);
+        game.UINode.<UIFrame>GetChild("SettingsFrame").<UIFrame>GetChild(name).GetChildOfClass(UITextInput.class).Text = Double.toString(value);
+        game.UINode.<UIFrame>GetChild("SettingsFrame").<UIFrame>GetChild(name).GetChildOfClass(UITextInput.class).PlaceholderText = Double.toString(value);
     }
 
     private double getSettingsInputText(String name) {
-        return Double.valueOf(game.UINode.<UIFrame>GetTypedChild("SettingsFrame").<UIFrame>GetTypedChild(name).GetChildOfClass(UITextInput.class).Text);
+        return Double.valueOf(game.UINode.<UIFrame>GetChild("SettingsFrame").<UIFrame>GetChild(name).GetChildOfClass(UITextInput.class).Text);
     }
 
     static double getDragCoefficient(Image2D plane, Vector2 velocity) {
@@ -149,10 +149,10 @@ class RealSimulation {
         plane1 = (Image2D) game.WorldNode.GetChild("Plane1");
         ((Image2D) game.WorldNode.GetChild("Plane2")).Destroy();
 
-        plane1.Position = new Vector2(0, game.Services.WindowService.GetWindowHeight() - game.WorldNode.<Image2D>GetTypedChild("Ground").Size.Y/2 - throwHeight * ExperimentData.meterInPixel);
+        plane1.Position = new Vector2(0, game.Services.WindowService.GetWindowHeight() - game.WorldNode.<Image2D>GetChild("Ground").Size.Y/2 - throwHeight * ExperimentData.meterInPixel);
 
-        panel1 = game.UINode.<UIFrame>GetTypedChild("Panel1");
-        game.UINode.<UIFrame>GetTypedChild("Panel2").Destroy();
+        panel1 = game.UINode.<UIFrame>GetChild("Panel1");
+        game.UINode.<UIFrame>GetChild("Panel2").Destroy();
 
         plane1RealPos = plane1.Position;
 
@@ -202,7 +202,7 @@ class RealSimulation {
         wind = getSettingsInputText("Wind");
    
         plane1Velocity = new Vector2(MSAUtil.toPixels(viX)/11, -MSAUtil.toPixels(viY)/100);
-        plane1.Position = new Vector2(0, game.Services.WindowService.GetWindowHeight() - game.WorldNode.<Image2D>GetTypedChild("Ground").Size.Y/2 - throwHeight * ExperimentData.meterInPixel);
+        plane1.Position = new Vector2(0, game.Services.WindowService.GetWindowHeight() - game.WorldNode.<Image2D>GetChild("Ground").Size.Y/2 - throwHeight * ExperimentData.meterInPixel);
         plane1RealPos = plane1.Position;
 
         @SuppressWarnings("rawtypes")
@@ -265,13 +265,13 @@ class RealSimulation {
 
             double plane1height = MSAUtil.toMeters(game.Services.WindowService.GetWindowHeight() - plane1.Size.Y/2 - plane1.Position.Y);
 
-            panel1.<UIText>GetTypedChild("Drag").Text = "Drag: "+format(plane1dragNewtons)+"N";
-            panel1.<UIText>GetTypedChild("Lift").Text = "Lift: "+format(plane1liftNewtons)+"N";
-            if (!plane1Finished) panel1.<UIText>GetTypedChild("Weight").Text = "Weight: "+format(getWeight(plane1, 0))+"N";
-            panel1.<UIText>GetTypedChild("Height").Text = "Height: "+format(plane1height)+"m";
-            panel1.<UIText>GetTypedChild("Displacement").Text = "Displacement: "+format(MSAUtil.toMeters(plane1.Position.X))+"m";
-            panel1.<UIText>GetTypedChild("Angle").Text = "Angle of Attack(α): "+format(Math.toDegrees(plane1.Rotation))+"°";
-            if (!plane1Finished) panel1.<UIText>GetTypedChild("Time").Text = "Time: "+format(realFlyingTime)+"s";
+            panel1.<UIText>GetChild("Drag").Text = "Drag: "+format(plane1dragNewtons)+"N";
+            panel1.<UIText>GetChild("Lift").Text = "Lift: "+format(plane1liftNewtons)+"N";
+            if (!plane1Finished) panel1.<UIText>GetChild("Weight").Text = "Weight: "+format(getWeight(plane1, 0))+"N";
+            panel1.<UIText>GetChild("Height").Text = "Height: "+format(plane1height)+"m";
+            panel1.<UIText>GetChild("Displacement").Text = "Displacement: "+format(MSAUtil.toMeters(plane1.Position.X))+"m";
+            panel1.<UIText>GetChild("Angle").Text = "Angle of Attack(α): "+format(Math.toDegrees(plane1.Rotation))+"°";
+            if (!plane1Finished) panel1.<UIText>GetChild("Time").Text = "Time: "+format(realFlyingTime)+"s";
 
             Box2D track = new Box2D();
             track.Size = new Vector2(25, 5);

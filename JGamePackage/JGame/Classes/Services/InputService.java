@@ -287,9 +287,11 @@ public class InputService extends Service {
     }
 
     public Vector2 GetMousePosition() {
+        boolean fullscreen = game.Services.WindowService.IsFullscreen();
+
         Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
         Point windowLoc = game.GetWindow().getLocation();
-        return new Vector2(mouseLoc.getX() - windowLoc.getX(), mouseLoc.getY() - windowLoc.getY() - (game.Services.WindowService.IsFullscreen() ? 0 : 28));
+        return new Vector2(mouseLoc.getX() - windowLoc.getX() - (!fullscreen ? 7 : 0), mouseLoc.getY() - windowLoc.getY() - (fullscreen ? 0 : 30));
     }
 
     public UIBase GetMouseUITarget() {
