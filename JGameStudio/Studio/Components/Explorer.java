@@ -47,9 +47,10 @@ public class Explorer extends UIFrame {
         UIImage img = new UIImage();
         img.AnchorPoint = new Vector2(0, .5);
         img.Size = UDim2.fromScale(.1, .9);
-        img.SetParent(frame);
         img.Position = UDim2.fromScale(.04, .5);
+        img.SetImage("JGameStudio\\Assets\\InstanceIcons\\"+obj.getClass().getSimpleName()+".png", Vector2.new(25));
         img.MouseTargetable = false;
+        img.SetParent(frame);
 
         new UIAspectRatioConstraint().SetParent(img);
 
