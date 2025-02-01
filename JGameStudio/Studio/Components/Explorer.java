@@ -73,6 +73,8 @@ public class Explorer extends UIFrame {
         frame.Size = UDim2.fromScale(1,0).add(UDim2.fromAbsolute(0, 20));
         frame.BackgroundTransparency = 1;
         frame.Name = "ObjectFrame";
+        frame.Name = obj.Name;
+        frame.BackgroundColor = StudioGlobals.BlueColor;
         frame.SetParent(absoluteContainer);
 
         File imageIconFile = new File("JGameStudio\\Assets\\InstanceIcons\\"+obj.getClass().getSimpleName()+".png");
@@ -125,6 +127,7 @@ public class Explorer extends UIFrame {
         arrow.SetParent(frame);
 
         arrow.Mouse1Down.Connect(()-> {
+            if (!arrow.Visible) return;
             if (!childrenFrame.Visible) {
                 absoluteContainer.Size = UDim2.fromScale(1, 0).add(UDim2.fromAbsolute(0, 20+childrenFrame.Size.Y.Absolute));
 

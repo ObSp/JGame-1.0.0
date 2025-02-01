@@ -3,9 +3,13 @@ package JGamePackage.JGame.Classes.UI;
 import java.awt.Color;
 import java.awt.Cursor;
 
-public class UIButton extends UIFrame {
+import JGamePackage.JGame.Classes.UI.Internal.UIButtonInternal;
+
+public class UIButton extends UIFrame implements UIButtonBase {
     public Color HoverColor = Color.gray;
     public boolean HoverEffectsEnabled = true;
+
+    public boolean Disabled = false;
 
     private boolean isHovering = false;
 
@@ -13,14 +17,14 @@ public class UIButton extends UIFrame {
         super();
         
         this.MouseEnter.Connect(()-> {
+            if (Disabled) return;
             this.isHovering = true;
             game.Services.WindowService.SetMouseCursor(Cursor.HAND_CURSOR);
         });
 
         this.MouseLeave.Connect(()-> {
             this.isHovering = false;
-            if (game.Services.InputService.GetMouseUITarget() instanceof UITextButton || game.Services.InputService.GetMouseUITarget() instanceof UIButton) return;
-            game.Services.WindowService.SetMouseCursor(Cursor.DEFAULT_CURSOR);
+            UIButtonInternal.updateCursorAfterLeave(game);
         });
 
     }

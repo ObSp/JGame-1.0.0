@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import JGamePackage.JGame.JGame;
-import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
@@ -62,18 +61,6 @@ public class Studio {
         game.Services.TimeService.WaitSeconds(1);
 
         initComponents();
-
-        UIFrame last = new UIFrame();
-        last.SetParent(game.UINode);
-        for (int i = 0; i < 15; i++) {
-            UIFrame n = last.Clone();
-            n.SetParent(last);
-            last = n;
-        }
-
-        game.InputService.OnMouseClick.Connect(()->{
-            System.out.println(game.InputService.GetMouseUITarget());
-        });
     }
 
     public static void main(String[] args) throws IOException {

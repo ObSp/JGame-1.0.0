@@ -295,28 +295,23 @@ public class InputService extends Service {
     }
 
     public UIBase GetMouseUITarget() {
-        Vector2 mousePos = GetMousePosition();
+        Vector2 mousePos = game.InputService.GetMousePosition();
         UIBase curTarget = null;
-        //first find an UI instance that (SHOULD BE) diplayed on top
-        //the one issue with this is that children are always displayed on TOP of parents, therefore step 2 is needed 
-        for (UIBase v : game.UINode.GetChildrenOfClass(UIBase.class)) {
-            if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos) || !v.Visible || !v.MouseTargetable) continue;
-            if (curTarget != null && v.ZIndex <= curTarget.ZIndex) continue;
-            curTarget = v;
-        }
-        if (curTarget == null) return null;
-        //to fix the above mentioned issue, repeatedly loop through children
-        while (true) {
-            UIBase[] children = curTarget.GetChildrenOfClass(UIBase.class);
-            if (children.length == 0) break;
-            UIBase lastChild = null;
-            for (UIBase child : children) {
-                if (!isPointInBounds(child.GetAbsolutePosition(), child.GetAbsoluteSize(), mousePos) || !child.Visible || !child.MouseTargetable) continue;
-                if (lastChild != null && child.ZIndex <= lastChild.ZIndex) continue;
-                lastChild = child;
+        // first find an UI instance that (SHOULD BE) diplayed on top
+        // the one issue with this is that children are always displayed on TOP of
+        // parents, therefore step 2 is needed
+        for (UIBase v : game.UINode.GetDescendantsOfClass(UIBase.class)) {
+            if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos) || !isUIItemVisible(v)|| !v.MouseTargetable)
+                continue;
+
+            if (curTarget == null) {
+                curTarget = v;
+                continue;
             }
-            if (lastChild == null) break;
-            curTarget = lastChild;
+
+            if (v.ZIndex > curTarget.ZIndex || v.GetAncestors().length > curTarget.GetAncestors().length) {
+                curTarget = v;
+            }
         }
         return curTarget;
     }
@@ -346,6 +341,17 @@ public class InputService extends Service {
         selectedUIInput = input;
     }
 
+    private boolean isUIItemVisible(UIBase uiBase) {
+        if (!uiBase.Visible) return false;
+
+        for (Instance ancestor : uiBase.GetAncestors()) {
+            if (ancestor == game.UINode) return true;
+            if (!(ancestor instanceof UIBase)) return false;
+            if (!((UIBase) ancestor).Visible) return false;
+        }
+
+        return true;
+    }
 
     private boolean isPointInBounds(Vector2 pos, Vector2 size, Vector2 point) {
         double left = pos.X;

@@ -13,6 +13,8 @@ public class DisplayWindow extends UIFrame {
         this.Size = UDim2.fromAbsolute(game.Services.WindowService.GetWindowWidth()-350, 0).add(UDim2.fromScale(0, .91));
         this.Position = UDim2.fromAbsolute(0, 105);
         this.BackgroundColor = new Color(46, 46, 46);
+        this.MouseTargetable = false;
+        this.BackgroundTransparency = 1;
 
         UIBorder border = new UIBorder();
         border.Width = 1;

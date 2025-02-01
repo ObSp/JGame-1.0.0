@@ -15,9 +15,9 @@ public class UIImage extends UIBase {
      */
     public java.awt.Image Image;
 
-    private String imagePath = "JGamePackage\\JGame\\Assets\\imageDefault.png";
+    protected String imagePath = "JGamePackage\\JGame\\Assets\\imageDefault.png";
 
-    private Vector2 scale = null;
+    protected Vector2 scale = null;
 
     public boolean PixelPerfect = false;
 
