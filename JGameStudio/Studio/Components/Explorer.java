@@ -1,6 +1,7 @@
 package JGameStudio.Studio.Components;
 
 import java.awt.Font;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Set;
@@ -16,7 +17,9 @@ import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
+import JGamePackage.lib.Signal.Signal;
 import JGameStudio.StudioGlobals;
+import JGameStudio.Studio.Modules.Selection;
 
 public class Explorer extends UIFrame {
 
@@ -26,6 +29,7 @@ public class Explorer extends UIFrame {
     private Set<String> ignoredClasses = Set.of("Sidebar", "Topbar", "DisplayWindow");
 
     private ArrayList<Instance> trackedInstances = new ArrayList<>();
+    private ArrayList<Instance> trackedBoxes = new ArrayList<>();
 
     public Explorer() {
         this.Size = UDim2.fromScale(1, .55);
@@ -41,6 +45,29 @@ public class Explorer extends UIFrame {
                 } else {
                     c.Visible = false;
                 }
+            }
+        });
+
+        Selection.InstanceDeselected.Connect(inst -> {
+            for (Instance frame : trackedBoxes) {
+                if (frame.GetCProp("Instance") == inst) {
+                    frame.<Signal<Boolean>>GetCProp("SelectSignal").Fire(false);
+                    return;
+                }
+            }
+        });
+
+        //duplication
+        game.InputService.OnKeyPress.Connect(kv -> {
+            if (kv.getKeyCode() != KeyEvent.VK_D || !game.InputService.IsKeyDown(KeyEvent.VK_CONTROL)) return;
+
+            for (Instance e : Selection.get()) {
+                if (!e.CanClone()) continue;
+                Instance clone = e.Clone();
+                clone.SetParent(e.GetParent());
+
+                Selection.remove(e);
+                Selection.add(clone);
             }
         });
 
@@ -153,11 +180,28 @@ public class Explorer extends UIFrame {
             }
         });
 
+        frame.Mouse1Down.Connect(()-> {
+            if (game.InputService.IsKeyDown(KeyEvent.VK_CONTROL)) {
+                if (!Selection.contains(obj)) {
+                    Selection.add(obj);
+                } else {
+                    Selection.remove(obj);
+                    return;
+                }
+            } else {
+                Selection.set(obj);
+            }
+
+            absoluteContainer.<Signal<Boolean>>GetCProp("SelectSignal").Fire(true);
+        });
+
         frame.MouseEnter.Connect(()->{
+            if (absoluteContainer.GetCProp("Selected") != null) return;
             frame.BackgroundTransparency = .8;
         });
 
         frame.MouseLeave.Connect(()->{
+            if (absoluteContainer.GetCProp("Selected") != null) return;
             frame.BackgroundTransparency = 1;
         });
 
@@ -181,6 +225,21 @@ public class Explorer extends UIFrame {
         obj.Destroying.Connect(()->{
             absoluteContainer.Destroy();
         });
+
+        Signal<Boolean> selectChanged = new Signal<>();
+        absoluteContainer.SetCProp("SelectSignal", selectChanged);
+
+        selectChanged.Connect(selected -> {
+            if (selected) {
+                frame.BackgroundTransparency = .7;
+                absoluteContainer.SetCProp("Selected", true);
+            } else {
+                frame.BackgroundTransparency = 1;
+                absoluteContainer.SetCProp("Selected", null);
+            }
+        });
+
+        trackedBoxes.add(absoluteContainer);
 
         return absoluteContainer;
     }

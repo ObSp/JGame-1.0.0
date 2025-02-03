@@ -13,5 +13,7 @@ public abstract class Renderable extends Instance {
 
     public int ZIndex = 0;
 
+    public boolean MouseTargetable = true;
+
     public abstract void render(Graphics2D graphics);
 }

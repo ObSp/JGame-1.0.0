@@ -2,9 +2,9 @@ package JGamePackage.JGame.Classes.World;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
+import JGamePackage.JGame.Classes.Rendering.RenderUtil;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
@@ -28,64 +28,51 @@ public class Text2D extends WorldBase{
     public String FontName = "Arial";
     public int FontStyle = Font.PLAIN;
 
+    public Font CustomFont = null;
+
     @Override
     public void render(Graphics2D g) {
         if (Text == null) return;
 
         Vector2 renderSize = GetRenderSize();
-        Vector2 renderPosition = GetRenderPosition();
+        Vector2 renderPos = GetRenderPosition();
 
-        if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPosition)) return;
+        if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPos)) return;
 
-        int centerX = (int) (renderPosition.X + (renderSize.X/2));
-        int centerY = (int) (renderPosition.Y + (renderSize.Y/2));
-
-        //render background
-        Color backgroundRenderColor = this.GetRenderColor();
-        if (backgroundRenderColor.getAlpha() > 0) {
-            g.setColor(backgroundRenderColor);
-            g.fillRect((int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y);
+        if (Transparency < 1) {
+            RenderUtil.drawRectangle(this, renderSize, renderPos, GetRenderColor());
         }
 
-        Font font;
-        
-        if (TextScaled) {
-            font = new Font(this.FontName, this.FontStyle, (int) (renderSize.Y*1.3));
-        } else {
-            font = new Font(this.FontName, this.FontStyle, this.FontSize);
-        }
+        if (Text == null || Text.equals("")) return;
 
-        g.setFont(font);
-
-        FontMetrics fm = g.getFontMetrics();
-
-        int pixelHeight = (int) Math.round((double) font.getSize()*.75);
-        int pixelWidth = fm.stringWidth(Text);
-
-        int xStringPos;
-        int yStringPos;
-
-        if (HorizontalTextAlignment == Constants.HorizontalTextAlignment.Left) {
-            xStringPos = (int) renderPosition.X;
-        } else if (HorizontalTextAlignment == Constants.HorizontalTextAlignment.Center) {
-            xStringPos = (int) (centerX-pixelWidth/2);
-        } else { //right alignment
-            xStringPos = (int) (renderPosition.X + renderSize.X - pixelWidth);
-        }
-
-        if (VerticalTextAlignment == Constants.VerticalTextAlignment.Top) {
-            yStringPos = (int) (renderPosition.Y + pixelHeight*2.2);
-        } else if (VerticalTextAlignment == Constants.VerticalTextAlignment.Center) {
-            yStringPos = (int) (centerY + pixelHeight/2);
-        } else { //bottom alignment
-            yStringPos = (int) (renderPosition.Y + renderSize.Y);
-        }
-
-        g.setColor(GetTextRenderColor());
-        g.drawString(Text, xStringPos, yStringPos);
+        RenderUtil.drawText(Text, renderSize, renderPos, GetTextRenderColor(), FontSize, FontStyle, FontName, CustomFont, TextScaled, HorizontalTextAlignment, VerticalTextAlignment);
     }
 
     private Color GetTextRenderColor(){
         return new Color(TextColor.getRed(), TextColor.getGreen(), TextColor.getBlue(), (int) (255*(1-TextTransparency)));
+    }
+
+    @Override
+    public Text2D Clone() {
+        Text2D clone = cloneWithoutChildren();
+        this.cloneHierarchyToNewParent(clone);
+        return clone;
+    }
+
+    @Override
+    protected Text2D cloneWithoutChildren() {
+        Text2D text = new Text2D();
+        this.cloneHelper(text);
+        text.Text = this.Text;
+        text.TextColor = this.TextColor;
+        text.TextTransparency = this.TextTransparency;
+        text.HorizontalTextAlignment = this.HorizontalTextAlignment;
+        text.VerticalTextAlignment = this.VerticalTextAlignment;
+        text.FontSize = this.FontSize;
+        text.FontName = this.FontName;
+        text.FontStyle = this.FontStyle;
+        text.TextScaled = this.TextScaled;
+        text.CustomFont = this.CustomFont;
+        return text;
     }
 }

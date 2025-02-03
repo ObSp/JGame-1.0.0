@@ -51,4 +51,20 @@ public class Image2D extends WorldBase {
 
         graphics.drawImage(this.Image, (int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y, null);
     }
+
+    @Override
+    public Image2D Clone() {
+        Image2D clone = cloneWithoutChildren();
+        this.cloneHierarchyToNewParent(clone);
+        return clone;
+    }
+
+    @Override
+    protected Image2D cloneWithoutChildren() {
+        Image2D img = new Image2D();
+        img.SetImage(this.imagePath);
+
+        this.cloneHelper(img);
+        return img;
+    }
 }

@@ -2,6 +2,8 @@ package JGamePackage.JGame.Classes.Services;
 
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -40,6 +42,9 @@ public class InputService extends Service {
 
     private Signal<Integer> mouseWheelMoved = new Signal<>();
     public SignalWrapper<Integer> OnMouseScroll = new SignalWrapper<>(mouseWheelMoved);
+
+    private VoidSignal windowResized = new VoidSignal();
+    public VoidSignalWrapper OnWindowResized = new VoidSignalWrapper(windowResized);
     
     public Integer FullscreenHotKey = KeyEvent.VK_F11;
 
@@ -50,9 +55,13 @@ public class InputService extends Service {
 
     private UITextInput selectedUIInput = null;
 
+    private Vector2 lastMousePos;
+    private Vector2 curMousePos;
+
 
     private boolean isMouse1Down = false;
     private boolean isMouse2Down = false;
+    private boolean isMouse3Down = false;
 
 
     public InputService(SignalWrapper<Double> onTick) {
@@ -122,9 +131,10 @@ public class InputService extends Service {
                     if (uiTarget != null) {
                         new Thread(()->uiTarget.Mouse1Down.Fire()).start();
                     }
-
-                } else if (e.getButton() == MouseEvent.BUTTON2) {
+                } else if (e.getButton() == MouseEvent.BUTTON3) {
                     isMouse2Down = true;
+                } else if (e.getButton() == MouseEvent.BUTTON2) {
+                    isMouse3Down = true;
                 }
             }
 
@@ -138,9 +148,10 @@ public class InputService extends Service {
                     if (uiTarget != null) {
                         uiTarget.Mouse1Up.Fire();
                     }
-
-                } else if(e.getButton() == MouseEvent.BUTTON2){
+                } else if(e.getButton() == MouseEvent.BUTTON3){
                     isMouse2Down = false;
+                } else if (e.getButton() == MouseEvent.BUTTON2) {
+                    isMouse3Down = false;
                 }
 
             }
@@ -185,10 +196,20 @@ public class InputService extends Service {
             public void windowDeactivated(WindowEvent e) {
                 heldKeys.clear();
             }
-            
+        });
+
+        gameWindow.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                windowResized.Fire();
+            }
         });
 
         onTick.Connect(dt->{
+            lastMousePos = curMousePos;
+            curMousePos = GetMousePosition();
+
+            if (lastMousePos == null) lastMousePos = curMousePos;
+
             UIBase newTarget = GetMouseUITarget();
             
             if (newTarget == currentHover) return;
@@ -198,23 +219,6 @@ public class InputService extends Service {
 
             if (oldTarget != null) oldTarget.MouseLeave.Fire();
             if (currentHover != null) currentHover.MouseEnter.Fire();
-
-            /**
-            List<UIBase> mouseTargets = Arrays.asList(GetMouseUITargetList());
-            for (UIBase v : game.UINode.GetDescendantsOfClass(UIBase.class)) {
-                boolean inList = hoveringUIItems.contains(v);
-
-                if (!mouseTargets.contains(v)) { //idk why ! is needed, smth is wrong with GetMouseUITargetList()
-                    if (!inList) {
-                        v.MouseEnter.Fire();
-                        hoveringUIItems.add(v);
-                    }
-                } else if (inList) {
-                    v.MouseLeave.Fire();
-                    hoveringUIItems.remove(v);
-                }
-
-            } */
         });
     }
 
@@ -284,6 +288,14 @@ public class InputService extends Service {
 
     public boolean IsMouse2Down() {
         return isMouse2Down;
+    }
+
+    public boolean IsMouse3Down() {
+        return isMouse3Down;
+    }
+
+    public Vector2 GetMouseDelta() {
+        return curMousePos.subtract(lastMousePos);
     }
 
     public Vector2 GetMousePosition() {

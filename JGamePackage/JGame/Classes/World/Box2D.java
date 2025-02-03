@@ -18,4 +18,19 @@ public class Box2D extends WorldBase {
         graphics.setColor(this.GetRenderColor());
 
         graphics.fillRect((int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y);
-    }}
+    }
+
+    @Override
+    public Box2D Clone() {
+        Box2D clone = cloneWithoutChildren();
+        this.cloneHierarchyToNewParent(clone);
+        return clone;
+    }
+
+    @Override
+    protected Box2D cloneWithoutChildren() {
+        Box2D frame = new Box2D();
+        this.cloneHelper(frame);
+        return frame;
+    }
+}

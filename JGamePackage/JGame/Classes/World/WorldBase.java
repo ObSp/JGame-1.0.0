@@ -67,13 +67,16 @@ public abstract class WorldBase extends Renderable{
         return new Color(FillColor.getRed(), FillColor.getGreen(), FillColor.getBlue(), (int) (255*(1-Transparency)));
     }
 
-    @Override
-    public WorldBase Clone() {
-        return null;
-    }
-
-    @Override
-    public WorldBase cloneWithoutChildren() {
-        return null;
+    protected void cloneHelper(WorldBase base) {
+        base.Pivot = this.Pivot;
+        base.FillColor = this.FillColor;
+        base.Transparency = this.Transparency;
+        base.Name = this.Name;
+        base.Position = this.Position;
+        base.Rotation = this.Rotation;
+        base.Size = this.Size;
+        base.Visible = this.Visible;
+        base.ZIndex = this.ZIndex;
+        base.MouseTargetable = this.MouseTargetable;
     }
 }

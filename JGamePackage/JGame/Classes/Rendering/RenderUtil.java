@@ -151,4 +151,22 @@ public class RenderUtil {
     public static void drawText(String text, Vector2 renderSize, Vector2 renderPos, Color color, int fontSize, int fontStyle, String fontName, Font customFont, boolean textScaled, HorizontalTextAlignment xAlign, VerticalTextAlignment yAlign) {
         drawText(text, renderSize, renderPos, color, fontSize, fontStyle, fontName, customFont, textScaled, xAlign, yAlign, "");
     }
+
+    private static void drawBorder(Vector2 pos, Vector2 size, int width, Color color) {
+        g.setColor(color);
+
+        int curX = ((int) pos.X)-width;
+        int curY = ((int) pos.Y)-width;
+
+        int sizeX = ((int) size.X)+width * 2;
+        int sizeY = ((int) size.Y)+width * 2;
+
+        for (int i = 0; i < width; i++) {
+            g.drawRect(curX, curY, sizeX, sizeY);
+            curX++;
+            curY++;
+            sizeX -= 1;
+            sizeY -= 1;
+        }
+    }
 }

@@ -18,7 +18,7 @@ public abstract class Instance {
     private static CustomError ErrorAlreadyDestroyed = new CustomError("Cannot destroy an already destroyed instance.", CustomError.WARNING, "JGamePackage");
     private static CustomError ErrorParentLocked = new CustomError("Unable to set parent property; the property is locked.", CustomError.WARNING, "JGamePackage");
     private static CustomError ErrorNoJGame = new CustomError("A JGame must be running in order to create JGame instances.", CustomError.ERROR, "JGamePackage");
-    private static CustomError WarningNullClone = new CustomError("The method Clone() is unimplemented for the class %s..", CustomError.WARNING, "JGamePackage");
+    private static CustomError WarningNullClone = new CustomError("The method Clone() is unimplemented for the class %s.", CustomError.WARNING, "JGamePackage");
 
     /**A non-unique identifier that can be used to access this instance through its parent.
      * 
@@ -277,6 +277,10 @@ public abstract class Instance {
      */
     public abstract Instance Clone();
     protected abstract Instance cloneWithoutChildren();
+
+    public boolean CanClone() {
+        return true;
+    }
     
     private static void duplicateChildren(Instance from, Instance to) {
         for (Instance child : from.GetChildren()) {
@@ -296,12 +300,8 @@ public abstract class Instance {
         duplicateChildren(this, newParent);
     }
 
-    public Object GetCProp(String name) {
-        return cprops.get(name);
-    }
-
     @SuppressWarnings("unchecked")
-    public <T> T GetTypedCProp(String name) {
+    public <T extends Object> T GetCProp(String name) {
         return (T) cprops.get(name);
     }
 

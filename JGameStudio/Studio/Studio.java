@@ -10,6 +10,7 @@ import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
 import JGameStudio.ProjectHandler.ProjectHandler;
 import JGameStudio.ProjectHandler.ProjectHandler.ProjectData;
+import JGameStudio.Studio.Classes.WorldNavigation.WorldNavi;
 import JGameStudio.Studio.Components.DisplayWindow;
 import JGameStudio.Studio.Components.Sidebar;
 import JGameStudio.Studio.Components.Topbar;
@@ -25,6 +26,8 @@ public class Studio {
     private DisplayWindow displayWindow;
     private Sidebar sideBar;
     private Topbar topBar;
+
+    private WorldNavi worldNavi;
 
     private void initComponents() {
         displayWindow = new DisplayWindow();
@@ -61,6 +64,8 @@ public class Studio {
         game.Services.TimeService.WaitSeconds(1);
 
         initComponents();
+
+        worldNavi = new WorldNavi();
     }
 
     public static void main(String[] args) throws IOException {

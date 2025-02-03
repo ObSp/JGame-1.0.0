@@ -4,7 +4,7 @@ public class CustomError {
     private String message;
     private int errorType;
     private String ansiColor;
-    private String jumpOverElementsContaining;
+    private String[] jumpOverElementsContaining;
 
     public static final int ERROR = 0;
     public static final int WARNING = 1;
@@ -18,6 +18,18 @@ public class CustomError {
      * @param stackTraceElementBlacklist
      */
     public CustomError(String errorMessage, int errorType, String stackTraceElementBlacklist) {
+        this(errorMessage, errorType, new String[] {stackTraceElementBlacklist});
+    }
+
+    /** Constructs a CustomError based on the given parameters.
+     * Note that any occurences of the regex "%s" will be replaced with the corresponding 
+     * insertions when this.Throw(String[]) is called.
+     * 
+     * @param errorMessage
+     * @param errorType
+     * @param stackTraceElementBlacklist
+     */
+    public CustomError(String errorMessage, int errorType, String[] stackTraceElementBlacklist) {
         this.message = errorMessage;
         this.errorType = errorType;
         this.jumpOverElementsContaining = stackTraceElementBlacklist;
@@ -38,7 +50,14 @@ public class CustomError {
         System.out.print(ansiColor);
         StackTraceElement[] stackTrace = new Throwable().getStackTrace();
         for (int i = 1; i < stackTrace.length; i++) {
-            if (stackTrace[i].toString().contains(this.jumpOverElementsContaining)) continue;
+            boolean cont = false;
+            for (String s : jumpOverElementsContaining) {
+                if (stackTrace[i].toString().contains(s)) {
+                    cont = true;
+                    break;
+                }
+            }
+            if (cont) continue;
 
             System.out.println("    at "+stackTrace[i]);
         }
