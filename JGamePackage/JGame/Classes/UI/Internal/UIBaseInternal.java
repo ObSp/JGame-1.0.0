@@ -5,14 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.Modifiers.ListLayout;
 import JGamePackage.JGame.Classes.UI.UIBase;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
 public class UIBaseInternal {
 
-    public static Vector2 computePositionWithUIList(UIBase inst, UIListLayout layout, JGame game) {
+    public static Vector2 computePositionWithUIList(UIBase inst, ListLayout layout, JGame game) {
         UIBase[] childrenOfClass = inst.GetParent().GetChildrenOfClass(UIBase.class);
         Vector2 paddingVec2 = layout.Padding.ToVector2(game.Services.WindowService.GetWindowSize());
         boolean isHorizontal = layout.ItemAlignment == Constants.ListAlignment.Horizontal;

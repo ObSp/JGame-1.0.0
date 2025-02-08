@@ -150,6 +150,13 @@ public abstract class Instance {
         return arrayChildren;
     }
 
+    public boolean IsDescendantOf(Instance ancestor) {
+        for (Instance v : ancestor.GetDescendants()) {
+            if (v == this) return true;
+        }
+        return false;
+    }
+
     public Instance[] GetAncestors() {
         ArrayList<Instance> ancestors = new ArrayList<>();
 

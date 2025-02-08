@@ -3,14 +3,13 @@ package JGamePackage.JGame.Classes.UI;
 import java.awt.Color;
 
 import JGamePackage.JGame.Classes.Instance;
+import JGamePackage.JGame.Classes.Modifiers.AspectRatioConstraint;
+import JGamePackage.JGame.Classes.Modifiers.ListLayout;
 import JGamePackage.JGame.Classes.Rendering.Renderable;
 import JGamePackage.JGame.Classes.UI.Internal.UIBaseInternal;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
-import JGamePackage.lib.Signal.VoidSignal;
 
 public abstract class UIBase extends Renderable {
 
@@ -18,12 +17,6 @@ public abstract class UIBase extends Renderable {
      * 
      */
     public UDim2 Position = UDim2.zero;
-
-    public final VoidSignal Mouse1Down = new VoidSignal();
-    public final VoidSignal Mouse1Up = new VoidSignal();
-
-    public final VoidSignal MouseEnter = new VoidSignal();
-    public final VoidSignal MouseLeave = new VoidSignal();
 
     /**The size of the object in 2D space, represented by a UDim2.
      * 
@@ -69,7 +62,7 @@ public abstract class UIBase extends Renderable {
         if (parentInstance == null) 
             return realPos = Position.ToVector2(game.Services.WindowService.GetWindowSize()).subtract(GetAnchorPointOffset());
 
-        UIListLayout layout = parentInstance.GetChildOfClass(UIListLayout.class);
+        ListLayout layout = parentInstance.GetChildOfClass(ListLayout.class);
 
         if (layout != null) {
             realPos = UIBaseInternal.computePositionWithUIList(this, layout, game);
@@ -94,7 +87,7 @@ public abstract class UIBase extends Renderable {
             realSize = Size.ToVector2(((UIBase) parentInstance).GetAbsoluteSize());
         }
 
-        UIAspectRatioConstraint aspectConstr = this.GetChildOfClass(UIAspectRatioConstraint.class);
+        AspectRatioConstraint aspectConstr = this.GetChildOfClass(AspectRatioConstraint.class);
 
         if (aspectConstr != null) {
             if (aspectConstr.DominantAxis == Constants.Vector2Axis.X) {

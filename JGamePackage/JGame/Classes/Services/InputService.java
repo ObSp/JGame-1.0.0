@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UITextInput;
+import JGamePackage.JGame.Classes.World.WorldBase;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGamePackage.lib.Signal.Signal;
 import JGamePackage.lib.Signal.SignalWrapper;
@@ -31,11 +32,17 @@ public class InputService extends Service {
     private Signal<KeyEvent> onkeypress = new Signal<>();
     public SignalWrapper<KeyEvent> OnKeyPress = new SignalWrapper<>(onkeypress);
 
-    private VoidSignal onclick = new VoidSignal();
-    public VoidSignalWrapper OnMouseClick = new VoidSignalWrapper(onclick);
+    private VoidSignal onclick1 = new VoidSignal();
+    public VoidSignalWrapper OnMouse1Click = new VoidSignalWrapper(onclick1);
 
-    private VoidSignal mouseUp = new VoidSignal();
-    public VoidSignalWrapper OnMouseUp = new VoidSignalWrapper(mouseUp);
+    private VoidSignal mouseUp1 = new VoidSignal();
+    public VoidSignalWrapper OnMouse1Up = new VoidSignalWrapper(mouseUp1);
+
+    private VoidSignal onclick2 = new VoidSignal();
+    public VoidSignalWrapper OnMouse2Click = new VoidSignalWrapper(onclick1);
+
+    private VoidSignal mouseUp2 = new VoidSignal();
+    public VoidSignalWrapper OnMouse2Up = new VoidSignalWrapper(mouseUp1);
 
     private VoidSignal windowClosing = new VoidSignal();
     public VoidSignalWrapper GameClosing = new VoidSignalWrapper(windowClosing);
@@ -125,7 +132,7 @@ public class InputService extends Service {
                     selectedUIInput = null;
 
                     isMouse1Down = true;
-                    onclick.Fire();
+                    onclick1.Fire();
 
                     UIBase uiTarget = GetMouseUITarget();
                     if (uiTarget != null) {
@@ -133,6 +140,12 @@ public class InputService extends Service {
                     }
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
                     isMouse2Down = true;
+                    onclick2.Fire();
+
+                    UIBase uiTarget = GetMouseUITarget();
+                    if (uiTarget != null) {
+                        new Thread(()->uiTarget.Mouse2Down.Fire()).start();
+                    }
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
                     isMouse3Down = true;
                 }
@@ -142,7 +155,7 @@ public class InputService extends Service {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1){
                     isMouse1Down = false;
-                    mouseUp.Fire();
+                    mouseUp1.Fire();
 
                     UIBase uiTarget = GetMouseUITarget();
                     if (uiTarget != null) {
@@ -150,6 +163,12 @@ public class InputService extends Service {
                     }
                 } else if(e.getButton() == MouseEvent.BUTTON3){
                     isMouse2Down = false;
+                    mouseUp2.Fire();
+
+                    UIBase uiTarget = GetMouseUITarget();
+                    if (uiTarget != null) {
+                        uiTarget.Mouse2Up.Fire();
+                    }
                 } else if (e.getButton() == MouseEvent.BUTTON2) {
                     isMouse3Down = false;
                 }
@@ -309,9 +328,6 @@ public class InputService extends Service {
     public UIBase GetMouseUITarget() {
         Vector2 mousePos = game.InputService.GetMousePosition();
         UIBase curTarget = null;
-        // first find an UI instance that (SHOULD BE) diplayed on top
-        // the one issue with this is that children are always displayed on TOP of
-        // parents, therefore step 2 is needed
         for (UIBase v : game.UINode.GetDescendantsOfClass(UIBase.class)) {
             if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos) || !isUIItemVisible(v)|| !v.MouseTargetable)
                 continue;
@@ -360,6 +376,44 @@ public class InputService extends Service {
             if (ancestor == game.UINode) return true;
             if (!(ancestor instanceof UIBase)) return false;
             if (!((UIBase) ancestor).Visible) return false;
+        }
+
+        return true;
+    }
+
+    public Vector2 GetMouseWorldPosition() {
+        return this.GetMousePosition()
+            .subtract(game.WindowService.GetWindowSize().divide(2))
+            .multiply(game.Camera.DepthFactor)
+            .add(game.Camera.Position);
+    }
+
+    public WorldBase GetMouseWorldTarget() {
+        Vector2 mousePos = game.InputService.GetMouseWorldPosition();
+        WorldBase curTarget = null;
+        for (WorldBase v : game.WorldNode.GetDescendantsOfClass(WorldBase.class)) {
+            if (!isPointInBounds(v.Position, v.Size, mousePos) || !isWorldItemVisible(v)|| !v.MouseTargetable)
+                continue;
+
+            if (curTarget == null) {
+                curTarget = v;
+                continue;
+            }
+
+            if (v.ZIndex > curTarget.ZIndex || v.GetAncestors().length > curTarget.GetAncestors().length) {
+                curTarget = v;
+            }
+        }
+        return curTarget;
+    }
+
+    private boolean isWorldItemVisible(WorldBase worldBase) {
+        if (!worldBase.Visible) return false;
+
+        for (Instance ancestor : worldBase.GetAncestors()) {
+            if (ancestor == game.WorldNode) return true;
+            if (!(ancestor instanceof WorldBase)) return false;
+            if (!((WorldBase) ancestor).Visible) return false;
         }
 
         return true;

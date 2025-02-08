@@ -9,6 +9,7 @@ public class Selection {
     private static ArrayList<Instance> selection = new ArrayList<>();
 
     public static final Signal<Instance> InstanceDeselected = new Signal<>();
+    public static final Signal<Instance> InstanceSelected = new Signal<>();
 
     public static Instance[] get() {
         Instance[] list = new Instance[selection.size()];
@@ -26,6 +27,7 @@ public class Selection {
 
     public static void add(Instance e) {
         selection.add(e);
+        InstanceSelected.Fire(e);
     }
 
     public static void remove(Instance e) {
@@ -35,7 +37,7 @@ public class Selection {
 
     public static void set(Instance e) {
         clear();
-        selection.add(e);
+        add(e);
     }
 
     public static void clear() {

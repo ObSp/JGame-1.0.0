@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import JGamePackage.JGame.Classes.Instance;
+import JGamePackage.JGame.Classes.Modifiers.AspectRatioConstraint;
+import JGamePackage.JGame.Classes.Modifiers.ListLayout;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.UI.UITextInput;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
@@ -26,7 +26,7 @@ public class Explorer extends UIFrame {
     public UITextInput filter;
     public UIFrame listFrame;
 
-    private Set<String> ignoredClasses = Set.of("Sidebar", "Topbar", "DisplayWindow");
+    private Set<String> ignoredClasses = Set.of("Sidebar", "Topbar", "DisplayWindow", "SelectionBorder");
 
     private ArrayList<Instance> trackedInstances = new ArrayList<>();
     private ArrayList<Instance> trackedBoxes = new ArrayList<>();
@@ -57,6 +57,15 @@ public class Explorer extends UIFrame {
             }
         });
 
+        Selection.InstanceSelected.Connect(inst -> {
+            for (Instance frame : trackedBoxes) {
+                if (frame.GetCProp("Instance") == inst) {
+                    frame.<Signal<Boolean>>GetCProp("SelectSignal").Fire(true);
+                    return;
+                }
+            }
+        });
+
         //duplication
         game.InputService.OnKeyPress.Connect(kv -> {
             if (kv.getKeyCode() != KeyEvent.VK_D || !game.InputService.IsKeyDown(KeyEvent.VK_CONTROL)) return;
@@ -74,6 +83,7 @@ public class Explorer extends UIFrame {
         this.AddInstance(game.WorldNode);
         this.AddInstance(game.UINode);
         this.AddInstance(game.StorageNode);
+        this.AddInstance(game.Camera);
     }
 
     private UIFrame createInstanceFrame(Instance obj) {
@@ -94,7 +104,7 @@ public class Explorer extends UIFrame {
         childrenFrame.Visible = false;
         childrenFrame.SetParent(absoluteContainer);
 
-        listFrame.GetChildWhichIsA("UIListLayout").Clone().SetParent(childrenFrame);
+        listFrame.GetChildWhichIsA("ListLayout").Clone().SetParent(childrenFrame);
 
         UIFrame frame = new UIFrame();
         frame.Size = UDim2.fromScale(1,0).add(UDim2.fromAbsolute(0, 20));
@@ -118,7 +128,7 @@ public class Explorer extends UIFrame {
         img.SetImage(imageIconFile.getPath(), new Vector2(25));
         img.SetParent(frame);
 
-        new UIAspectRatioConstraint().SetParent(img);
+        new AspectRatioConstraint().SetParent(img);
 
         UIText name = new UIText();
         name.Size = UDim2.fromScale(.9, 1);
@@ -181,18 +191,7 @@ public class Explorer extends UIFrame {
         });
 
         frame.Mouse1Down.Connect(()-> {
-            if (game.InputService.IsKeyDown(KeyEvent.VK_CONTROL)) {
-                if (!Selection.contains(obj)) {
-                    Selection.add(obj);
-                } else {
-                    Selection.remove(obj);
-                    return;
-                }
-            } else {
-                Selection.set(obj);
-            }
-
-            absoluteContainer.<Signal<Boolean>>GetCProp("SelectSignal").Fire(true);
+            selectInstance(obj);
         });
 
         frame.MouseEnter.Connect(()->{
@@ -259,7 +258,7 @@ public class Explorer extends UIFrame {
         listFrame.BackgroundTransparency = 1;
         listFrame.SetParent(this);
 
-        UIListLayout layout = new UIListLayout();
+        ListLayout layout = new ListLayout();
         layout.Padding = UDim2.zero;
         layout.SetParent(listFrame);
     }
@@ -310,4 +309,17 @@ public class Explorer extends UIFrame {
         filterBackground.GetChildOfClass(UIText.class).Destroy();
     }
 
+    private void selectInstance(Instance v) {
+        boolean ctrlDown = game.InputService.IsKeyDown(KeyEvent.VK_CONTROL);
+
+        if (ctrlDown) {
+            if (Selection.contains(v)) {
+                Selection.remove(v);
+            } else {
+                Selection.add(v);
+            }
+        } else {
+            Selection.set(v);
+        }
+    }
 }

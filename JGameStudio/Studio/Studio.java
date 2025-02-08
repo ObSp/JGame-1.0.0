@@ -10,6 +10,8 @@ import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
 import JGameStudio.ProjectHandler.ProjectHandler;
 import JGameStudio.ProjectHandler.ProjectHandler.ProjectData;
+import JGameStudio.Studio.Classes.Modes.ModeHandler;
+import JGameStudio.Studio.Classes.MouseBehavior.MouseBehaviorHandler;
 import JGameStudio.Studio.Classes.WorldNavigation.WorldNavi;
 import JGameStudio.Studio.Components.DisplayWindow;
 import JGameStudio.Studio.Components.Sidebar;
@@ -28,6 +30,9 @@ public class Studio {
     private Topbar topBar;
 
     private WorldNavi worldNavi;
+    private MouseBehaviorHandler mouseHandler;
+
+    private ModeHandler modeHandler;
 
     private void initComponents() {
         displayWindow = new DisplayWindow();
@@ -66,6 +71,9 @@ public class Studio {
         initComponents();
 
         worldNavi = new WorldNavi();
+        mouseHandler = new MouseBehaviorHandler();
+
+        modeHandler = new ModeHandler();
     }
 
     public static void main(String[] args) throws IOException {

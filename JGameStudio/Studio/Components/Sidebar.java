@@ -1,7 +1,7 @@
 package JGameStudio.Studio.Components;
 
+import JGamePackage.JGame.Classes.Modifiers.BorderEffect;
 import JGamePackage.JGame.Classes.UI.UIFrame;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIBorder;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGameStudio.StudioGlobals;
@@ -17,7 +17,7 @@ public class Sidebar extends UIFrame {
         this.Position = UDim2.fromScale(1,0).add(UDim2.fromAbsolute(0, 105));
         this.ZIndex = 1;
 
-        UIBorder border = new UIBorder();
+        BorderEffect border = new BorderEffect();
         border.Width = 1;
         border.BorderColor = StudioGlobals.ForegroundColor;
         border.SetParent(this);

@@ -2,6 +2,7 @@ package JGamePackage.JGame.Classes.World;
 
 import java.awt.Graphics2D;
 
+import JGamePackage.JGame.Classes.Rendering.RenderUtil;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
 public class Box2D extends WorldBase {
@@ -15,9 +16,7 @@ public class Box2D extends WorldBase {
 
         if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPosition)) return;
 
-        graphics.setColor(this.GetRenderColor());
-
-        graphics.fillRect((int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y);
+        RenderUtil.drawRectangle(this, renderSize, renderPosition, GetRenderColor());
     }
 
     @Override

@@ -1,22 +1,22 @@
-package JGamePackage.JGame.Classes.UI.Modifiers;
+package JGamePackage.JGame.Classes.Modifiers;
 
 import JGamePackage.JGame.Types.Constants.Constants;
 
-public class UIAspectRatioConstraint extends UIModifier {
+public class AspectRatioConstraint extends Modifier {
     public double AspectRatio = 1;
 
     public Constants.Vector2Axis DominantAxis = Constants.Vector2Axis.Y;
 
     @Override
-    public UIAspectRatioConstraint Clone() {
-        UIAspectRatioConstraint clone = this.cloneWithoutChildren();
+    public AspectRatioConstraint Clone() {
+        AspectRatioConstraint clone = this.cloneWithoutChildren();
         this.cloneHierarchyToNewParent(clone);
         return clone;
     }
 
     @Override
-    protected UIAspectRatioConstraint cloneWithoutChildren() {
-        UIAspectRatioConstraint clone = new UIAspectRatioConstraint();
+    protected AspectRatioConstraint cloneWithoutChildren() {
+        AspectRatioConstraint clone = new AspectRatioConstraint();
         clone.AspectRatio = this.AspectRatio;
         clone.DominantAxis = this.DominantAxis;
         return clone;

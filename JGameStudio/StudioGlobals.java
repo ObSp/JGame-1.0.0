@@ -6,7 +6,7 @@ import java.awt.FontFormatException;
 import java.io.File;
 import java.io.IOException;
 
-import JGamePackage.JGame.Classes.UI.Modifiers.UIBorder;
+import JGamePackage.JGame.Classes.Modifiers.BorderEffect;
 
 public class StudioGlobals{
     public static Font GlobalFont;
@@ -24,10 +24,10 @@ public class StudioGlobals{
 
     public static String jsonData = "JGameStudio\\Data\\data.json";
 
-    public static UIBorder GlobalBorder;
+    public static BorderEffect GlobalBorder;
 
     public static void construct() {
-        GlobalBorder = new UIBorder();
+        GlobalBorder = new BorderEffect();
         GlobalBorder.Width = 1;
         GlobalBorder.BorderColor = StudioGlobals.ForegroundColor;
         try {

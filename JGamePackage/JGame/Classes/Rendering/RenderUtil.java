@@ -10,8 +10,8 @@ import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 
 import JGamePackage.JGame.Classes.Instance;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIBorder;
-import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
+import JGamePackage.JGame.Classes.Modifiers.BorderEffect;
+import JGamePackage.JGame.Classes.Modifiers.CornerEffect;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.Constants.Constants.HorizontalTextAlignment;
 import JGamePackage.JGame.Types.Constants.Constants.VerticalTextAlignment;
@@ -21,7 +21,7 @@ public class RenderUtil {
     public static Graphics2D g;
 
     public static void drawRectangle(Instance inst, Vector2 renderSize, Vector2 renderPos, Color color) {
-        UICorner cornerEffect = inst.GetChildOfClass(UICorner.class);
+        CornerEffect cornerEffect = inst.GetChildOfClass(CornerEffect.class);
 
         if (cornerEffect != null) {
             RenderUtil.drawRoundedRect(renderSize, renderPos, color, cornerEffect);
@@ -30,8 +30,8 @@ public class RenderUtil {
         }
     }
 
-    public static void drawRoundedRect(Vector2 size, Vector2 pos, Color color, UICorner corner) {
-        UIBorder borderEffect = corner.GetParent().GetChildOfClass(UIBorder.class);
+    public static void drawRoundedRect(Vector2 size, Vector2 pos, Color color, CornerEffect corner) {
+        BorderEffect borderEffect = corner.GetParent().GetChildOfClass(BorderEffect.class);
 
         double radius = corner.Radius;
         radius *= size.getAxisFromVector2Axis(corner.RelativeTo);
@@ -47,7 +47,7 @@ public class RenderUtil {
     }
 
     public static void drawSharpRect(Vector2 size, Vector2 pos, Color color, Instance inst) {
-        UIBorder borderEffect = inst.GetChildOfClass(UIBorder.class);
+        BorderEffect borderEffect = inst.GetChildOfClass(BorderEffect.class);
 
         if (borderEffect != null) {
             g.setColor(borderEffect.BorderColor);
@@ -59,7 +59,7 @@ public class RenderUtil {
     }
 
     public static void drawImage(Instance inst, Vector2 renderSize, Vector2 renderPos, Image image, boolean pixelPerfect) {
-        UICorner cornerEffect = inst.GetChildOfClass(UICorner.class);
+        CornerEffect cornerEffect = inst.GetChildOfClass(CornerEffect.class);
 
         if (!pixelPerfect) g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
@@ -74,7 +74,7 @@ public class RenderUtil {
         g.drawImage(image, (int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y, null);
     }
 
-    public static void drawRoundImage(Instance inst, Vector2 renderSize, Vector2 renderPos, Image image, UICorner corner) {
+    public static void drawRoundImage(Instance inst, Vector2 renderSize, Vector2 renderPos, Image image, CornerEffect corner) {
         double radius = corner.Radius;
         radius *= renderSize.getAxisFromVector2Axis(corner.RelativeTo);
 

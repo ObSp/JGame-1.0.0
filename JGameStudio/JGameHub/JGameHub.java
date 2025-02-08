@@ -14,6 +14,10 @@ import javax.swing.JFrame;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.Modifiers.AspectRatioConstraint;
+import JGamePackage.JGame.Classes.Modifiers.BorderEffect;
+import JGamePackage.JGame.Classes.Modifiers.CornerEffect;
+import JGamePackage.JGame.Classes.Modifiers.ListLayout;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UIButton;
 import JGamePackage.JGame.Classes.UI.UIFrame;
@@ -21,10 +25,6 @@ import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.UI.UITextButton;
 import JGamePackage.JGame.Classes.UI.UITextInput;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIBorder;
-import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
@@ -156,12 +156,12 @@ public class JGameHub {
         container.AnchorPoint = new Vector2(.5, 0);
         container.BackgroundColor = StudioGlobals.BackgroundColor;
 
-        UIBorder border = new UIBorder();
+        BorderEffect border = new BorderEffect();
         border.BorderColor = StudioGlobals.ForegroundColor;
         border.Width = 1;
         border.SetParent(container);
 
-        UICorner corner = new UICorner();
+        CornerEffect corner = new CornerEffect();
         corner.Radius = .5;
         corner.RelativeTo = Constants.Vector2Axis.Y;
         corner.SetParent(container);
@@ -193,12 +193,12 @@ public class JGameHub {
         create.ZIndex = 2;
         create.HoverColor = create.BackgroundColor.darker();
 
-        UIBorder border = new UIBorder();
+        BorderEffect border = new BorderEffect();
         border.BorderColor = StudioGlobals.ForegroundColor;
         border.Width = 1;
         border.SetParent(create);
 
-        UICorner corner = new UICorner();
+        CornerEffect corner = new CornerEffect();
         corner.Radius = .2;
         corner.RelativeTo = Constants.Vector2Axis.Y;
         corner.SetParent(create);
@@ -271,12 +271,12 @@ public class JGameHub {
         container.Size = UDim2.fromScale(.4, .7);
         container.SetParent(frame);
 
-        UIBorder border = new UIBorder();
+        BorderEffect border = new BorderEffect();
         border.Width = 1;
         border.BorderColor = StudioGlobals.ForegroundColor;
         border.SetParent(container);
 
-        UICorner corner = new UICorner();
+        CornerEffect corner = new CornerEffect();
         corner.Radius = .05;
         corner.SetParent(container);
 
@@ -296,7 +296,7 @@ public class JGameHub {
         nameInput.TextColor = StudioGlobals.TextColor;
         nameInput.SetParent(container);
         
-        UICorner inpCorner = new UICorner();
+        CornerEffect inpCorner = new CornerEffect();
         inpCorner.Radius = .3;
         inpCorner.SetParent(nameInput);
 
@@ -321,7 +321,7 @@ public class JGameHub {
         create.Size = UDim2.fromScale(.8, .1);
         create.AnchorPoint = Vector2.half;
         create.Position = pathToInstallation.Position.add(UDim2.fromScale(0, .2));
-        create.GetChildOfClass(UICorner.class).Radius = inpCorner.Radius;
+        create.GetChildOfClass(CornerEffect.class).Radius = inpCorner.Radius;
         create.SetParent(container);
 
         UITextButton cancel = create.Clone();
@@ -352,7 +352,7 @@ public class JGameHub {
         test.Name = projData.name();
         test.HoverEffectsEnabled = false;
 
-        UICorner corner = new UICorner();
+        CornerEffect corner = new CornerEffect();
         corner.RelativeTo = Constants.Vector2Axis.Y;
         corner.Radius = .5;
         corner.SetParent(test);
@@ -448,7 +448,7 @@ public class JGameHub {
         projectTable.BackgroundTransparency = 1;
         projectTable.Position = UDim2.fromScale(.006, .28);
 
-        UIListLayout layout = new UIListLayout();
+        ListLayout layout = new ListLayout();
         layout.SetParent(projectTable);
 
         reloadProjectTableItems();
@@ -583,7 +583,7 @@ public class JGameHub {
         homeIcon.MouseTargetable = false;
         homeIcon.SetParent(home);
 
-        UIAspectRatioConstraint constraint = new UIAspectRatioConstraint();
+        AspectRatioConstraint constraint = new AspectRatioConstraint();
         constraint.DominantAxis = Constants.Vector2Axis.Y;
         constraint.SetParent(homeIcon);
 
@@ -599,7 +599,7 @@ public class JGameHub {
         homeText.FontSize = 20;
         homeText.SetParent(home);
 
-        UICorner homeCorner = new UICorner();
+        CornerEffect homeCorner = new CornerEffect();
         homeCorner.Radius = .5;
         homeCorner.RelativeTo = Constants.Vector2Axis.Y;
         homeCorner.SetParent(home);
@@ -654,7 +654,7 @@ public class JGameHub {
         list.BackgroundTransparency = 1;
         list.SetParent(container);
 
-        UIListLayout layout = new UIListLayout();
+        ListLayout layout = new ListLayout();
         layout.SetParent(list);
 
         UIButton[] buttons = createNavbarButtons(list);

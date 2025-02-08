@@ -12,13 +12,13 @@ import JGamePackage.JGame.Classes.World.WorldBase;
 public class CreationHandler {
     private static JGame game;
 
-    private static String selected = "Box2D";
+    private static String selectedClass = "Box2D";
 
     private static HashMap<String, Class<? extends Instance>> classes = new HashMap<>();
 
     @SuppressWarnings({"deprecation"})
     public static void createInstance() {
-        if (classes.get(selected) == null) {
+        if (classes.get(selectedClass) == null) {
             classes.put("Box2D", Box2D.class);
         }
 
@@ -29,7 +29,7 @@ public class CreationHandler {
         Instance created;
         
         try {
-            created = classes.get(selected).newInstance();
+            created = classes.get(selectedClass).newInstance();
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | SecurityException e) {
             e.printStackTrace();
             return;
@@ -37,12 +37,14 @@ public class CreationHandler {
 
         if (created instanceof WorldBase) {
             WorldBase c = (WorldBase) created;
+            c.FillColor = ColorManager.getColor();
             c.Position = game.Camera.Position.subtract(c.Size.multiply(.5));
         }
 
-        if (selected != null) {
+        if (parent != null) {
             created.SetParent(parent);
         } else if (created instanceof UIBase) {
+            ((UIBase) created).BackgroundColor = ColorManager.getColor();
             created.SetParent(game.UINode);
         } else {
             created.SetParent(game.WorldNode);

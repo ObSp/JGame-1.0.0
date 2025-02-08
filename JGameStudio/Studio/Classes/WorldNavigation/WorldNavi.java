@@ -3,6 +3,8 @@ package JGameStudio.Studio.Classes.WorldNavigation;
 import java.awt.Cursor;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.World.Box2D;
+import JGamePackage.JGame.Types.PointObjects.Vector2;
 
 public class WorldNavi {
     private JGame game;
@@ -12,7 +14,7 @@ public class WorldNavi {
     private void initScrollBehavior() {
         game.InputService.OnMouseScroll.Connect(dir -> {
             if (game.InputService.IsMouse3Down()) return;
-            double factor = ((double) dir*.15);
+            double factor = ((double) dir*.1);
 
             game.Camera.DepthFactor += factor;
         });
@@ -37,10 +39,19 @@ public class WorldNavi {
         });
     }
 
+    private void initWASDBehavior() {
+        Box2D b = new Box2D();
+        b.SetParent(game.WorldNode);
+        game.TimeService.OnTick.Connect(dt->{
+            game.Camera.Position = game.Camera.Position.add(new Vector2(game.InputService.GetInputHorizontal(), -game.InputService.GetInputVertical()).multiply(5));
+        });
+    }
+
     public WorldNavi() {
         game = JGame.CurrentGame;
 
         initMiddleWheelBehavior();
         initScrollBehavior();
+        initWASDBehavior();
     }
 }

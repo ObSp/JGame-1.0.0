@@ -1,22 +1,22 @@
-package JGamePackage.JGame.Classes.UI.Modifiers;
+package JGamePackage.JGame.Classes.Modifiers;
 
 import java.awt.Color;
 
-public class UIBorder extends UIModifier {
+public class BorderEffect extends Modifier {
     public int Width = 5;
 
     public Color BorderColor = Color.black;
 
     @Override
-    public UIBorder Clone() {
-        UIBorder clone = this.cloneWithoutChildren();
+    public BorderEffect Clone() {
+        BorderEffect clone = this.cloneWithoutChildren();
         this.cloneHierarchyToNewParent(clone);
         return clone;
     }
 
     @Override
-    protected UIBorder cloneWithoutChildren() {
-        UIBorder clone = new UIBorder();
+    protected BorderEffect cloneWithoutChildren() {
+        BorderEffect clone = new BorderEffect();
         clone.Width = this.Width;
         clone.BorderColor = this.BorderColor;
         return clone;

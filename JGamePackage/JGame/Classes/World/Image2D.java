@@ -6,6 +6,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import JGamePackage.JGame.Classes.Rendering.RenderUtil;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
 public class Image2D extends WorldBase {
@@ -16,7 +17,7 @@ public class Image2D extends WorldBase {
 
     private String imagePath = "JGamePackage\\JGame\\Assets\\imageDefault.png";
 
-    public boolean XFlipped = false;
+    public boolean PixelPerfect = false;
 
     public Image2D() {
         SetImage(imagePath);
@@ -39,17 +40,10 @@ public class Image2D extends WorldBase {
         if (!game.Camera.AreBoundsInCameraBounds(renderSize, renderPosition)) return;
 
         if (this.Transparency < 1) {
-            graphics.setColor(this.GetRenderColor());
-
-            graphics.fillRect((int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y);
+            RenderUtil.drawRectangle(this, renderSize, renderPosition, GetRenderColor());
         }
 
-        if (XFlipped){
-            renderSize = new Vector2(-renderSize.X, renderSize.Y);
-            renderPosition = new Vector2(renderPosition.X + Math.abs(renderSize.X), renderPosition.Y);
-        }
-
-        graphics.drawImage(this.Image, (int) renderPosition.X, (int) renderPosition.Y, (int) renderSize.X, (int) renderSize.Y, null);
+        RenderUtil.drawImage(this, renderSize, renderPosition, Image, PixelPerfect);
     }
 
     @Override

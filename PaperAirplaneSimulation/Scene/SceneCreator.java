@@ -3,13 +3,13 @@ package PaperAirplaneSimulation.Scene;
 import java.awt.Color;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.Modifiers.AspectRatioConstraint;
+import JGamePackage.JGame.Classes.Modifiers.CornerEffect;
+import JGamePackage.JGame.Classes.Modifiers.ListLayout;
 import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.UI.UITextInput;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
-import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
 import JGamePackage.JGame.Classes.World.Box2D;
 import JGamePackage.JGame.Classes.World.Image2D;
 import JGamePackage.JGame.Types.Constants.Constants;
@@ -53,7 +53,7 @@ public class SceneCreator {
         cam.Name = "CamButton";
         cam.SetParent(game.UINode);
 
-        new UIAspectRatioConstraint().SetParent(cam);
+        new AspectRatioConstraint().SetParent(cam);
 
         UIImage settings = cam.Clone();
         settings.SetImage("PaperAirplaneSimulation\\Assets\\Settings.png");
@@ -61,7 +61,7 @@ public class SceneCreator {
         settings.Name = "Settings";
         settings.SetParent(game.UINode);
 
-        UIAspectRatioConstraint camConstraint = new UIAspectRatioConstraint();
+        AspectRatioConstraint camConstraint = new AspectRatioConstraint();
         camConstraint.SetParent(cam);
 
         UIFrame settingsFrame = new UIFrame();
@@ -73,7 +73,7 @@ public class SceneCreator {
         settingsFrame.Name = "SettingsFrame";
         settingsFrame.SetParent(game.UINode);
 
-        UIListLayout layout =  new UIListLayout();
+        ListLayout layout =  new ListLayout();
         layout.Padding = UDim2.fromScale(0, .02);
         layout.SetParent(settingsFrame);
 
@@ -108,7 +108,7 @@ public class SceneCreator {
         throwHeightInput.Size = UDim2.fromScale(.3, 1);
         throwHeightInput.SetParent(throwHeight);
 
-        UICorner throwHeightCorner = new UICorner();
+        CornerEffect throwHeightCorner = new CornerEffect();
         throwHeightCorner.RelativeTo = Constants.Vector2Axis.Y;
         throwHeightCorner.Radius = .4;
         throwHeightCorner.SetParent(throwHeightInput);
@@ -145,7 +145,7 @@ public class SceneCreator {
         start.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Center;
         start.SetParent(game.UINode);
 
-        UICorner corner = new UICorner();
+        CornerEffect corner = new CornerEffect();
         corner.SetParent(start);
 
         start.MouseEnter.Connect(()->{

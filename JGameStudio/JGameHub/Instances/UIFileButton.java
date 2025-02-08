@@ -4,10 +4,10 @@ import java.awt.Font;
 
 import javax.swing.JFileChooser;
 
+import JGamePackage.JGame.Classes.Modifiers.BorderEffect;
+import JGamePackage.JGame.Classes.Modifiers.CornerEffect;
 import JGamePackage.JGame.Classes.UI.UIButton;
 import JGamePackage.JGame.Classes.UI.UIText;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIBorder;
-import JGamePackage.JGame.Classes.UI.Modifiers.UICorner;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.lib.Signal.Signal;
@@ -31,12 +31,12 @@ public class UIFileButton extends UIButton {
         this.BackgroundColor = StudioGlobals.BackgroundColor.darker();
         this.HoverColor = StudioGlobals.BackgroundColor.brighter();
 
-        UIBorder border = new UIBorder();
+        BorderEffect border = new BorderEffect();
         border.BorderColor = StudioGlobals.ForegroundColor;
         border.Width = 1;
         border.SetParent(this);
 
-        UICorner corner = new UICorner();
+        CornerEffect corner = new CornerEffect();
         corner.Radius = .3;
         corner.SetParent(this);
 

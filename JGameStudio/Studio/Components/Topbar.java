@@ -4,17 +4,22 @@ import java.awt.Color;
 
 import javax.swing.JColorChooser;
 
+import JGamePackage.JGame.Classes.Instance;
+import JGamePackage.JGame.Classes.Modifiers.AspectRatioConstraint;
+import JGamePackage.JGame.Classes.Modifiers.ListLayout;
+import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UIButton;
 import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Classes.UI.UIText;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIAspectRatioConstraint;
-import JGamePackage.JGame.Classes.UI.Modifiers.UIListLayout;
+import JGamePackage.JGame.Classes.World.WorldBase;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGameStudio.StudioGlobals;
+import JGameStudio.Studio.Modules.ColorManager;
 import JGameStudio.Studio.Modules.CreationHandler;
+import JGameStudio.Studio.Modules.Selection;
 
 public class Topbar extends UIFrame {
 
@@ -37,7 +42,7 @@ public class Topbar extends UIFrame {
         container.BackgroundColor = StudioGlobals.BackgroundColor;
         container.SetParent(this);
 
-        UIListLayout list = new UIListLayout();
+        ListLayout list = new ListLayout();
         list.Padding = UDim2.zero;
         list.ItemAlignment = Constants.ListAlignment.Horizontal;
         list.SetParent(container);
@@ -69,7 +74,7 @@ public class Topbar extends UIFrame {
         createImage.MouseTargetable = false;
         createImage.SetParent(createInstance);
 
-        UIAspectRatioConstraint aspect = new UIAspectRatioConstraint();
+        AspectRatioConstraint aspect = new AspectRatioConstraint();
         aspect.DominantAxis = Constants.Vector2Axis.X;
         aspect.SetParent(createImage);
 
@@ -100,11 +105,11 @@ public class Topbar extends UIFrame {
         colorFrame.Size = UDim2.fromScale(.53, .5);
         colorFrame.AnchorPoint = new Vector2(.5, 0);
         colorFrame.Position = UDim2.fromScale(.5, .17);
-        colorFrame.BackgroundColor = Color.red;
+        colorFrame.BackgroundColor = ColorManager.getColor();
         colorFrame.MouseTargetable = false;
         colorFrame.SetParent(setColor);
 
-        UIAspectRatioConstraint colorAspect = new UIAspectRatioConstraint();
+        AspectRatioConstraint colorAspect = new AspectRatioConstraint();
         colorAspect.DominantAxis = Constants.Vector2Axis.X;
         colorAspect.SetParent(colorFrame);
 
@@ -113,11 +118,26 @@ public class Topbar extends UIFrame {
         setColor.Mouse1Down.Connect(()->{
             Color chosen = JColorChooser.showDialog(game.GetWindow(), "Pick Color", colorFrame.BackgroundColor);
             if (chosen == null) return;
-            colorFrame.BackgroundColor = chosen;
+            ColorManager.setColor(chosen);
+        });
+
+        setColor.Mouse2Down.Connect(()->{
+            Color c = ColorManager.getColor();
+            for (Instance v : Selection.get()) {
+                if (v instanceof WorldBase) {
+                    ((WorldBase) v).FillColor = c;
+                } else if (v instanceof UIBase) {
+                    ((UIBase) v).BackgroundColor = c;
+                }
+            }
         });
 
         createInstance.Mouse1Down.Connect(()-> {
             CreationHandler.createInstance();
+        });
+
+        ColorManager.ColorChanged.Connect(newColor ->{
+            colorFrame.BackgroundColor = newColor;
         });
     }
 
@@ -141,7 +161,7 @@ public class Topbar extends UIFrame {
 
         StudioGlobals.GlobalBorder.Clone().SetParent(container);
 
-        UIListLayout list = new UIListLayout();
+        ListLayout list = new ListLayout();
         list.Padding = UDim2.zero;
         list.SetParent(container);
 
@@ -160,7 +180,7 @@ public class Topbar extends UIFrame {
         saveFileImg.SetImage("JGameStudio\\Assets\\Icons\\Save.png", new Vector2(32));
         saveFileImg.SetParent(saveFile);
 
-        new UIAspectRatioConstraint().SetParent(saveFileImg);
+        new AspectRatioConstraint().SetParent(saveFileImg);
 
         UIText saveFileText = new UIText();
         saveFileText.BackgroundTransparency = 1;
@@ -205,7 +225,7 @@ public class Topbar extends UIFrame {
 
         StudioGlobals.GlobalBorder.Clone().SetParent(container);
 
-        UIListLayout layout = new UIListLayout();
+        ListLayout layout = new ListLayout();
         layout.ItemAlignment = Constants.ListAlignment.Horizontal;
         layout.Padding = UDim2.zero;
         layout.SetParent(container);
@@ -225,7 +245,7 @@ public class Topbar extends UIFrame {
         dragImage.MouseTargetable = false;
         dragImage.SetParent(dragButton);
 
-        UIAspectRatioConstraint aspect = new UIAspectRatioConstraint();
+        AspectRatioConstraint aspect = new AspectRatioConstraint();
         aspect.DominantAxis = Constants.Vector2Axis.X;
         aspect.SetParent(dragImage);
 
