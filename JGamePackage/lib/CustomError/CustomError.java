@@ -70,4 +70,8 @@ public class CustomError {
     public void Throw(){
         this.Throw(new String[0]);
     }
+
+    public void Throw(String s) {
+        this.Throw(new String[] {s});
+    }
 }

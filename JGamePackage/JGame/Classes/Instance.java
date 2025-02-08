@@ -20,6 +20,8 @@ public abstract class Instance {
     private static CustomError ErrorNoJGame = new CustomError("A JGame must be running in order to create JGame instances.", CustomError.ERROR, "JGamePackage");
     private static CustomError WarningNullClone = new CustomError("The method Clone() is unimplemented for the class %s.", CustomError.WARNING, "JGamePackage");
 
+    protected static CustomError ErrorCloneFailed = new CustomError("The method of %s.Clone() has failed: %s.", CustomError.ERROR, "JGamePackage");
+
     /**A non-unique identifier that can be used to access this instance through its parent.
      * 
      */
@@ -290,6 +292,8 @@ public abstract class Instance {
     }
     
     private static void duplicateChildren(Instance from, Instance to) {
+        to.cprops = new HashMap<>(from.cprops);
+        to.Name = from.Name;
         for (Instance child : from.GetChildren()) {
             Instance clone = child.cloneWithoutChildren();
             if (clone == null) {
