@@ -64,12 +64,12 @@ public abstract class Instance {
     protected JGame game;
 
     //--HIERARCHY VARS--//
-    protected ArrayList<Instance> children = new ArrayList<>();
-    protected Instance parent;
-    protected boolean parentLocked = false;
+    private ArrayList<Instance> children = new ArrayList<>();
+    private Instance parent;
+    private boolean parentLocked = false;
 
     //--Custom Properties--//
-    protected Map<String, Object> cprops = new HashMap<>();
+    private Map<String, Object> cprops = new HashMap<>();
 
     //--UTIL--//
     private Instance[] instanceListToArray(ArrayList<Instance> list){

@@ -2,7 +2,11 @@ package JGamePackage.JGame.Classes.Scripts;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class Script extends ScriptBase {
+public abstract class Script extends ScriptBase {
+
+    public void Start() {}
+
+    public void Tick() {}
 
     @Override
     public Script Clone() {
