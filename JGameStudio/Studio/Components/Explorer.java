@@ -12,6 +12,7 @@ import JGamePackage.JGame.Classes.Modifiers.ListLayout;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIImage;
+import JGamePackage.JGame.Classes.UI.UIImageButton;
 import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.UI.UITextInput;
 import JGamePackage.JGame.Types.Constants.Constants;
@@ -25,6 +26,8 @@ public class Explorer extends UIFrame {
 
     public UITextInput filter;
     public UIFrame listFrame;
+
+    private UIImageButton plusButton;
 
     private Set<String> ignoredClasses = Set.of("Sidebar", "Topbar", "DisplayWindow", "SelectionBorder");
 
@@ -82,8 +85,13 @@ public class Explorer extends UIFrame {
 
         this.AddInstance(game.WorldNode);
         this.AddInstance(game.UINode);
+        this.AddInstance(game.ScriptNode);
         this.AddInstance(game.StorageNode);
         this.AddInstance(game.Camera);
+    }
+
+    private void createPlusButton() {
+        plusButton = new UIImageButton();
     }
 
     private UIFrame createInstanceFrame(Instance obj) {

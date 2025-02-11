@@ -22,7 +22,7 @@ public class Selection {
     }
 
     public static Instance getFirst() {
-        return selection.size() > 0 ? selection.getFirst() : null;
+        return selection.size() > 0 ? selection.get(0) : null;
     }
 
     public static void add(Instance e) {

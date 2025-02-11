@@ -50,7 +50,7 @@ public class Studio {
 
         FlatDarculaLaf.setup();
 
-        game = new JGame(new StartParams(false));
+        game = new JGame(new StartParams(false, false));
 
         if (path != null) {
             projectData = ProjectHandler.ReadProjectDir(path);

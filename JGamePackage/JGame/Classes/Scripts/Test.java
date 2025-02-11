@@ -1,7 +1,12 @@
 package JGamePackage.JGame.Classes.Scripts;
 
-public class Test extends Script {
+import JGamePackage.JGame.Classes.Scripts.Writable.WritableScript;
+
+public class Test extends WritableScript {
 
 
-
+    @Override
+    public void Start() {
+        
+    }
 }

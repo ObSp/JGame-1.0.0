@@ -709,7 +709,7 @@ public class JGameHub {
     public JGameHub() {
         FlatDarculaLaf.setup();
 
-        game = new JGame(new StartParams(false));
+        game = new JGame(new StartParams(false, false));
         StudioUtil.game = game;
         StudioGlobals.construct();
 

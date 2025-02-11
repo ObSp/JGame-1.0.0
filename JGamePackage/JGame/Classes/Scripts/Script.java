@@ -2,11 +2,22 @@ package JGamePackage.JGame.Classes.Scripts;
 
 import java.lang.reflect.InvocationTargetException;
 
+import JGamePackage.JGame.Classes.Scripts.Writable.WritableScript;
+
 public abstract class Script extends ScriptBase {
+    private Class<? extends WritableScript> writableClass;
+    
+    public Script(Class<? extends WritableScript> writableClass) {
+        this.writableClass = writableClass;
+    }
 
-    public void Start() {}
+    public Class<? extends WritableScript> GetWritableClass() {
+        return writableClass;
+    }
 
-    public void Tick() {}
+    public void SetWritableClass(Class<? extends WritableScript> writableClass) {
+        this.writableClass = writableClass;
+    }
 
     @Override
     public Script Clone() {

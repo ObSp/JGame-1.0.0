@@ -4,11 +4,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import JGamePackage.JGame.Classes.Misc.Camera;
+import JGamePackage.JGame.Classes.Misc.ScriptNode;
 import JGamePackage.JGame.Classes.Misc.StorageNode;
 import JGamePackage.JGame.Classes.Misc.UINode;
 import JGamePackage.JGame.Classes.Misc.WorldNode;
 import JGamePackage.JGame.Classes.Rendering.Renderer;
 import JGamePackage.JGame.Classes.Services.InputService;
+import JGamePackage.JGame.Classes.Services.ScriptService;
 import JGamePackage.JGame.Classes.Services.TimeService;
 import JGamePackage.JGame.Classes.Services.WindowService;
 import JGamePackage.JGame.Types.Services.ServiceContainer;
@@ -28,6 +30,7 @@ public class JGame {
     public final WorldNode WorldNode;
     public final UINode UINode;
     public final StorageNode StorageNode;
+    public final ScriptNode ScriptNode;
 
     //--SIGNALS--//
     private Signal<Double> ontick = new Signal<>();
@@ -39,6 +42,7 @@ public class JGame {
     public final InputService InputService;
     public final TimeService TimeService;
     public final WindowService WindowService;
+    public final ScriptService ScriptService;
 
     //--CAMERA--//
     public Camera Camera;
@@ -62,13 +66,15 @@ public class JGame {
         WorldNode = new WorldNode();
         UINode = new UINode();
         StorageNode = new StorageNode();
+        ScriptNode = new ScriptNode();
 
         gameWindow = new JFrame("JGame");
 
-        Services = new ServiceContainer(servicesOnTick);
+        Services = new ServiceContainer(servicesOnTick, params);
         InputService = Services.InputService;
         TimeService = Services.TimeService;
         WindowService = Services.WindowService;
+        ScriptService = Services.ScriptService;
 
         renderer = new Renderer(this);
         Camera = new Camera();
