@@ -2,6 +2,8 @@ package JGameStudio.Studio.Modules;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.Instance;
+import JGamePackage.JGame.Types.PointObjects.UDim2;
+import JGamePackage.JGame.Types.PointObjects.Vector2;
 
 public class Util {
     private static JGame game = JGame.CurrentGame;
@@ -12,5 +14,15 @@ public class Util {
         Instance sideBar = game.UINode.GetChild("Sidebar");
 
         return e.IsDescendantOf(topbar) || e.IsDescendantOf(sideBar);
+    }
+
+    public static boolean shouldUseScaleForUDim2Transformations(UDim2 point) {
+        UDim2 scaleUD = point.ToScale();
+        UDim2 absoluteUD = point.ToAbsolute();
+
+        Vector2 scaleVec = scaleUD.ToVector2(game.WindowService.GetWindowSize());
+        Vector2 absoluteVec = new Vector2(absoluteUD.X.Absolute, absoluteUD.Y.Absolute);
+
+        return scaleVec.magnitude() > absoluteVec.magnitude();
     }
 }

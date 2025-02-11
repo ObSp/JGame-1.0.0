@@ -3,6 +3,7 @@ package JGameStudio.Studio.Components;
 import java.awt.Color;
 
 import JGamePackage.JGame.Classes.UI.UIFrame;
+import JGamePackage.JGame.Classes.World.Box2D;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 
 public class DisplayWindow extends UIFrame {
@@ -19,5 +20,11 @@ public class DisplayWindow extends UIFrame {
             double width = game.WindowService.GetWindowWidth();
             this.Size = UDim2.fromScale((width-350)/width, this.Size.Y.Scale);
         });
+
+        Box2D b = new Box2D();
+        b.SetParent(game.WorldNode);
+
+        UIFrame f = new UIFrame();
+        f.SetParent(this);
     }
 }

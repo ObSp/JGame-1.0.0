@@ -10,6 +10,7 @@ import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
 import JGameStudio.ProjectHandler.ProjectHandler;
 import JGameStudio.ProjectHandler.ProjectHandler.ProjectData;
+import JGameStudio.Studio.Classes.KeyboardBehavior.KeyboardBehaviour;
 import JGameStudio.Studio.Classes.Modes.ModeHandler;
 import JGameStudio.Studio.Classes.MouseBehavior.MouseBehaviorHandler;
 import JGameStudio.Studio.Classes.WorldNavigation.WorldNavi;
@@ -72,6 +73,7 @@ public class Studio {
 
         worldNavi = new WorldNavi();
         mouseHandler = new MouseBehaviorHandler();
+        new KeyboardBehaviour(game);
 
         modeHandler = new ModeHandler();
     }

@@ -5,10 +5,13 @@ import java.util.Arrays;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.Instance;
+import JGamePackage.JGame.Classes.Modifiers.BorderEffect;
+import JGamePackage.JGame.Classes.Rendering.Renderable;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.World.WorldBase;
 import JGameStudio.Studio.Components.DisplayWindow;
 import JGameStudio.Studio.Components.Explorer;
+import JGameStudio.Studio.Instances.SelectionBorder;
 import JGameStudio.Studio.Modules.Selection;
 
 public class MouseBehaviorHandler {
@@ -24,7 +27,9 @@ public class MouseBehaviorHandler {
                 Selection.add(v);
             }
         } else {
-            Selection.set(v);
+            if (!Selection.contains(v)) {
+                Selection.set(v);
+            }
         }
     }
 
@@ -53,14 +58,32 @@ public class MouseBehaviorHandler {
                 return;
             }
 
-            System.out.println("select ui");
+           
             selectInstance(uiTarget);
+        });
+    }
+
+    private void initInstanceBorderOnSelection() {
+        Selection.InstanceSelected.Connect((instance) -> {
+            if (!(instance instanceof Renderable)) return;
+
+            new SelectionBorder().SetParent(instance);
+        });
+
+        Selection.InstanceDeselected.Connect((instance) -> {
+            if (!(instance instanceof Renderable)) return;
+
+            BorderEffect border = instance.GetChildOfClass(BorderEffect.class);
+            if (border != null) {
+                border.Destroy();
+            }
         });
     }
 
     public MouseBehaviorHandler() {
         game = JGame.CurrentGame;
 
+        initInstanceBorderOnSelection();
         initMouseSelection();
     }
 }

@@ -70,6 +70,8 @@ public class JGame {
 
         gameWindow = new JFrame("JGame");
 
+        Camera = new Camera();
+
         Services = new ServiceContainer(servicesOnTick, params);
         InputService = Services.InputService;
         TimeService = Services.TimeService;
@@ -77,7 +79,6 @@ public class JGame {
         ScriptService = Services.ScriptService;
 
         renderer = new Renderer(this);
-        Camera = new Camera();
 
         Promise.await(this.start(params));
     }

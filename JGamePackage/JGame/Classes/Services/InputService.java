@@ -65,6 +65,9 @@ public class InputService extends Service {
     private Vector2 lastMousePos;
     private Vector2 curMousePos;
 
+    private Vector2 lastMouseWorldPos;
+    private Vector2 curMouseWorldPos;
+
 
     private boolean isMouse1Down = false;
     private boolean isMouse2Down = false;
@@ -227,6 +230,9 @@ public class InputService extends Service {
             lastMousePos = curMousePos;
             curMousePos = GetMousePosition();
 
+            lastMouseWorldPos = curMouseWorldPos;
+            curMouseWorldPos = GetMouseWorldPosition();
+
             if (lastMousePos == null) lastMousePos = curMousePos;
 
             UIBase newTarget = GetMouseUITarget();
@@ -317,6 +323,10 @@ public class InputService extends Service {
         return curMousePos.subtract(lastMousePos);
     }
 
+    public Vector2 GetMouseWorldDelta() {
+        return curMouseWorldPos.subtract(lastMouseWorldPos);
+    }
+
     public Vector2 GetMousePosition() {
         boolean fullscreen = game.Services.WindowService.IsFullscreen();
 
@@ -337,9 +347,17 @@ public class InputService extends Service {
                 continue;
             }
 
-            if (v.ZIndex > curTarget.ZIndex || v.GetAncestors().length > curTarget.GetAncestors().length) {
+            if (v.ZIndex > curTarget.ZIndex) {
+                curTarget = v;
+            } else if (v.GetParent() == curTarget.GetParent() ) {
+                if (v.GetHierarchyDepthInParent() > curTarget.GetHierarchyDepthInParent()) {
+                    curTarget = v;
+                }
+            } else if (v.GetAncestors().length > curTarget.GetAncestors().length) {
                 curTarget = v;
             }
+
+            
         }
         return curTarget;
     }
@@ -400,7 +418,13 @@ public class InputService extends Service {
                 continue;
             }
 
-            if (v.ZIndex > curTarget.ZIndex || v.GetAncestors().length > curTarget.GetAncestors().length) {
+            if (v.ZIndex > curTarget.ZIndex) {
+                curTarget = v;
+            } else if (v.GetParent() == curTarget.GetParent() ) {
+                if (v.GetHierarchyDepthInParent() > curTarget.GetHierarchyDepthInParent()) {
+                    curTarget = v;
+                }
+            } else if (v.GetAncestors().length > curTarget.GetAncestors().length) {
                 curTarget = v;
             }
         }

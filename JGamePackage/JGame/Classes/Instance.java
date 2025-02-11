@@ -234,6 +234,22 @@ public abstract class Instance {
         }
     }
 
+    /**Returns the "depth" a.k.a the index of this instance in the list of the parent's children,
+     * returning -1 if the current parent is null
+     * 
+     * @return The depth in the hierarchy of the parent
+     */
+    public int GetHierarchyDepthInParent() {
+        if (GetParent() == null) return -1;
+        Instance[] parentChildren = GetParent().GetChildren();
+
+        for (int i = 0; i < parentChildren.length; i++) {
+            if (parentChildren[i] == this) return i;
+        }
+
+        return -1; //will never reach this due to prechecks
+    }
+
     protected void AddChild(Instance child) {
         children.add(child);
         childAddedSignal.Fire(child);
