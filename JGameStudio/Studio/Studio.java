@@ -37,10 +37,11 @@ public class Studio {
 
     private void initComponents() {
         displayWindow = new DisplayWindow();
+        displayWindow.SetParent(game.UINode);
+        
         sideBar = new Sidebar();
         topBar = new Topbar();
 
-        displayWindow.SetParent(game.UINode);
         sideBar.SetParent(game.UINode);
         topBar.SetParent(game.UINode);
     }

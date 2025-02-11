@@ -387,6 +387,10 @@ public class InputService extends Service {
         selectedUIInput = input;
     }
 
+    public boolean IsTyping() {
+        return GetFocusedUITextInput() != null;
+    }
+
     private boolean isUIItemVisible(UIBase uiBase) {
         if (!uiBase.Visible) return false;
 

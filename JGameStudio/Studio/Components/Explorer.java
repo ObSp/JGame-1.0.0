@@ -29,7 +29,7 @@ public class Explorer extends UIFrame {
 
     private UIImageButton plusButton;
 
-    private Set<String> ignoredClasses = Set.of("Sidebar", "Topbar", "DisplayWindow", "SelectionBorder");
+    private Set<String> ignoredClasses = Set.of("Sidebar", "Topbar", "SelectionBorder");
 
     private ArrayList<Instance> trackedInstances = new ArrayList<>();
     private ArrayList<Instance> trackedBoxes = new ArrayList<>();
@@ -84,7 +84,7 @@ public class Explorer extends UIFrame {
         });
 
         this.AddInstance(game.WorldNode);
-        this.AddInstance(game.UINode);
+        this.AddInstanceAs(game.UINode.GetChildOfClass(DisplayWindow.class), "UINode", "UINode");
         this.AddInstance(game.ScriptNode);
         this.AddInstance(game.StorageNode);
         this.AddInstance(game.Camera);
@@ -94,7 +94,7 @@ public class Explorer extends UIFrame {
         plusButton = new UIImageButton();
     }
 
-    private UIFrame createInstanceFrame(Instance obj) {
+    private UIFrame createInstanceFrame(Instance obj, String displayText, String className) {
         if (ignoredClasses.contains(obj.getClass().getSimpleName())) return null;
 
         UIFrame absoluteContainer = new UIFrame();
@@ -122,7 +122,7 @@ public class Explorer extends UIFrame {
         frame.BackgroundColor = StudioGlobals.BlueColor;
         frame.SetParent(absoluteContainer);
 
-        File imageIconFile = new File("JGameStudio\\Assets\\InstanceIcons\\"+obj.getClass().getSimpleName()+".png");
+        File imageIconFile = new File("JGameStudio\\Assets\\InstanceIcons\\"+className+".png");
         if (!imageIconFile.exists()) {
             imageIconFile = new File("JGameStudio\\Assets\\InstanceIcons\\UNKNOWN.png");
         }
@@ -141,7 +141,7 @@ public class Explorer extends UIFrame {
         UIText name = new UIText();
         name.Size = UDim2.fromScale(.9, 1);
         name.Position = UDim2.fromScale(.1, 0);
-        name.Text = obj.Name;
+        name.Text = displayText;
         name.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
         name.BackgroundTransparency = 1;
         name.TextColor = StudioGlobals.TextColor;
@@ -160,7 +160,7 @@ public class Explorer extends UIFrame {
         arrow.Visible = obj.GetChildren().length > 0;
 
         for (Instance c : obj.GetChildren()) {
-            UIFrame objFrame = createInstanceFrame(c);
+            UIFrame objFrame = createInstanceFrame(c, c.Name, c.getClass().getSimpleName());
             if (objFrame == null) return null;
             childrenFrame.Size = childrenFrame.Size.add(UDim2.fromAbsolute(0, objFrame.Size.Y.Absolute));
             objFrame.SetParent(childrenFrame);
@@ -216,7 +216,7 @@ public class Explorer extends UIFrame {
         obj.ChildAdded.Connect(inst ->{
             if (trackedInstances.contains(inst)) return;
 
-            UIFrame objFrame = createInstanceFrame(inst);
+            UIFrame objFrame = createInstanceFrame(inst, inst.Name, inst.getClass().getSimpleName());
             if (objFrame == null) return;
             childrenFrame.Size = childrenFrame.Size.add(UDim2.fromAbsolute(0, objFrame.Size.Y.Absolute));
             objFrame.SetParent(childrenFrame);
@@ -252,7 +252,15 @@ public class Explorer extends UIFrame {
     }
 
     public void AddInstance(Instance obj) {
-        UIFrame container = createInstanceFrame(obj);
+        UIFrame container = createInstanceFrame(obj, obj.Name, obj.getClass().getSimpleName());
+
+        trackedInstances.add(obj);
+
+        container.SetParent(listFrame);
+    }
+
+    public void AddInstanceAs(Instance obj, String name, String className) {
+        UIFrame container = createInstanceFrame(obj, name, className);
 
         trackedInstances.add(obj);
 
