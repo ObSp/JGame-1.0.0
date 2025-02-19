@@ -46,6 +46,11 @@ public abstract class UIBase extends Renderable {
      */
     public boolean Visible = true;
 
+    /**If true, creates a clipping area the size of this UIBase, such that it cuts of any pixels outside of the clipping area.
+     * 
+     */
+    public boolean ClipsDescendants = false;
+
     /**Whether or not the object can be detected as the current mouse target.
      * If set to false, the mouse will ignore this object, effectively making it
      * "pass through."
@@ -63,14 +68,18 @@ public abstract class UIBase extends Renderable {
             return realPos = Position.ToVector2(game.Services.WindowService.GetWindowSize()).subtract(GetAnchorPointOffset());
 
         ListLayout layout = parentInstance.GetChildOfClass(ListLayout.class);
+        Vector2 scrollOffset = Vector2.zero;
+        if (parentInstance instanceof UIScrollFrame) {
+            scrollOffset = ((UIScrollFrame) parentInstance).ScrollOffset;
+        }
 
         if (layout != null) {
-            realPos = UIBaseInternal.computePositionWithUIList(this, layout, game);
+            realPos = UIBaseInternal.computePositionWithUIList(this, layout, game, scrollOffset);
         } else {
             if (!(parentInstance instanceof UIBase)) {
                 realPos = Position.ToVector2(game.Services.WindowService.GetWindowSize()).subtract(GetAnchorPointOffset());
             } else {
-                realPos = Position.ToVector2(((UIBase) parentInstance).GetAbsoluteSize()).add(((UIBase) parentInstance).GetAbsolutePosition()).subtract(GetAnchorPointOffset());
+                realPos = Position.ToVector2(((UIBase) parentInstance).GetAbsoluteSize()).add(((UIBase) parentInstance).GetAbsolutePosition()).subtract(GetAnchorPointOffset()).add(scrollOffset);
             }
         }
 

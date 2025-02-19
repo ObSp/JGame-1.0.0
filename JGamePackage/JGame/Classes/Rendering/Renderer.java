@@ -71,8 +71,16 @@ public class Renderer extends JPanel {
             //rotation
             child.render(g);
 
+            if (child.ClipsDescendants) {
+                g.setClip((int) renderPos.X, (int) renderPos.Y, (int) renderSize.X, (int) renderSize.Y);
+            }
+
             g.setTransform(previous);
             renderUIRecursive(child.GetChildrenOfClass(UIBase.class), g);
+
+            if (child.ClipsDescendants) {
+                g.setClip(null);
+            }
         }
     }
 

@@ -12,7 +12,7 @@ import JGamePackage.JGame.Types.PointObjects.Vector2;
 
 public class UIBaseInternal {
 
-    public static Vector2 computePositionWithUIList(UIBase inst, ListLayout layout, JGame game) {
+    public static Vector2 computePositionWithUIList(UIBase inst, ListLayout layout, JGame game, Vector2 offset) {
         UIBase[] childrenOfClass = inst.GetParent().GetChildrenOfClass(UIBase.class);
         Vector2 paddingVec2 = layout.Padding.ToVector2(game.Services.WindowService.GetWindowSize());
         boolean isHorizontal = layout.ItemAlignment == Constants.ListAlignment.Horizontal;
@@ -30,7 +30,7 @@ public class UIBaseInternal {
         }
 
         if (posInChildren == 0) {
-            return ((UIBase) inst.GetParent()).GetAbsolutePosition().subtract(inst.GetAnchorPointOffset());
+            return ((UIBase) inst.GetParent()).GetAbsolutePosition().subtract(offset.multiply(2)).subtract(inst.GetAnchorPointOffset());
         } else {
             UIBase childBefore = childrenOfClass[posInChildren - 1];
             Vector2 absSize = childBefore.GetAbsoluteSize();

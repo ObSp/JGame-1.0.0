@@ -90,7 +90,7 @@ public class InputService extends Service {
                         selectedUIInput.Text =  selectedUIInput.Text.length() > 0 ? selectedUIInput.Text.substring(0, selectedUIInput.Text.length()-1) : "";
                         selectedUIInput.TextUpdated.Fire();
                     } else if (code == KeyEvent.VK_ENTER) {
-                        selectedUIInput = null;
+                        SetFocusedUITextInput(null);
                     } else if (Character.isLetterOrDigit(keyChar) || Pattern.matches("\\p{Punct}", new String(new char[] {keyChar})) || code == KeyEvent.VK_SPACE){
                         selectedUIInput.Text += e.getKeyChar();
                         selectedUIInput.TextUpdated.Fire();
@@ -132,7 +132,7 @@ public class InputService extends Service {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1){
-                    selectedUIInput = null;
+                    SetFocusedUITextInput(null);
 
                     isMouse1Down = true;
                     onclick1.Fire();
@@ -384,7 +384,10 @@ public class InputService extends Service {
     }
 
     public void SetFocusedUITextInput(UITextInput input) {
+        if (selectedUIInput != null) selectedUIInput.FocusChanged.Fire(false);
         selectedUIInput = input;
+        if (input == null) return;
+        selectedUIInput.FocusChanged.Fire(true);
     }
 
     public boolean IsTyping() {

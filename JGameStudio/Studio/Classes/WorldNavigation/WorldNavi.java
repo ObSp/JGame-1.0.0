@@ -40,6 +40,7 @@ public class WorldNavi {
 
     private void initWASDBehavior() {
         game.TimeService.OnTick.Connect(dt->{
+            if (game.InputService.IsTyping()) return;
             game.Camera.Position = game.Camera.Position.add(new Vector2(game.InputService.GetInputHorizontal(), -game.InputService.GetInputVertical()).multiply(5));
         });
     }

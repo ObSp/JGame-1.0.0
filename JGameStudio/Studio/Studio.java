@@ -17,6 +17,7 @@ import JGameStudio.Studio.Classes.WorldNavigation.WorldNavi;
 import JGameStudio.Studio.Components.DisplayWindow;
 import JGameStudio.Studio.Components.Sidebar;
 import JGameStudio.Studio.Components.Topbar;
+import JGameStudio.Studio.Instances.InsertMenu;
 import JGameStudio.Studio.Pages.Init;
 
 public class Studio {
@@ -34,6 +35,8 @@ public class Studio {
     private MouseBehaviorHandler mouseHandler;
 
     private ModeHandler modeHandler;
+
+    InsertMenu insertMenu;
 
     private void initComponents() {
         displayWindow = new DisplayWindow();
@@ -75,6 +78,8 @@ public class Studio {
         worldNavi = new WorldNavi();
         mouseHandler = new MouseBehaviorHandler();
         new KeyboardBehaviour(game);
+
+        insertMenu = new InsertMenu(sideBar);
 
         modeHandler = new ModeHandler();
     }
