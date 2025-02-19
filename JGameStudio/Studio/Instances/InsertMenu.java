@@ -1,11 +1,9 @@
 package JGameStudio.Studio.Instances;
 
-import java.awt.Color;
-
+import JGamePackage.JGame.Classes.Modifiers.ListLayout;
 import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIScrollFrame;
 import JGamePackage.JGame.Classes.UI.UITextInput;
-import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGameStudio.StudioGlobals;
@@ -43,7 +41,21 @@ public class InsertMenu extends UIFrame {
         });
 
         UIScrollFrame list = new UIScrollFrame();
-        list.Position = UDim2.fromAbsolute(0, 30);
+        list.Position = UDim2.fromAbsolute(0, 40);
+        list.Size = UDim2.fromScale(1, .85);
+        list.BackgroundTransparency = 1;
+        list.SetParent(this);
+
+        ListLayout listLayout = new ListLayout();
+        listLayout.Padding = UDim2.zero;
+        listLayout.SetParent(list);
+
+        for (int i = 0; i < 100; i++) {
+            UIFrame frame = new UIFrame();
+            frame.Size = UDim2.fromScale(1, .1);
+            frame.BackgroundColor = StudioGlobals.BackgroundColor.brighter();
+            frame.SetParent(listLayout);
+        }
         
 
         StudioGlobals.GlobalBorder.SetParent(this);
