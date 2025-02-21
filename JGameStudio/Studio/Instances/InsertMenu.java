@@ -1,5 +1,7 @@
 package JGameStudio.Studio.Instances;
 
+import java.awt.Color;
+
 import JGamePackage.JGame.Classes.Modifiers.ListLayout;
 import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIScrollFrame;
@@ -16,7 +18,7 @@ public class InsertMenu extends UIFrame {
         this.SetParent(sidebar);
 
         this.Position = UDim2.fromAbsolute(0, 100);
-        this.Size = UDim2.fromScale(.7, .3);
+        this.Size = UDim2.fromScale(.7, 0).add(UDim2.fromAbsolute(0, 250));
         this.BackgroundColor = StudioGlobals.BackgroundColor;
         this.ClipsDescendants = true;
         this.ZIndex = 100;
@@ -43,7 +45,7 @@ public class InsertMenu extends UIFrame {
         UIScrollFrame list = new UIScrollFrame();
         list.Position = UDim2.fromAbsolute(0, 40);
         list.Size = UDim2.fromScale(1, .85);
-        list.BackgroundTransparency = 1;
+        list.BackgroundTransparency = .5;
         list.SetParent(this);
 
         ListLayout listLayout = new ListLayout();
@@ -52,9 +54,9 @@ public class InsertMenu extends UIFrame {
 
         for (int i = 0; i < 100; i++) {
             UIFrame frame = new UIFrame();
-            frame.Size = UDim2.fromScale(1, .1);
+            frame.Size = UDim2.fromScale(.9, .1);
             frame.BackgroundColor = StudioGlobals.BackgroundColor.brighter();
-            frame.SetParent(listLayout);
+            frame.SetParent(list);
         }
         
 

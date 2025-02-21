@@ -25,7 +25,7 @@ public class UIScrollFrame extends UIBase {
 
         game.InputService.OnMouseScroll.Connect(amount -> {
             if (!mouseInBounds) return;
-            ScrollOffset = new Vector2(0, ScrollOffset.Y + amount);
+            ScrollOffset = new Vector2(0, ScrollOffset.Y + amount * 3);
         });
     }
 
