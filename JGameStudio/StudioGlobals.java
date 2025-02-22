@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 import JGamePackage.JGame.Classes.Modifiers.BorderEffect;
+import JGameStudio.Studio.Instances.InsertMenu;
 
 public class StudioGlobals{
     public static Font GlobalFont;
@@ -25,6 +26,9 @@ public class StudioGlobals{
     public static String jsonData = "JGameStudio\\Data\\data.json";
 
     public static BorderEffect GlobalBorder;
+
+    //studio stuff
+    public static InsertMenu InsertMenu;
 
     public static void construct() {
         GlobalBorder = new BorderEffect();

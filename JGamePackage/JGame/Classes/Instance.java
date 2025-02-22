@@ -60,6 +60,11 @@ public abstract class Instance {
      */
     public VoidSignalWrapper Destroying = new VoidSignalWrapper(destroyingSignal);
 
+    /**Controls whether or not this instance can be destroyed.
+     * 
+     */
+    public boolean Destroyable = true;
+
     //--MISC--//
     protected JGame game;
 
@@ -93,6 +98,8 @@ public abstract class Instance {
 
     //--HIERARCHY METHODS--//
     public void Destroy(){
+        if (!Destroyable) return;
+
         if (parentLocked) {
             ErrorAlreadyDestroyed.Throw();
             return;
@@ -179,7 +186,8 @@ public abstract class Instance {
     @SuppressWarnings("unchecked")
     public <T extends Instance> T[] GetChildrenOfClass(Class<T> classToFind) {
         ArrayList<T> filteredChildren = new ArrayList<>();
-        for (Instance child : children) {
+        for (int i = 0; i < children.size(); i++) {
+            Instance child = children.get(i);
             if (classToFind.isInstance(child))
                 filteredChildren.add((T) child);
         }
@@ -292,8 +300,9 @@ public abstract class Instance {
         this.parent.AddChild(this);
     }
 
-    public Instance GetParent() {
-        return parent;
+    @SuppressWarnings("unchecked")
+    public <T extends Instance> T GetParent() {
+        return (T) parent;
     }
 
     /**Returns a duplicate of this instance while also duplicating all descendants

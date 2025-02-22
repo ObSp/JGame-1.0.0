@@ -1,5 +1,3 @@
 package JGamePackage.JGame.Classes.UI;
 
-public interface UIButtonBase {
-    
-}
+public abstract interface UIButtonBase {}

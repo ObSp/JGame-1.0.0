@@ -6,7 +6,7 @@ import JGamePackage.lib.Utils.ExtendedMath;
 
 public class Vector2 extends BasePoint {
 
-    private static final CustomError ErrorAccessIndexOutOfBounds = new CustomError("Index %s out of bounds for Vector2 index access. Valid indices are "+Constants.Vector2Axis.X+" and "+Constants.Vector2Axis.Y+".", CustomError.ERROR, "Vector2");
+    private static final CustomError ErrorAccessIndexOutOfBounds = new CustomError("Index %s out of bounds for Vector2 index access. Valid indices are 0(X) and 1(Y).", CustomError.ERROR, "Vector2");
 
     /**Shorthand for {@code Vector2(0,0)}.*/
     public static final Vector2 zero = new Vector2(0, 0);
@@ -51,8 +51,6 @@ public class Vector2 extends BasePoint {
         Y = n;
     }
 
-
-
     public Vector2 add(Vector2 other){
         return new Vector2(X+other.X, Y+other.Y);
     }
@@ -77,7 +75,6 @@ public class Vector2 extends BasePoint {
     public Vector2 subtract(double x, double y) {
         return new Vector2(X-x, Y-y);
     }
-
 
     public Vector2 multiply(Vector2 other){
         return new Vector2(X*other.X, Y*other.Y);

@@ -6,7 +6,7 @@ import java.awt.Cursor;
 import JGamePackage.JGame.Classes.UI.Internal.UIButtonInternal;
 
 public class UIButton extends UIFrame implements UIButtonBase {
-    public Color HoverColor = Color.gray;
+    public Color HoverColor = null;
     public boolean HoverEffectsEnabled = true;
 
     public boolean Disabled = false;
@@ -31,7 +31,7 @@ public class UIButton extends UIFrame implements UIButtonBase {
 
     @Override
     public Color GetBackgroundRenderColor() {
-        Color curColor = (isHovering && HoverEffectsEnabled) ? HoverColor : BackgroundColor;
+        Color curColor = (isHovering && HoverEffectsEnabled) ? (HoverColor != null ? HoverColor : BackgroundColor.darker()) : BackgroundColor;
         return new Color(curColor.getRed(), curColor.getGreen(), curColor.getBlue(), (int) (255*(1-BackgroundTransparency)));
     }
 

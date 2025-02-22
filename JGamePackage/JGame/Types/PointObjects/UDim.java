@@ -3,6 +3,8 @@ package JGamePackage.JGame.Types.PointObjects;
 import JGamePackage.lib.Utils.ExtendedMath;
 
 public class UDim {
+    public static final UDim zero = new UDim(0, 0);
+
     public final double Scale;
     public final double Absolute;
 

@@ -6,7 +6,7 @@ package JGamePackage.lib.Signal;
  * in favor of it being a one-way communication class.
  * 
  */
-public class VoidSignalWrapper {
+public class VoidSignalWrapper extends AbstractSignalWrapper{
     private VoidSignal sig;
 
     public VoidSignalWrapper(){

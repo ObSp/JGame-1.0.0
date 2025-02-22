@@ -336,10 +336,20 @@ public class InputService extends Service {
     }
 
     public UIBase GetMouseUITarget() {
+        return GetMouseUITarget(true);
+    }
+
+    /**Returns the top-most current target of the mouse.
+     * 
+     * @param considerMouseTargetable Whether the {@code UIBase.MouseTargetable} property should be considered when getting the mouse target. Setting
+     * this to false will ignore the value of the property.
+     * @return
+     */
+    public UIBase GetMouseUITarget(boolean considerMouseTargetable) {
         Vector2 mousePos = game.InputService.GetMousePosition();
         UIBase curTarget = null;
         for (UIBase v : game.UINode.GetDescendantsOfClass(UIBase.class)) {
-            if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos) || !isUIItemVisible(v)|| !v.MouseTargetable)
+            if (!isPointInBounds(v.GetAbsolutePosition(), v.GetAbsoluteSize(), mousePos) || !isUIItemVisible(v)|| (!v.MouseTargetable && considerMouseTargetable))
                 continue;
 
             if (curTarget == null) {
@@ -377,6 +387,14 @@ public class InputService extends Service {
         for (int i = 0; i < arr.length; i++)
             arr[i] = list.get(i);
         return arr;
+    }
+
+    
+    public boolean IsMouseInUIBaseBounds(UIBase uiBase) {
+        Vector2 absPos = uiBase.GetAbsolutePosition();
+        Vector2 absSize = uiBase.GetAbsoluteSize();
+
+        return isPointInBounds(absPos, absSize, GetMousePosition());
     }
 
     public UITextInput GetFocusedUITextInput() {

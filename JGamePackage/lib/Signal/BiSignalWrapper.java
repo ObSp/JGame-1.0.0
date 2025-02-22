@@ -7,7 +7,7 @@ import java.util.function.BiConsumer;
  * in favor of it being a one-way communication class.
  * 
  */
-public class BiSignalWrapper<T,U> {
+public class BiSignalWrapper<T,U> extends AbstractSignalWrapper{
     private BiSignal<T,U> sig;
 
     public BiSignalWrapper(){

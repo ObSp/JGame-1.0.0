@@ -7,7 +7,7 @@ import java.util.function.Consumer;
  * in favor of it being a one-way communication class.
  * 
  */
-public class SignalWrapper<T> {
+public class SignalWrapper<T> extends AbstractSignalWrapper{
     private Signal<T> sig;
 
     public SignalWrapper(){

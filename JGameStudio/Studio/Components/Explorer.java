@@ -37,6 +37,8 @@ public class Explorer extends UIFrame {
     public Explorer() {
         this.Size = UDim2.fromScale(1, .55);
         this.BackgroundTransparency = 1;
+
+        createPlusButton();
         createHeader();
         createList();
 
@@ -92,6 +94,24 @@ public class Explorer extends UIFrame {
 
     private void createPlusButton() {
         plusButton = new UIImageButton();
+        plusButton.SetImage("JGameStudio\\Assets\\Icons\\Plus.png");
+        plusButton.Size = UDim2.fromScale(0, 1);
+        plusButton.AnchorPoint = new Vector2(1, 0);
+        plusButton.Position = UDim2.fromScale(1, 0);
+        plusButton.BackgroundTransparency = 1;
+        plusButton.MouseTargetable = false;
+        plusButton.Destroyable = false;
+        new AspectRatioConstraint().SetParent(plusButton);
+
+        game.InputService.OnMouse1Click.Connect(()->{
+            UIBase target = game.InputService.GetMouseUITarget(false);
+            if (target == plusButton) {
+                StudioGlobals.InsertMenu.OpenAtPosWithInstance(UDim2.fromScale(.5, 0).add(UDim2.fromAbsolute(0, plusButton.GetAbsolutePosition().Y)), plusButton.GetParent().GetParent().<Instance>GetCProp("Instance"));
+            } else {
+                if (target == StudioGlobals.InsertMenu || target.IsDescendantOf(StudioGlobals.InsertMenu)) return;
+                StudioGlobals.InsertMenu.Visible = false;
+            }
+        });
     }
 
     private UIFrame createInstanceFrame(Instance obj, String displayText, String className) {
@@ -203,11 +223,16 @@ public class Explorer extends UIFrame {
         });
 
         frame.MouseEnter.Connect(()->{
+            plusButton.SetParent(frame);
             if (absoluteContainer.GetCProp("Selected") != null) return;
             frame.BackgroundTransparency = .8;
         });
 
         frame.MouseLeave.Connect(()->{
+            if (plusButton.GetParent() == frame) {
+                plusButton.SetParent(null);
+            }
+
             if (absoluteContainer.GetCProp("Selected") != null) return;
             frame.BackgroundTransparency = 1;
         });

@@ -1,7 +1,6 @@
 package JGameStudio.Studio.Classes.MouseBehavior;
 
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.Instance;
@@ -73,7 +72,7 @@ public class MouseBehaviorHandler {
         Selection.InstanceDeselected.Connect((instance) -> {
             if (!(instance instanceof Renderable)) return;
 
-            BorderEffect border = instance.GetChildOfClass(BorderEffect.class);
+            BorderEffect border = instance.GetChildOfClass(SelectionBorder.class);
             if (border != null) {
                 border.Destroy();
             }

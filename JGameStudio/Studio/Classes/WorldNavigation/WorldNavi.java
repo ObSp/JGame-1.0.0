@@ -12,7 +12,7 @@ public class WorldNavi {
 
     private void initScrollBehavior() {
         game.InputService.OnMouseScroll.Connect(dir -> {
-            if (game.InputService.IsMouse3Down()) return;
+            if (game.InputService.IsMouse3Down() || !game.InputService.IsMouseInUIBaseBounds(game.UINode.GetChild("DisplayWindow"))) return;
             double factor = ((double) dir*.1);
 
             game.Camera.DepthFactor += factor;

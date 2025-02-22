@@ -2,6 +2,7 @@ package JGamePackage.JGame.Classes.UI;
 
 import java.awt.Graphics2D;
 
+import JGamePackage.JGame.Classes.Modifiers.ListLayout;
 import JGamePackage.JGame.Classes.Rendering.RenderUtil;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
@@ -9,23 +10,29 @@ public class UIScrollFrame extends UIBase {
 
     public Vector2 ScrollOffset = Vector2.zero;
 
-    private boolean mouseInBounds = false;
+    /** A value representing the maximum value of the {@code ScrollOffset} property. If set to null,
+     * no maximum value will be applied.
+     */
+    public Vector2 MaxScrollOffset = null;
 
     public UIScrollFrame() {
         super();
         this.ClipsDescendants = true;
 
-        this.MouseEnter.Connect(()-> {
-            mouseInBounds = true;
-        });
-
-        this.MouseLeave.Connect(()-> {
-            mouseInBounds = false;
-        });
-
         game.InputService.OnMouseScroll.Connect(amount -> {
-            if (!mouseInBounds) return;
-            ScrollOffset = new Vector2(0, ScrollOffset.Y + amount * 3);
+            if (!game.InputService.IsMouseInUIBaseBounds(this)) return;
+
+            Vector2 listSize = new Vector2(Double.MAX_VALUE);
+            ListLayout list = GetChildOfClass(ListLayout.class);
+            if (list != null) {
+                listSize = list.GetAbsoluteListSize().subtract(0, GetAbsoluteSize().Y);
+            }
+
+
+            ScrollOffset = new Vector2(0, Math.min(Math.max(ScrollOffset.Y + amount * 10, 0), listSize.Y));
+            if (MaxScrollOffset != null) {
+                ScrollOffset = new Vector2(0, Math.min(ScrollOffset.Y, MaxScrollOffset.Y));
+            }
         });
     }
 

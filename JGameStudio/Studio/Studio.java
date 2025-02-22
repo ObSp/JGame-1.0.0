@@ -80,6 +80,7 @@ public class Studio {
         new KeyboardBehaviour(game);
 
         insertMenu = new InsertMenu(sideBar);
+        StudioGlobals.InsertMenu = insertMenu;
 
         modeHandler = new ModeHandler();
     }
