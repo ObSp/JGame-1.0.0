@@ -142,7 +142,6 @@ public class InsertMenu extends UIFrame {
             }
         });
         
-
         StudioGlobals.GlobalBorder.SetParent(this);
     }
 

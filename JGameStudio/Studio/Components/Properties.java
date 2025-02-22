@@ -220,12 +220,38 @@ public class Properties extends UIFrame {
         inp.FocusChanged.Connect(focused -> {
             if (focused) return;
             try {
-                System.out.println(field.getType());
                 if (field.getType().getSimpleName() == "int") {
                     field.set(inst, Integer.valueOf(inp.Text));
                 } else if (field.getType().getSimpleName() == "double") {
                     field.set(inst, Double.valueOf(inp.Text));
                 }
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return f;
+    }
+
+    private UIFrame createVector2Field(String fieldName, Vector2 val, Field field, Instance inst) {
+        UIFrame f = createFieldBaseFrame(fieldName);
+
+        UITextInput inp = new UITextInput();
+        inp.Text = val.toString();
+        inp.TextColor = StudioGlobals.TextColor;
+        inp.FontSize = fieldFontSize;
+        inp.BackgroundTransparency = 1;
+        inp.CustomFont = StudioGlobals.GlobalFont;
+        inp.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        inp.Position = UDim2.fromScale(.52, 0);
+        inp.Size = UDim2.fromScale(.5, 1);
+        inp.SetParent(f);
+
+        inp.FocusChanged.Connect(focused -> {
+            if (focused) return;
+            try {
+                field.set(inst, Vector2.fromString(inp.Text));
+                inp.Text = field.get(inst).toString();
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 e.printStackTrace();
             }
@@ -256,6 +282,8 @@ public class Properties extends UIFrame {
                 createBooleanField(name, (Boolean) curValue, f, cur).SetParent(propsFrame);
             } else if (curValue instanceof Number) {
                 createNumberField(name, (Number) curValue, f, cur).SetParent(propsFrame);
+            } else if (curValue instanceof Vector2) {
+                createVector2Field(name, (Vector2) curValue, f, cur).SetParent(propsFrame);
             }
         }
     }

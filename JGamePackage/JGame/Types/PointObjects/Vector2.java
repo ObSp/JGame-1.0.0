@@ -23,6 +23,23 @@ public class Vector2 extends BasePoint {
     /**Shorthand for {@code Vector2(0,-1)}.*/
     public static final Vector2 down = new Vector2(0, 1);
 
+    /**Converts a {@code String} to a {@code Vector2}. The input string must follow this format:
+     * (X, Y). Note that whitespace and parantheses don't matter, only the comma is required.
+     * 
+     * @param str : The input string, following the format specified above
+     * @return A new Vector2
+     */
+    public static Vector2 fromString(String str){
+        String stripped = str.replace("(", "").replace(")", "").replace(" ", "");
+
+        String[] split = stripped.split(",");
+
+        double xCoord = Double.parseDouble(split[0]);
+        double yCoord = Double.parseDouble(split[1]);
+
+        return new Vector2(xCoord, yCoord);
+    }
+
     /**The X component of this Vector2.
      * 
      */
@@ -100,8 +117,6 @@ public class Vector2 extends BasePoint {
     public Vector2 divide(double x, double y) {
         return new Vector2(X/x, Y/y);
     }
-
-
 
     public Vector2 abs() {
         return new Vector2(Math.abs(X), Math.abs(Y));
