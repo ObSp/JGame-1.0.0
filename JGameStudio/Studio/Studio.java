@@ -1,6 +1,7 @@
 package JGameStudio.Studio;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 
@@ -34,8 +35,6 @@ public class Studio {
     private WorldNavi worldNavi;
     private MouseBehaviorHandler mouseHandler;
 
-    private ModeHandler modeHandler;
-
     InsertMenu insertMenu;
 
     private void initComponents() {
@@ -52,6 +51,8 @@ public class Studio {
     public Studio(String[] args) throws IOException {
         if (args.length > 0)
             path = args[0];
+
+        Locale.setDefault(Locale.US);
 
         FlatDarculaLaf.setup();
 
@@ -73,6 +74,8 @@ public class Studio {
 
         game.Services.TimeService.WaitSeconds(1);
 
+        StudioGlobals.ModeHandler = new ModeHandler();
+
         initComponents();
 
         worldNavi = new WorldNavi();
@@ -81,8 +84,6 @@ public class Studio {
 
         insertMenu = new InsertMenu(sideBar);
         StudioGlobals.InsertMenu = insertMenu;
-
-        modeHandler = new ModeHandler();
     }
 
     public static void main(String[] args) throws IOException {

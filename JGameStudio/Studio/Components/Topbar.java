@@ -1,6 +1,7 @@
 package JGameStudio.Studio.Components;
 
 import java.awt.Color;
+import java.util.HashMap;
 
 import javax.swing.JColorChooser;
 
@@ -260,15 +261,42 @@ public class Topbar extends UIFrame {
         dragText.MouseTargetable = false;
         dragText.SetParent(dragButton);
 
+        dragButton.Mouse1Down.Connect(()-> {
+            StudioGlobals.ModeHandler.setMode(StudioGlobals.ModeHandler.dragMode);
+        });
+
         moveButton = dragButton.Clone();
         moveButton.GetChildOfClass(UIText.class).Text = "Move";
         moveButton.GetChildOfClass(UIImage.class).SetImage("JGameStudio\\Assets\\Icons\\Move.png");
         moveButton.SetParent(container);
 
+        moveButton.Mouse1Down.Connect(()-> {
+            StudioGlobals.ModeHandler.setMode(StudioGlobals.ModeHandler.moveMode);
+        });
+
         scaleButton = moveButton.Clone();
         scaleButton.GetChildOfClass(UIText.class).Text = "Scale";
         scaleButton.GetChildOfClass(UIImage.class).SetImage("JGameStudio\\Assets\\Icons\\Scale.png");
         scaleButton.SetParent(container);
+
+        scaleButton.Mouse1Down.Connect(()-> {
+            StudioGlobals.ModeHandler.setMode(StudioGlobals.ModeHandler.scaleMode);
+        });
+
+        HashMap<String, UIButton> buttons = new HashMap<>();
+        buttons.put("Drag", dragButton);
+        buttons.put("Move", moveButton);
+        buttons.put("Scale", scaleButton);
+
+        StudioGlobals.ModeHandler.ModeSelected.Connect((oldMode, mode) -> {
+            if (oldMode != null) {
+                buttons.get(oldMode.getClass().getSimpleName()).BackgroundColor = StudioGlobals.BackgroundColor;
+            }
+
+            buttons.get(mode.getClass().getSimpleName()).BackgroundColor = StudioGlobals.BackgroundColor.darker();
+        });
+
+        StudioGlobals.ModeHandler.setMode(StudioGlobals.ModeHandler.dragMode);
     }
     
     public Topbar() {

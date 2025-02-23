@@ -1,4 +1,4 @@
-package JGameStudio.Studio.Classes.Modes.Drag;
+package JGameStudio.Studio.Classes.Modes.ModeInstances;
 
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.UI.UIBase;
@@ -13,7 +13,7 @@ public class Drag extends Mode {
     private boolean dragging = false;
 
     private void moveCurrentElement() {
-        if (!dragging) return;
+        if (!dragging || !selected) return;
 
         Vector2 mouseDeltaRaw = game.InputService.GetMouseDelta();
         Vector2 mouseDeltaWorld = game.InputService.GetMouseWorldDelta();

@@ -1,5 +1,8 @@
 package JGamePackage.JGame.Types.PointObjects;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.lib.CustomError.CustomError;
 import JGamePackage.lib.Utils.ExtendedMath;
@@ -141,6 +144,20 @@ public class Vector2 extends BasePoint {
         }
         
         return new Vector2(x, y);
+    }
+
+    /**Returns a {@code Vector2} with the X and Y components formatted to the specified format
+     * 
+     * @return
+     */
+    public Vector2 formatted(String pattern) {
+        DecimalFormat df = new DecimalFormat(pattern);
+        df.setRoundingMode(RoundingMode.CEILING);
+        
+        double newX = Double.valueOf(df.format(X));
+        double newY = Double.valueOf(df.format(Y));
+
+        return new Vector2(newX, newY);
     }
 
 

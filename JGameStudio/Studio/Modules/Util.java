@@ -25,4 +25,19 @@ public class Util {
 
         return scaleVec.magnitude() > absoluteVec.magnitude();
     }
+
+    public static Vector2 vec2FromString(String s) {
+        s = s.replace("(", "").replace(")", "");
+
+        String[] split = s.split(",");
+        if (split.length <= 1) {
+            split = s.split(" ");
+        }
+
+        if (split.length <= 1) {
+            return new Vector2(Double.valueOf(s));
+        }
+
+        return new Vector2(Double.valueOf(split[0]), Double.valueOf(split[1]));
+    }
 }

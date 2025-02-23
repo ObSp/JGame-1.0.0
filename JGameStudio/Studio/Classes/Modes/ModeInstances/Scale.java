@@ -1,4 +1,4 @@
-package JGameStudio.Studio.Classes.Modes.Drag;
+package JGameStudio.Studio.Classes.Modes.ModeInstances;
 
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Rendering.Renderable;

@@ -42,10 +42,9 @@ public class Selection {
 
     public static void clear() {
         for (Instance e : get()) {
+            selection.remove(e);
             InstanceDeselected.Fire(e);
         }
-
-        selection.clear();
     }
 
     public static boolean contains(Instance e) {

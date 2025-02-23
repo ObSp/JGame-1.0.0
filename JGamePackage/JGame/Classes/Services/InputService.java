@@ -323,6 +323,10 @@ public class InputService extends Service {
         return curMousePos.subtract(lastMousePos);
     }
 
+    /**Returns the world distance that the mouse has traveled since the last frame.
+     * 
+     * @return
+     */
     public Vector2 GetMouseWorldDelta() {
         return curMouseWorldPos.subtract(lastMouseWorldPos);
     }

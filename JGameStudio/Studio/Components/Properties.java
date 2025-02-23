@@ -20,6 +20,7 @@ import JGamePackage.lib.Signal.AbstractSignal;
 import JGamePackage.lib.Signal.AbstractSignalWrapper;
 import JGameStudio.StudioGlobals;
 import JGameStudio.Studio.Modules.Selection;
+import JGameStudio.Studio.Modules.Util;
 
 public class Properties extends UIFrame {
 
@@ -37,6 +38,22 @@ public class Properties extends UIFrame {
         this.BackgroundColor = StudioGlobals.BackgroundColor;
         this.ZIndex = 2;
         createHeader();
+
+        Selection.InstanceSelected.Connect(inst -> {
+            try {
+                UpdateWindow(inst);
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
+        Selection.InstanceDeselected.Connect(inst -> {
+            try {
+                UpdateWindow(Selection.getFirst());
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
     }
         
     private void createHeader() {
@@ -95,22 +112,6 @@ public class Properties extends UIFrame {
         listLayout.SetParent(propsFrame);
 
         filterBackground.GetChildOfClass(UIText.class).Destroy();
-
-        Selection.InstanceSelected.Connect(inst -> {
-            try {
-                UpdateWindow(inst);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        });
-
-        Selection.InstanceDeselected.Connect(inst -> {
-            try {
-                UpdateWindow(Selection.getFirst());
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     private UIFrame createFieldBaseFrame(String fieldName) {
@@ -219,14 +220,17 @@ public class Properties extends UIFrame {
 
         inp.FocusChanged.Connect(focused -> {
             if (focused) return;
+            Number old = 0;
+
             try {
+                old = (Number) field.get(inst);
                 if (field.getType().getSimpleName() == "int") {
                     field.set(inst, Integer.valueOf(inp.Text));
                 } else if (field.getType().getSimpleName() == "double") {
                     field.set(inst, Double.valueOf(inp.Text));
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
+                inp.Text = old.toString();
             }
         });
 
@@ -237,7 +241,7 @@ public class Properties extends UIFrame {
         UIFrame f = createFieldBaseFrame(fieldName);
 
         UITextInput inp = new UITextInput();
-        inp.Text = val.toString();
+        inp.Text = val.formatted("#.####").toString();
         inp.TextColor = StudioGlobals.TextColor;
         inp.FontSize = fieldFontSize;
         inp.BackgroundTransparency = 1;
@@ -249,11 +253,15 @@ public class Properties extends UIFrame {
 
         inp.FocusChanged.Connect(focused -> {
             if (focused) return;
-            try {
-                field.set(inst, Vector2.fromString(inp.Text));
-                inp.Text = field.get(inst).toString();
+
+            Vector2 old = Vector2.zero;
+            try { 
+                old = (Vector2) field.get(inst);
+
+                field.set(inst, Util.vec2FromString(inp.Text));
+                inp.Text = ((Vector2) field.get(inst)).formatted("#.####").toString();
             } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
+                inp.Text = old.toString();
             }
         });
 
@@ -265,6 +273,7 @@ public class Properties extends UIFrame {
             v.Destroy();
         }
 
+        header.Text = "Properties";
         if (cur == null) return;
         header.Text = "Properties - "+cur.getClass().getSimpleName()+ " \"" + cur.Name + "\"";
 

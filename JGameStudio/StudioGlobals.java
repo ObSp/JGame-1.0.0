@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 import JGamePackage.JGame.Classes.Modifiers.BorderEffect;
+import JGameStudio.Studio.Classes.Modes.ModeHandler;
 import JGameStudio.Studio.Instances.InsertMenu;
 
 public class StudioGlobals{
@@ -29,6 +30,7 @@ public class StudioGlobals{
 
     //studio stuff
     public static InsertMenu InsertMenu;
+    public static ModeHandler ModeHandler;
 
     public static void construct() {
         GlobalBorder = new BorderEffect();
