@@ -16,6 +16,17 @@ public class Move extends Mode {
     private UIImageButton arrowBottom;
 
     private void positionArrows() {
+        if (!selected) {
+            arrowLeft.Visible = false;
+            arrowTop.Visible = false;
+            arrowRight.Visible = false;
+            arrowBottom.Visible = false;
+        } else {
+            arrowLeft.Visible = true;
+            arrowTop.Visible = true;
+            arrowRight.Visible = true;
+            arrowBottom.Visible = true;
+        }
         Instance selected = Selection.getFirst();
         if (!(selected instanceof Renderable)) return;
 
