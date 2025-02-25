@@ -12,11 +12,13 @@ import JGameStudio.Studio.Modules.Util;
 public class Drag extends Mode {
     private boolean dragging = false;
 
+    public Vector2 DragMult = Vector2.one;
+
     private void moveCurrentElement() {
         if (!dragging || !selected) return;
 
-        Vector2 mouseDeltaRaw = game.InputService.GetMouseDelta();
-        Vector2 mouseDeltaWorld = game.InputService.GetMouseWorldDelta();
+        Vector2 mouseDeltaRaw = game.InputService.GetMouseDelta().multiply(DragMult);
+        Vector2 mouseDeltaWorld = game.InputService.GetMouseWorldDelta().multiply(DragMult);
 
         for (Instance selected : Selection.get()) {
             if (selected instanceof WorldBase) {
