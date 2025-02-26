@@ -6,10 +6,11 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import JGamePackage.JGame.Classes.Abstracts.AbstractImage;
 import JGamePackage.JGame.Classes.Rendering.RenderUtil;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
-public class Image2D extends WorldBase {
+public class Image2D extends WorldBase implements AbstractImage{
     /**The BufferedImage that is rendered with this object.
      * 
      */
@@ -30,6 +31,10 @@ public class Image2D extends WorldBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String GetImagePath() {
+        return imagePath;
     }
 
     @Override

@@ -15,7 +15,7 @@ public class Drag extends Mode {
     public Vector2 DragMult = Vector2.one;
 
     private void moveCurrentElement() {
-        if (!dragging) return;
+        if (!dragging || !game.InputService.IsWindowFocused()) return;
 
         Vector2 mouseDeltaRaw = game.InputService.GetMouseDelta().multiply(DragMult);
         Vector2 mouseDeltaWorld = game.InputService.GetMouseWorldDelta().multiply(DragMult);
@@ -38,6 +38,9 @@ public class Drag extends Mode {
 
     public Drag() {
         game.TimeService.OnTick.Connect(dt->{
+            if (!game.InputService.IsWindowFocused()) {
+                dragging = false;
+            }
             moveCurrentElement();
         });
 

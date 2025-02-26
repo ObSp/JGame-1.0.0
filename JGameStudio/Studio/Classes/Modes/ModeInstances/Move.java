@@ -1,9 +1,12 @@
 package JGameStudio.Studio.Classes.Modes.ModeInstances;
 
+import java.util.ArrayList;
+
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Rendering.Renderable;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UIImageButton;
+import JGamePackage.JGame.Classes.World.WorldBase;
 import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
@@ -19,8 +22,12 @@ public class Move extends Mode {
 
     private UIImageButton selectedArrow;
 
+    private ArrayList<UIImageButton> arrows = new ArrayList<>();
+
     private void positionArrows() {
-        if (!selected) {
+        Instance selectedInstance = Selection.getFirst();
+
+        if (!selected || selectedInstance == null) {
             arrowLeft.Visible = false;
             arrowTop.Visible = false;
             arrowRight.Visible = false;
@@ -31,11 +38,11 @@ public class Move extends Mode {
             arrowRight.Visible = true;
             arrowBottom.Visible = true;
         }
-        Instance selected = Selection.getFirst();
-        if (!(selected instanceof Renderable)) return;
 
-        if (selected instanceof UIBase) {
-            UIBase ui = (UIBase) selected;
+        if (!(selectedInstance instanceof Renderable)) return;
+
+        if (selectedInstance instanceof UIBase) {
+            UIBase ui = (UIBase) selectedInstance;
 
             Vector2 absSize = ui.GetAbsoluteSize();
             Vector2 absPos = ui.GetAbsolutePosition();
@@ -44,10 +51,21 @@ public class Move extends Mode {
             arrowRight.Position = UDim2.fromAbsolute(absPos.X + absSize.X, absPos.Y + absSize.Y/2);
             arrowBottom.Position = UDim2.fromAbsolute(absPos.X + absSize.X/2, absPos.Y + absSize.Y);
             arrowTop.Position = UDim2.fromAbsolute(absPos.X + absSize.X/2, absPos.Y);
+        } else if (selectedInstance instanceof WorldBase) {
+            WorldBase worldBase = (WorldBase) selectedInstance;
+
+            Vector2 absSize = worldBase.GetRenderSize();
+            Vector2 absPos = worldBase.GetRenderPosition();
+
+            arrowLeft.Position = UDim2.fromAbsolute(absPos.X, absPos.Y + absSize.Y/2);
+            arrowRight.Position = UDim2.fromAbsolute(absPos.X + absSize.X, absPos.Y + absSize.Y/2);
+            arrowBottom.Position = UDim2.fromAbsolute(absPos.X + absSize.X/2, absPos.Y + absSize.Y);
+            arrowTop.Position = UDim2.fromAbsolute(absPos.X + absSize.X/2, absPos.Y);
         }
 
-
-        StudioGlobals.ModeHandler.dragMode.DragMult = (selected.GetCProp("Dir") == Constants.Vector2Axis.X) ? Vector2.right : Vector2.down;
+        if (selectedArrow != null) {
+            StudioGlobals.ModeHandler.dragMode.DragMult = (selectedArrow.GetCProp("Dir") == Constants.Vector2Axis.X) ? Vector2.right : Vector2.down;
+        }
     }
 
     public Move() {
@@ -56,7 +74,7 @@ public class Move extends Mode {
         arrowLeft.BackgroundTransparency = 1;
         arrowLeft.SetImage("JGameStudio\\Assets\\Icons\\arrowX.png");
         arrowLeft.Size = UDim2.fromAbsolute(60, 25);
-        arrowLeft.ZIndex = 100;
+        arrowLeft.ZIndex = 1;
         arrowLeft.Rotation = Math.toRadians(180);
         arrowLeft.AnchorPoint = new Vector2(1, .5);
         arrowLeft.SetParent(game.UINode);
@@ -81,24 +99,23 @@ public class Move extends Mode {
         arrowTop.SetCProp("Dir", Constants.Vector2Axis.Y);
         arrowTop.SetParent(game.UINode);
 
-        arrowLeft.Mouse1Down.Connect(()-> {
-            selectedArrow = arrowLeft;
-        });
-
-        arrowTop.Mouse1Down.Connect(()-> {
-            selectedArrow = arrowTop;
-        });
-
-        arrowRight.Mouse1Down.Connect(()-> {
-            selectedArrow = arrowRight;
-        });
-
-        arrowBottom.Mouse1Down.Connect(()-> {
-            selectedArrow = arrowBottom;
-        });
+        arrows.add(arrowLeft);
+        arrows.add(arrowRight);
+        arrows.add(arrowTop);
+        arrows.add(arrowBottom);
 
         game.TimeService.OnTick.Connect(dt->{
             positionArrows();
+        });
+
+        game.InputService.OnMouse1Click.Connect(()->{
+            UIBase mouseUITarget = game.InputService.GetMouseUITarget();
+            if (arrows.contains(mouseUITarget)) {
+                selectedArrow = (UIImageButton) mouseUITarget;
+            } else {
+                selectedArrow = null;
+                StudioGlobals.ModeHandler.dragMode.DragMult = Vector2.one;
+            }
         });
     }
 

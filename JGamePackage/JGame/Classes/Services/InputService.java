@@ -68,6 +68,8 @@ public class InputService extends Service {
     private Vector2 lastMouseWorldPos;
     private Vector2 curMouseWorldPos;
 
+    private boolean windowFocused = false;
+
 
     private boolean isMouse1Down = false;
     private boolean isMouse2Down = false;
@@ -87,7 +89,11 @@ public class InputService extends Service {
                     int code = e.getKeyCode();
                     char keyChar = e.getKeyChar();
                     if (code == KeyEvent.VK_BACK_SPACE) {
-                        selectedUIInput.Text =  selectedUIInput.Text.length() > 0 ? selectedUIInput.Text.substring(0, selectedUIInput.Text.length()-1) : "";
+                        if (IsKeyDown(KeyEvent.VK_CONTROL)) {
+                            selectedUIInput.Text = "";
+                        } else {
+                            selectedUIInput.Text = selectedUIInput.Text.length() > 0 ? selectedUIInput.Text.substring(0, selectedUIInput.Text.length()-1) : "";
+                        }
                         selectedUIInput.TextUpdated.Fire();
                     } else if (code == KeyEvent.VK_ENTER) {
                         SetFocusedUITextInput(null);
@@ -212,10 +218,12 @@ public class InputService extends Service {
 
             @Override
             public void windowActivated(WindowEvent e) {
+                windowFocused = true;
             }
 
             @Override
             public void windowDeactivated(WindowEvent e) {
+                windowFocused = false;
                 heldKeys.clear();
             }
         });
@@ -458,6 +466,10 @@ public class InputService extends Service {
             }
         }
         return curTarget;
+    }
+
+    public boolean IsWindowFocused() {
+        return windowFocused;
     }
 
     private boolean isWorldItemVisible(WorldBase worldBase) {

@@ -2,7 +2,9 @@ package JGamePackage.JGame.Classes.World;
 
 import java.awt.Color;
 
+import JGamePackage.JGame.Classes.Modifiers.AspectRatioConstraint;
 import JGamePackage.JGame.Classes.Rendering.Renderable;
+import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
 public abstract class WorldBase extends Renderable{
@@ -60,7 +62,18 @@ public abstract class WorldBase extends Renderable{
     }
 
     public Vector2 GetRenderSize() {
-        return game.Camera.GetWorldBaseRenderSize(this);
+        AspectRatioConstraint aspectConstr = this.GetChildOfClass(AspectRatioConstraint.class);
+        Vector2 realSize = game.Camera.GetWorldBaseRenderSize(this);
+
+        if (aspectConstr != null) {
+            if (aspectConstr.DominantAxis == Constants.Vector2Axis.X) {
+                realSize = new Vector2(realSize.X, realSize.X/aspectConstr.AspectRatio);
+            } else {
+                realSize = new Vector2(realSize.Y*aspectConstr.AspectRatio, realSize.Y);
+            }
+        }
+
+        return realSize;
     }
 
     protected Color GetRenderColor() {

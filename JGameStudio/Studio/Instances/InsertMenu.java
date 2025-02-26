@@ -27,6 +27,7 @@ import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGameStudio.StudioGlobals;
 import JGameStudio.Studio.Components.Sidebar;
+import JGameStudio.Studio.Modules.Selection;
 
 public class InsertMenu extends UIFrame {
     private static ArrayList<Class<? extends Instance>> creatableClasses = new ArrayList<>(Arrays.asList(new Class[] {UIButton.class, UIFrame.class, UIImage.class, UIImageButton.class, UIScrollFrame.class, UIText.class, UITextButton.class, UITextInput.class, Box2D.class, Image2D.class, Text2D.class, Script.class, AspectRatioConstraint.class, BorderEffect.class, CornerEffect.class, ListLayout.class}));
@@ -128,6 +129,7 @@ public class InsertMenu extends UIFrame {
                 }
 
                 created.SetParent(createdParent);
+                Selection.set(created);
                 this.Visible = false;
             });
 

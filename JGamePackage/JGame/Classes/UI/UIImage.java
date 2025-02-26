@@ -5,10 +5,11 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import JGamePackage.JGame.Classes.Abstracts.AbstractImage;
 import JGamePackage.JGame.Classes.Rendering.RenderUtil;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 
-public class UIImage extends UIBase {
+public class UIImage extends UIBase implements AbstractImage {
 
     /**The Image that is rendered with this object.
      * 
@@ -54,6 +55,10 @@ public class UIImage extends UIBase {
     public void SetImageScale(Vector2 scale) {
         this.Image = this.Image.getScaledInstance((int) scale.X, (int) scale.Y, java.awt.Image.SCALE_SMOOTH);
         this.scale = scale;
+    }
+
+    public String GetImagePath() {
+        return imagePath;
     }
 
     @Override

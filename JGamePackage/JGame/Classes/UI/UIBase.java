@@ -65,7 +65,7 @@ public abstract class UIBase extends Renderable {
         Vector2 realPos = null;
 
         if (parentInstance == null) 
-            return realPos = Position.ToVector2(game.Services.WindowService.GetWindowSize()).subtract(GetAnchorPointOffset());
+            return Position.ToVector2(game.Services.WindowService.GetWindowSize()).subtract(GetAnchorPointOffset());
 
         ListLayout layout = parentInstance.GetChildOfClass(ListLayout.class);
         Vector2 scrollOffset = Vector2.zero;

@@ -1,6 +1,7 @@
 package JGameStudio.Studio.Classes.WorldNavigation;
 
 import java.awt.Cursor;
+import java.awt.event.KeyEvent;
 
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
@@ -40,7 +41,7 @@ public class WorldNavi {
 
     private void initWASDBehavior() {
         game.TimeService.OnTick.Connect(dt->{
-            if (game.InputService.IsTyping()) return;
+            if (game.InputService.IsTyping() || game.InputService.IsKeyDown(KeyEvent.VK_CONTROL)) return;
             game.Camera.Position = game.Camera.Position.add(new Vector2(game.InputService.GetInputHorizontal(), -game.InputService.GetInputVertical()).multiply(5));
         });
     }

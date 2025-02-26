@@ -19,6 +19,7 @@ public class KeyboardBehaviour {
                     if (destroyIgnore.contains(v.getClass().getSimpleName())) continue;
                     v.Destroy();
                 }
+                Selection.clear();
             }
         });
     }

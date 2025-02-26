@@ -14,6 +14,7 @@ public class DisplayWindow extends UIFrame {
         this.Position = UDim2.fromAbsolute(0, 105);
         this.BackgroundColor = new Color(46, 46, 46);
         this.MouseTargetable = false;
+        this.ZIndex = -1;
         this.BackgroundTransparency = 1;
 
         game.InputService.OnWindowResized.Connect(()->{

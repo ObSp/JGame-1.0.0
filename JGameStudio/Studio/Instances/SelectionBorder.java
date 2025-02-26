@@ -10,5 +10,10 @@ public class SelectionBorder extends BorderEffect {
         this.BorderColor = StudioGlobals.BlueColor.darker();
         this.Width = 4;
     }
+
+    @Override
+    public boolean CanClone() {
+        return false;
+    }
     
 }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.lang.reflect.Field;
 
 import JGamePackage.JGame.Classes.Instance;
+import JGamePackage.JGame.Classes.Abstracts.AbstractImage;
 import JGamePackage.JGame.Classes.Modifiers.AspectRatioConstraint;
 import JGamePackage.JGame.Classes.Modifiers.CornerEffect;
 import JGamePackage.JGame.Classes.Modifiers.ListLayout;
@@ -158,6 +159,7 @@ public class Properties extends UIFrame {
         inp.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
         inp.Position = UDim2.fromScale(.52, 0);
         inp.Size = UDim2.fromScale(.5, 1);
+        inp.ClearTextOnFocus = false;
         inp.SetParent(f);
 
         inp.FocusChanged.Connect(focused -> {
@@ -216,6 +218,7 @@ public class Properties extends UIFrame {
         inp.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
         inp.Position = UDim2.fromScale(.52, 0);
         inp.Size = UDim2.fromScale(.5, 1);
+        inp.ClearTextOnFocus = false;
         inp.SetParent(f);
 
         inp.FocusChanged.Connect(focused -> {
@@ -249,6 +252,7 @@ public class Properties extends UIFrame {
         inp.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
         inp.Position = UDim2.fromScale(.52, 0);
         inp.Size = UDim2.fromScale(.5, 1);
+        inp.ClearTextOnFocus = false;
         inp.SetParent(f);
 
         inp.FocusChanged.Connect(focused -> {
@@ -263,6 +267,29 @@ public class Properties extends UIFrame {
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 inp.Text = old.toString();
             }
+        });
+
+        return f;
+    }
+
+    private UIFrame createImageField(String fieldName, String val, AbstractImage inst) {
+        UIFrame f = createFieldBaseFrame(fieldName);
+
+        UITextInput inp = new UITextInput();
+        inp.Text = val;
+        inp.TextColor = StudioGlobals.TextColor;
+        inp.FontSize = fieldFontSize;
+        inp.BackgroundTransparency = 1;
+        inp.CustomFont = StudioGlobals.GlobalFont;
+        inp.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        inp.Position = UDim2.fromScale(.52, 0);
+        inp.Size = UDim2.fromScale(.5, 1);
+        inp.ClearTextOnFocus = false;
+        inp.SetParent(f);
+
+        inp.FocusChanged.Connect(focused -> {
+            if (focused) return;
+            inst.SetImage(inp.Text);
         });
 
         return f;
@@ -294,6 +321,10 @@ public class Properties extends UIFrame {
             } else if (curValue instanceof Vector2) {
                 createVector2Field(name, (Vector2) curValue, f, cur).SetParent(propsFrame);
             }
+        }
+
+        if (cur instanceof AbstractImage) {
+            createImageField("Image", ((AbstractImage) cur).GetImagePath(), (AbstractImage) cur).SetParent(propsFrame);
         }
     }
 }

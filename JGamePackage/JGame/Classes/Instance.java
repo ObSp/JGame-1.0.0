@@ -320,6 +320,7 @@ public abstract class Instance {
         to.cprops = new HashMap<>(from.cprops);
         to.Name = from.Name;
         for (Instance child : from.GetChildren()) {
+            if (!child.CanClone()) continue;
             Instance clone = child.cloneWithoutChildren();
             if (clone == null) {
                 WarningNullClone.Throw(new String[] {child.getClass().getSimpleName()});
