@@ -4,8 +4,10 @@ import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Rendering.Renderable;
 import JGamePackage.JGame.Classes.UI.UIBase;
 import JGamePackage.JGame.Classes.UI.UIImageButton;
+import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
+import JGameStudio.StudioGlobals;
 import JGameStudio.Studio.Classes.Modes.Mode;
 import JGameStudio.Studio.Modules.Selection;
 
@@ -14,6 +16,8 @@ public class Move extends Mode {
     private UIImageButton arrowTop;
     private UIImageButton arrowRight;
     private UIImageButton arrowBottom;
+
+    private UIImageButton selectedArrow;
 
     private void positionArrows() {
         if (!selected) {
@@ -41,10 +45,14 @@ public class Move extends Mode {
             arrowBottom.Position = UDim2.fromAbsolute(absPos.X + absSize.X/2, absPos.Y + absSize.Y);
             arrowTop.Position = UDim2.fromAbsolute(absPos.X + absSize.X/2, absPos.Y);
         }
+
+
+        StudioGlobals.ModeHandler.dragMode.DragMult = (selected.GetCProp("Dir") == Constants.Vector2Axis.X) ? Vector2.right : Vector2.down;
     }
 
     public Move() {
         arrowLeft = new UIImageButton();
+        arrowLeft.SetCProp("Dir", Constants.Vector2Axis.X);
         arrowLeft.BackgroundTransparency = 1;
         arrowLeft.SetImage("JGameStudio\\Assets\\Icons\\arrowX.png");
         arrowLeft.Size = UDim2.fromAbsolute(60, 25);
@@ -55,6 +63,7 @@ public class Move extends Mode {
 
         arrowRight = arrowLeft.Clone();
         arrowRight.Rotation = 0;
+        arrowRight.SetCProp("Dir", Constants.Vector2Axis.X);
         arrowRight.Position = UDim2.fromAbsolute(100, 0);
         arrowRight.AnchorPoint = new Vector2(0, .5); 
         arrowRight.SetParent(game.UINode);
@@ -63,13 +72,30 @@ public class Move extends Mode {
         arrowBottom.Size = UDim2.fromAbsolute(25, 60);
         arrowBottom.SetImage("JGameStudio\\Assets\\Icons\\arrowY.png");
         arrowBottom.AnchorPoint = new Vector2(.5, 0);
+        arrowBottom.SetCProp("Dir", Constants.Vector2Axis.Y);
         arrowBottom.SetParent(game.UINode);
 
         arrowTop = arrowBottom.Clone();
         arrowTop.Rotation = Math.toRadians(180);
         arrowTop.AnchorPoint = new Vector2(.5, 1);
+        arrowTop.SetCProp("Dir", Constants.Vector2Axis.Y);
         arrowTop.SetParent(game.UINode);
 
+        arrowLeft.Mouse1Down.Connect(()-> {
+            selectedArrow = arrowLeft;
+        });
+
+        arrowTop.Mouse1Down.Connect(()-> {
+            selectedArrow = arrowTop;
+        });
+
+        arrowRight.Mouse1Down.Connect(()-> {
+            selectedArrow = arrowRight;
+        });
+
+        arrowBottom.Mouse1Down.Connect(()-> {
+            selectedArrow = arrowBottom;
+        });
 
         game.TimeService.OnTick.Connect(dt->{
             positionArrows();
