@@ -298,6 +298,27 @@ public class Topbar extends UIFrame {
 
         StudioGlobals.ModeHandler.setMode(StudioGlobals.ModeHandler.dragMode);
     }
+
+    private void createGridFrame() {
+        UIFrame container = new UIFrame();
+        container.Size = UDim2.fromAbsolute(180, 70);
+        container.AnchorPoint = new Vector2(0, .5);
+        container.Position = UDim2.fromAbsolute(550, 0).add(UDim2.fromScale(0, .45));
+        container.BackgroundColor = StudioGlobals.BackgroundColor;
+        container.SetParent(this);
+
+        UIText modeText = new UIText();
+        modeText.BackgroundTransparency = 1;
+        modeText.Text = "Grid Options";
+        modeText.CustomFont = StudioGlobals.GlobalFont;
+        modeText.Size = UDim2.fromAbsolute(container.Size.X.Absolute, 10);
+        modeText.TextColor = StudioGlobals.TextColor;
+        modeText.Position = UDim2.fromScale(0, .85).add(UDim2.fromAbsolute(container.Position.X.Absolute, 0));
+        modeText.FontSize = 13;
+        modeText.SetParent(this);
+
+        StudioGlobals.GlobalBorder.Clone().SetParent(container);
+    }
     
     public Topbar() {
         this.Size = UDim2.fromScale(1, 0).add(UDim2.fromAbsolute(0, 105));
@@ -310,5 +331,6 @@ public class Topbar extends UIFrame {
         createFileOptionsFrame();
         createModeFrame();
         createCreationFrame();
+        createGridFrame();
     }
 }
