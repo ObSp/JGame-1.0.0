@@ -37,8 +37,9 @@ public class RenderUtil {
         radius *= size.getAxisFromVector2Axis(corner.RelativeTo);
 
         if (borderEffect != null) {
+            int upscaledRadius = (int) ((size.getAxisFromVector2Axis(corner.RelativeTo) + borderEffect.Width*4)*corner.Radius);
             g.setColor(borderEffect.BorderColor);
-            g.fillRoundRect((int)( pos.X - borderEffect.Width), (int) (pos.Y - borderEffect.Width), (int) (size.X + borderEffect.Width*2), (int) (size.Y + borderEffect.Width*2), (int) radius, (int) radius);
+            g.fillRoundRect((int)( pos.X - borderEffect.Width), (int) (pos.Y - borderEffect.Width), (int) (size.X + borderEffect.Width*2), (int) (size.Y + borderEffect.Width*2), (int) upscaledRadius, (int) upscaledRadius);
         }
 
         g.setColor(color);

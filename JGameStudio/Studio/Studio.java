@@ -6,6 +6,7 @@ import java.util.Locale;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.World.Image2D;
 import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
@@ -40,12 +41,20 @@ public class Studio {
     private void initComponents() {
         displayWindow = new DisplayWindow();
         displayWindow.SetParent(game.UINode);
+
+        StudioGlobals.DisplayWindow = displayWindow;
         
         sideBar = new Sidebar();
         topBar = new Topbar();
 
         sideBar.SetParent(game.UINode);
         topBar.SetParent(game.UINode);
+
+        try {
+            System.out.println(game.SerializationService.InstanceToJSONObject(new Image2D()).toJSONString());
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public Studio(String[] args) throws IOException {

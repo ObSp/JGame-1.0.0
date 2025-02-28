@@ -78,10 +78,11 @@ public abstract class Instance {
 
     //--UTIL--//
     private Instance[] instanceListToArray(ArrayList<Instance> list){
-        Instance[] array = new Instance[list.size()];
+        ArrayList<Instance> listCopy = new ArrayList<>(list);
+        Instance[] array = new Instance[listCopy.size()];
 
         for (int i = 0; i < array.length; i++)
-            array[i] = list.get(i);
+            array[i] = listCopy.get(i);
 
         return array;
     }

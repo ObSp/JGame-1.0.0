@@ -2,7 +2,7 @@ package JGamePackage.lib.Signal;
 
 import java.util.ArrayList;
 
-public class VoidSignal extends AbstractSignal{
+public class VoidSignal extends AbstractSignal {
     
     public ArrayList<VoidConnection> _connections = new ArrayList<>();
     public ArrayList<VoidConnection> _onces = new ArrayList<>();

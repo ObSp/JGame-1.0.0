@@ -1,7 +1,7 @@
 package JGamePackage.lib.Signal;
 
 
-public abstract class AbstractConnection {
+public abstract class AbstractConnection extends AbstractSignalInstance {
 
     /**A boolean representing whether or not this BiConnection is currently connected to a Signal.
     * 

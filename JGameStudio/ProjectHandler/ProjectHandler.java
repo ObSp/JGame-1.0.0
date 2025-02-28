@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-import JGameStudio.lib.JSONSimple.JSONObject;
-import JGameStudio.lib.JSONSimple.parser.JSONParser;
+import JGamePackage.lib.JSONSimple.JSONObject;
+import JGamePackage.lib.JSONSimple.parser.JSONParser;
 
 /**Structure of a project is as follows: <p>
  * ProjectFolder <p>

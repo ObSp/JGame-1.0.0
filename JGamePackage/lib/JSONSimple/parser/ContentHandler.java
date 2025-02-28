@@ -1,4 +1,4 @@
-package JGameStudio.lib.JSONSimple.parser;
+package JGamePackage.lib.JSONSimple.parser;
 
 import java.io.IOException;
 

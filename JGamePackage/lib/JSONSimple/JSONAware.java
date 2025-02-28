@@ -1,4 +1,4 @@
-package JGameStudio.lib.JSONSimple;
+package JGamePackage.lib.JSONSimple;
 
 /**
  * Beans that support customized output of JSON text shall implement this interface.  

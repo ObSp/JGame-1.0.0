@@ -1,3 +1,3 @@
 package JGamePackage.lib.Signal;
 
-public abstract class AbstractSignal {}
+public abstract class AbstractSignal extends AbstractSignalInstance {}

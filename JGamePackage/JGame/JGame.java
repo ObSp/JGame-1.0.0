@@ -11,6 +11,7 @@ import JGamePackage.JGame.Classes.Misc.WorldNode;
 import JGamePackage.JGame.Classes.Rendering.Renderer;
 import JGamePackage.JGame.Classes.Services.InputService;
 import JGamePackage.JGame.Classes.Services.ScriptService;
+import JGamePackage.JGame.Classes.Services.SerializationService;
 import JGamePackage.JGame.Classes.Services.TimeService;
 import JGamePackage.JGame.Classes.Services.WindowService;
 import JGamePackage.JGame.Types.Services.ServiceContainer;
@@ -43,6 +44,7 @@ public class JGame {
     public final TimeService TimeService;
     public final WindowService WindowService;
     public final ScriptService ScriptService;
+    public final SerializationService SerializationService;
 
     //--CAMERA--//
     public Camera Camera;
@@ -77,6 +79,7 @@ public class JGame {
         TimeService = Services.TimeService;
         WindowService = Services.WindowService;
         ScriptService = Services.ScriptService;
+        SerializationService = Services.SerializationService;
 
         renderer = new Renderer(this);
 

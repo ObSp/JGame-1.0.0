@@ -2,7 +2,7 @@
  * $Id: JSONValue.java,v 1.1 2006/04/15 14:37:04 platform Exp $
  * Created on 2006-4-15
  */
-package JGameStudio.lib.JSONSimple;
+package JGamePackage.lib.JSONSimple;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,7 +14,7 @@ import java.util.List;
 // import java.util.List;
 import java.util.Map;
 
-import JGameStudio.lib.JSONSimple.parser.*;
+import JGamePackage.lib.JSONSimple.parser.*;
 
 
 /**

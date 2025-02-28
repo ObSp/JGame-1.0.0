@@ -6,9 +6,9 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import JGameStudio.lib.JSONSimple.JSONArray;
-import JGameStudio.lib.JSONSimple.JSONObject;
-import JGameStudio.lib.JSONSimple.parser.JSONParser;
+import JGamePackage.lib.JSONSimple.JSONArray;
+import JGamePackage.lib.JSONSimple.JSONObject;
+import JGamePackage.lib.JSONSimple.parser.JSONParser;
 
 public class DataReader {
     private static HashMap<String, DataReader> activeReaders = new HashMap<>();
