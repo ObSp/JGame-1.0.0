@@ -119,7 +119,7 @@ public class ProjectHandler {
             String creationDateString; String modifiedDateString; String name;
 
             creationDateString = (String) baseObject.get("creation_date");
-            modifiedDateString = (String) baseObject.get("modified_date"); //TODO: change
+            modifiedDateString = (String) baseObject.get("modified_date");
             name = (String) baseObject.get("name");
 
             Instant creationInstant = Instant.parse(creationDateString);

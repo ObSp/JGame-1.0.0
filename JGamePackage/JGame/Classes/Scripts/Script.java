@@ -4,8 +4,12 @@ import java.lang.reflect.InvocationTargetException;
 
 import JGamePackage.JGame.Classes.Scripts.Writable.WritableScript;
 
-public abstract class Script extends ScriptBase {
+public class Script extends ScriptBase {
     private Class<? extends WritableScript> writableClass;
+
+    public Script() {
+        super();
+    }
     
     public Script(Class<? extends WritableScript> writableClass) {
         this.writableClass = writableClass;

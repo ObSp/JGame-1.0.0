@@ -24,7 +24,7 @@ public class StudioGlobals{
     public static Color BlueColor  = new Color(151, 223, 252);
     public static Color GrayColor = new Color(76, 76, 76);
 
-    public static String jsonData = "JGameStudio\\Data\\data.json";
+    public static String jsonData = "JGameStudio\\data.json";
 
     public static BorderEffect GlobalBorder;
 
