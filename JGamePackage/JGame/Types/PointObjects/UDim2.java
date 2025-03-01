@@ -79,4 +79,13 @@ public class UDim2 extends BasePoint {
     public UDim2 ToAbsolute() {
         return new UDim2(0, X.Absolute, 0, Y.Absolute);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof UDim2) {
+            UDim2 other = (UDim2) obj;
+            return other.X.equals(this.X) && other.Y.equals(this.Y);
+        }
+        return false;
+    }
 }

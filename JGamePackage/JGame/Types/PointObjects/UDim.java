@@ -16,4 +16,13 @@ public class UDim {
     public UDim lerp(UDim goal, double t) {
         return new UDim(ExtendedMath.lerp(this.Scale, goal.Scale, t), ExtendedMath.lerp(this.Absolute, goal.Absolute, t));
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof UDim) {
+            UDim other = (UDim) obj;
+            return other.Scale == this.Scale && other.Absolute == this.Absolute;
+        }
+        return false;
+    }
 }

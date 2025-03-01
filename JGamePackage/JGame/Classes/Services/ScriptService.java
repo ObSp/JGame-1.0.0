@@ -84,9 +84,10 @@ public class ScriptService extends Service {
         loadCreatedScripts();
         attachScriptLoadOnCreationConnection();
 
-        onTick.Connect(dt->runScriptsOnTick(dt));
+        onTick.Connect(this::runScriptsOnTick);
     }
 
+    @SuppressWarnings("unused")
     private ProjectRepresentation traceDotJGameDir() {
         File dotJGame = new File("/.jgame");
 
