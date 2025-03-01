@@ -88,4 +88,9 @@ public class UDim2 extends BasePoint {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "({"+X.Scale+", "+X.Absolute+"}, {"+Y.Scale+", "+Y.Absolute+"})";
+    }
 }

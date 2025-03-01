@@ -6,6 +6,8 @@ import java.util.Locale;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.Instance;
+import JGamePackage.JGame.Classes.UI.UIImage;
 import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
@@ -88,6 +90,8 @@ public class Studio {
 
         insertMenu = new InsertMenu(sideBar);
         StudioGlobals.InsertMenu = insertMenu;
+
+        game.SerializationService.WriteInstanceArrayToFile(game.UINode.GetDescendants(), "world.json");
     }
 
     public static void main(String[] args) throws IOException {

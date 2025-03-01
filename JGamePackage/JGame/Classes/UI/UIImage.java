@@ -14,7 +14,7 @@ public class UIImage extends UIBase implements AbstractImage {
     /**The Image that is rendered with this object.
      * 
      */
-    public java.awt.Image Image;
+    public transient java.awt.Image Image;
 
     protected String imagePath = "JGamePackage\\JGame\\Assets\\imageDefault.png";
 

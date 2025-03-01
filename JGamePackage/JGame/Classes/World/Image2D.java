@@ -14,7 +14,7 @@ public class Image2D extends WorldBase implements AbstractImage{
     /**The BufferedImage that is rendered with this object.
      * 
      */
-    public BufferedImage Image;
+    public transient BufferedImage Image;
 
     private String imagePath = "JGamePackage\\JGame\\Assets\\imageDefault.png";
 

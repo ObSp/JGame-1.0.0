@@ -43,7 +43,7 @@ public class Drag extends Mode {
         for (Instance selected : Selection.get()) {
             if (selected instanceof WorldBase) {
                 WorldBase worldInst = (WorldBase) selected;
-                worldInst.Position = GridManager.snapToGrid(mousePos.add(mouseDeltaWorld));
+                worldInst.Position = worldInst.Position.add(mouseDeltaWorld);
             } else if (selected instanceof UIBase) {
                 UIBase uiInst = (UIBase) selected;
 

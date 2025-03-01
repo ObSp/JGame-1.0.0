@@ -153,6 +153,7 @@ public class RenderUtil {
         drawText(text, renderSize, renderPos, color, fontSize, fontStyle, fontName, customFont, textScaled, xAlign, yAlign, "");
     }
 
+    @SuppressWarnings("unused")
     private static void drawBorder(Vector2 pos, Vector2 size, int width, Color color) {
         g.setColor(color);
 
