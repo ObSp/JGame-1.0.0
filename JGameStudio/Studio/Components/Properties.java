@@ -3,6 +3,8 @@ package JGameStudio.Studio.Components;
 import java.awt.Color;
 import java.lang.reflect.Field;
 
+import javax.swing.JFileChooser;
+
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Abstracts.AbstractImage;
 import JGamePackage.JGame.Classes.Modifiers.AspectRatioConstraint;
@@ -10,6 +12,7 @@ import JGamePackage.JGame.Classes.Modifiers.CornerEffect;
 import JGamePackage.JGame.Classes.Modifiers.ListLayout;
 import JGamePackage.JGame.Classes.UI.UIButton;
 import JGamePackage.JGame.Classes.UI.UIFrame;
+import JGamePackage.JGame.Classes.UI.UIImageButton;
 import JGamePackage.JGame.Classes.UI.UIScrollFrame;
 import JGamePackage.JGame.Classes.UI.UIText;
 import JGamePackage.JGame.Classes.UI.UITextInput;
@@ -286,6 +289,21 @@ public class Properties extends UIFrame {
         inp.Size = UDim2.fromScale(.5, 1);
         inp.ClearTextOnFocus = false;
         inp.SetParent(f);
+
+        UIImageButton filePicker = new UIImageButton();
+        filePicker.Size = UDim2.fromScale(0, .98);
+        filePicker.AnchorPoint = new Vector2(1, .5);
+        filePicker.Position = UDim2.fromScale(1.005, 0.5);
+        filePicker.BackgroundColor = StudioGlobals.BackgroundColor;
+        filePicker.SetImage("JGameStudio\\Assets\\Icons\\Open.png", new Vector2(25));
+        filePicker.ZIndex = 2;
+        filePicker.SetParent(f);
+
+        new AspectRatioConstraint().SetParent(filePicker);
+
+        filePicker.Mouse1Down.Connect(()->{
+            new JFileChooser().showOpenDialog(null);
+        });
 
         inp.FocusChanged.Connect(focused -> {
             if (focused) return;
