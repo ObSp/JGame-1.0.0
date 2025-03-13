@@ -48,7 +48,13 @@ public class Image2D extends WorldBase implements AbstractImage{
             RenderUtil.drawRectangle(this, renderSize, renderPosition, GetRenderColor());
         }
 
-        RenderUtil.drawImage(this, renderSize, renderPosition, Image, PixelPerfect);
+        boolean pixelPerfect = PixelPerfect;
+
+        if (game.Camera.GlobalPixelPerfect) {
+            pixelPerfect = true;
+        }
+
+        RenderUtil.drawImage(this, renderSize, renderPosition, Image, pixelPerfect);
     }
 
     @Override

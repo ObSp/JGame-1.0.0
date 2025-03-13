@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Abstracts.AbstractImage;
+import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGamePackage.lib.JSONSimple.JSONArray;
 import JGamePackage.lib.JSONSimple.JSONObject;
 import JGamePackage.lib.JSONSimple.parser.JSONParser;
@@ -18,6 +19,13 @@ import JGamePackage.lib.Signal.AbstractSignalInstance;
 
 
 public class SerializationService extends Service {
+
+    public static final int NODE_WORLD_IDENTIFIER = -1;
+    public static final int NODE_UI_IDENTIFIER = -2;
+    public static final int STORAGE_WORLD_IDENTIFIER = -3;
+    public static final int NODE_SCRIPT_IDENTIFIER = -4;
+    public static final int NULL_IDENTIFIER = -5;
+
     private HashMap<Class<? extends Instance>, Instance> cachedDefaultComparisonInstances = new HashMap<>();
 
     private Instance findOrCreateDefaultComparisonInstance(Class<? extends Instance> clazz) {
@@ -48,10 +56,12 @@ public class SerializationService extends Service {
             //skip transient fields, allowing classes to define fields that shouldn't be serialized
             if (Modifier.isTransient(field.getModifiers()) || Objects.equals(field.get(originalInst), fieldValue)) continue;
 
-            if (fieldValue instanceof AbstractSignalInstance) continue; //this value hasn't changed and therefore doesn't need to be serialized
+            if (fieldValue instanceof AbstractSignalInstance) continue;
 
             if (fieldValue instanceof Color) {
                 fieldValue = ((Color) fieldValue).getRGB();
+            } else if (fieldValue instanceof Vector2) {
+                fieldValue = ((Vector2) fieldValue).toString();
             }
 
             obj.put(field.getName(), fieldValue);
@@ -86,7 +96,23 @@ public class SerializationService extends Service {
 
                 Integer parentIdentifierIndex = instanceIndexMap.get(inst.GetParent());
 
-                obj.put("ParentIdentifierIndex", parentIdentifierIndex != null ? parentIdentifierIndex : -1);
+                Instance parent = inst.GetParent();
+
+                if (parentIdentifierIndex == null) {
+                    if (parent == game.WorldNode) {
+                        parentIdentifierIndex = NODE_WORLD_IDENTIFIER;
+                    } else if (parent == game.UINode) {
+                        parentIdentifierIndex = NODE_UI_IDENTIFIER;
+                    } else if (parent == game.StorageNode) {
+                        parentIdentifierIndex = STORAGE_WORLD_IDENTIFIER;
+                    } else if (parent == game.ScriptNode) {
+                        parentIdentifierIndex = NODE_SCRIPT_IDENTIFIER;
+                    } else {
+                        parentIdentifierIndex = NULL_IDENTIFIER;
+                    }
+                }
+
+                obj.put("ParentIdentifierIndex", parentIdentifierIndex);
             } catch (IllegalArgumentException | IllegalAccessException e) {
                 e.printStackTrace();
                 return null;
@@ -110,8 +136,18 @@ public class SerializationService extends Service {
             JSONObject obj = (JSONObject) arr.get(i);
             Instance inst = instances[i];
 
-            if ((int) obj.get("ParentIdentifierIndex") != -1) {
+            int parentIdentifier = ((int) (long) obj.get("ParentIdentifierIndex"));
+
+            if (parentIdentifier >= 0) {
                 inst.SetParent(instances[(int) obj.get("ParentIdentifierIndex")]);
+            } else if (parentIdentifier == NODE_WORLD_IDENTIFIER) {
+                inst.SetParent(game.WorldNode);
+            } else if (parentIdentifier == NODE_UI_IDENTIFIER) {
+                inst.SetParent(game.UINode);
+            } else if (parentIdentifier == STORAGE_WORLD_IDENTIFIER) {
+                inst.SetParent(game.StorageNode);
+            } else if (parentIdentifier == NODE_SCRIPT_IDENTIFIER) {
+                inst.SetParent(game.ScriptNode);
             }
         }
 

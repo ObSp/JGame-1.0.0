@@ -1,1 +1,1 @@
-[{"IdentifierIndex":0,"ParentIdentifierIndex":-1,"class":"JGamePackage.JGame.Classes.World.Box2D"}]
+[{"Position":"(-268.6000000000001, -32.30000000000002)","ImagePath":"JGamePackage\\JGame\\Assets\\imageDefault.png","IdentifierIndex":0,"ParentIdentifierIndex":-1,"class":"JGamePackage.JGame.Classes.World.Image2D"},{"IdentifierIndex":1,"ParentIdentifierIndex":0,"class":"JGameStudio.Studio.Instances.SelectionBorder"}]

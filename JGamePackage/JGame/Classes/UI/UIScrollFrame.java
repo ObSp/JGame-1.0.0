@@ -33,6 +33,7 @@ public class UIScrollFrame extends UIBase {
             if (MaxScrollOffset != null) {
                 ScrollOffset = new Vector2(0, Math.min(ScrollOffset.Y, MaxScrollOffset.Y));
             }
+            ScrollOffset = new Vector2(0, Math.max(ScrollOffset.Y, 0));
         });
     }
 

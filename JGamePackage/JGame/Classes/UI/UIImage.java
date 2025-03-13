@@ -72,7 +72,13 @@ public class UIImage extends UIBase implements AbstractImage {
             RenderUtil.drawRectangle(this, renderSize, renderPos, GetBackgroundRenderColor());
         }
 
-        RenderUtil.drawImage(this, renderSize, renderPos, Image, PixelPerfect);
+        boolean pixelPerfect = PixelPerfect;
+
+        if (game.Camera.GlobalPixelPerfect) {
+            pixelPerfect = true;
+        }
+
+        RenderUtil.drawImage(this, renderSize, renderPos, Image, pixelPerfect);
     }
 
     @Override

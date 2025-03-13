@@ -302,7 +302,14 @@ public class Properties extends UIFrame {
         new AspectRatioConstraint().SetParent(filePicker);
 
         filePicker.Mouse1Down.Connect(()->{
-            new JFileChooser().showOpenDialog(null);
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            int success = chooser.showOpenDialog(null);
+            if (success != JFileChooser.APPROVE_OPTION) return;
+
+            String path = chooser.getSelectedFile().getPath();
+            inp.Text = path;
+            inst.SetImage(path);
         });
 
         inp.FocusChanged.Connect(focused -> {
