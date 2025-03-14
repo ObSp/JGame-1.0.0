@@ -169,7 +169,11 @@ public class SerializationService extends Service {
                     if (fieldType == Vector2.class) {
                         field.set(inst, Vector2.fromString((String) obj.get(key)));
                         continue;
+                    } else if (fieldType == Color.class) {
+                        field.set(inst, new Color((int) obj.get(key)));
+                        continue;
                     }
+
                     System.out.println("Field type mismatch: " + fieldType + " vs " + obj.get(key).getClass());
                     continue;
                 }

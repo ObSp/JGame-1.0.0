@@ -457,7 +457,7 @@ public class InputService extends Service {
 
             if (v.ZIndex > curTarget.ZIndex) {
                 curTarget = v;
-            } else if (v.GetParent() == curTarget.GetParent() ) {
+            } else if (v.GetParent() == curTarget.GetParent() && v.ZIndex == curTarget.ZIndex) {
                 if (v.GetHierarchyDepthInParent() > curTarget.GetHierarchyDepthInParent()) {
                     curTarget = v;
                 }
