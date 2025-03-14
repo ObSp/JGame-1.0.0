@@ -136,10 +136,10 @@ public class SerializationService extends Service {
             JSONObject obj = (JSONObject) arr.get(i);
             Instance inst = instances[i];
 
-            int parentIdentifier = ((int) (long) obj.get("ParentIdentifierIndex"));
+            int parentIdentifier = ((int)obj.get("ParentIdentifierIndex"));
 
             if (parentIdentifier >= 0) {
-                inst.SetParent(instances[(int) obj.get("ParentIdentifierIndex")]);
+                inst.SetParent(instances[parentIdentifier]);
             } else if (parentIdentifier == NODE_WORLD_IDENTIFIER) {
                 inst.SetParent(game.WorldNode);
             } else if (parentIdentifier == NODE_UI_IDENTIFIER) {
@@ -164,6 +164,15 @@ public class SerializationService extends Service {
                 if (key.equals("class") || !doesObjectContainField(inst, (String) key)) continue;
 
                 Field field = inst.getClass().getField((String) key);
+                Class<?> fieldType = field.getType();
+                if (!fieldType.isAssignableFrom(obj.get(key).getClass()) && !fieldType.isPrimitive()) {
+                    if (fieldType == Vector2.class) {
+                        field.set(inst, Vector2.fromString((String) obj.get(key)));
+                        continue;
+                    }
+                    System.out.println("Field type mismatch: " + fieldType + " vs " + obj.get(key).getClass());
+                    continue;
+                }
                 field.set(inst, obj.get(key));
             }
 
