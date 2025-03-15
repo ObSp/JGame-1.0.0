@@ -53,13 +53,15 @@ public class ProjectHandler {
         String pathToNewFolder = creationFolder + "\\" + name;
         String sep = "\\";
         String pathTodotJgame = pathToNewFolder + sep + ".jgame";
+        String alphanumericName = name.replaceAll("[^A-Za-z0-9]","");
 
         File dir = new File(pathToNewFolder);
         dir.mkdirs();
 
-        File javaFile = new File(pathToNewFolder + sep + name + ".java");
+        File javaFile = new File(pathToNewFolder + sep + alphanumericName + ".java");
         File dotjgame = new File(pathTodotJgame);
         File projectJson = new File(pathTodotJgame + sep + "project.json");
+        File worldJson = new File(pathTodotJgame + sep + "world.json");
         File dotVSCode = new File(pathToNewFolder + sep + ".vscode");
         File settingsJSON = new File(dotVSCode.getPath() + sep + "settings.json");
         File jgamePackageDir = new File(pathToNewFolder + sep + "JGamePackage");
@@ -85,6 +87,8 @@ public class ProjectHandler {
         projectJSONDict.put("name", name);
         writeToFile(projectJson, projectJSONDict.toJSONString());
 
+        //write world json
+        writeToFile(worldJson, "[]");
         
 
         // write to VS Code settings
@@ -97,7 +101,7 @@ public class ProjectHandler {
 
         File mainSrcFile = new File("JGameStudio\\ProjectHandler\\Templates\\MainFileTemplate.txt");
         String mainSrc = readFile(mainSrcFile);
-        mainSrc = mainSrc.replaceFirst("%s", name); // replace class name arg with actual class nam;
+        mainSrc = mainSrc.replaceFirst("%s", alphanumericName); // replace class name arg with actual class nam;
         writeToFile(javaFile, mainSrc);
 
         // clone JGame Source

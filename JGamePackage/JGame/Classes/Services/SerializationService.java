@@ -88,6 +88,7 @@ public class SerializationService extends Service {
         }
         
         for (Instance inst : instances) {
+            if (inst == null) continue;
             JSONObject obj;
             try {
                 obj = InstanceToJSONObject(inst);

@@ -8,14 +8,17 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import JGamePackage.lib.CustomError.CustomError;
+import JGamePackage.lib.JSONSimple.JSONArray;
 import JGamePackage.lib.JSONSimple.JSONObject;
 import JGamePackage.lib.JSONSimple.parser.JSONParser;
+import JGamePackage.lib.JSONSimple.parser.ParseException;
 
 public class ProjectRepresentation {
     public final File dotJGameDirectory;
     public final File jgamePackageDirectory;
     public final String jgamePackageVersion;
     public final ProjectJSONRepresentation projectJson;
+    public JSONArray savedInstances = null;
 
     private static CustomError ErrorProjectReadingFailed = new CustomError("Failed to read the project.json file: %s.", CustomError.ERROR, "JGamePackage");
 
@@ -50,6 +53,18 @@ public class ProjectRepresentation {
         //read package version
         List<String> allLines = Files.readAllLines(Paths.get(jgamePackageDirectory+"\\.version"));
         this.jgamePackageVersion = allLines.get(0);
+
+        //read saved instances
+        File savedInstancesFile = new File(dotJGameDirectory.getPath() + "\\world.json");
+        JSONParser parser = new JSONParser();
+        FileReader reader = new FileReader(savedInstancesFile);
+
+        try {
+            JSONArray baseObject = (JSONArray) parser.parse(reader);
+            this.savedInstances = (JSONArray) baseObject;
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public ProjectRepresentation() throws IOException {

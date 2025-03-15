@@ -6,6 +6,7 @@ import java.util.Locale;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
@@ -19,6 +20,7 @@ import JGameStudio.Studio.Components.DisplayWindow;
 import JGameStudio.Studio.Components.Sidebar;
 import JGameStudio.Studio.Components.Topbar;
 import JGameStudio.Studio.Instances.InsertMenu;
+import JGameStudio.Studio.Instances.SelectionBorder;
 import JGameStudio.Studio.Pages.Init;
 
 public class Studio {
@@ -89,10 +91,20 @@ public class Studio {
         insertMenu = new InsertMenu(sideBar);
         StudioGlobals.InsertMenu = insertMenu;
 
-        game.SerializationService.ReadInstanceArrayFromFile("world.json");
+        if (path == null) return;
+
+        game.SerializationService.ReadInstanceArrayFromFile(projectData.path() + "\\.jgame\\world.json");
 
         game.InputService.GameClosing.Connect(()->{
-            game.SerializationService.WriteInstanceArrayToFile(game.WorldNode.GetDescendants(), "world.json");
+            Instance[] desc = game.WorldNode.GetDescendants();
+
+            for (int i = 0; i < desc.length; i++) {
+                if (desc[i] instanceof SelectionBorder) {
+                    desc[i] = null;
+                }
+            }
+
+            game.SerializationService.WriteInstanceArrayToFile(desc, projectData.path() + "\\.jgame\\world.json");
         });
     }
 

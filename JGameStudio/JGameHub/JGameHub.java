@@ -70,7 +70,7 @@ public class JGameHub {
         reloadProjectTableItems();
     }
 
-    private void launchProject(String projPath) {
+    private void launchProject(String projPath) {      
         HubStudioBridge.openProjectInStudio(projPath);
     }
 
