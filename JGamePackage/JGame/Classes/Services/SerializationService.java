@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +27,7 @@ public class SerializationService extends Service {
     public static final int NODE_SCRIPT_IDENTIFIER = -4;
     public static final int NULL_IDENTIFIER = -5;
 
+    @SuppressWarnings("unused")
     private List<String> instantiateIgnoreList = List.of("Node");
 
     private HashMap<Class<? extends Instance>, Instance> cachedDefaultComparisonInstances = new HashMap<>();
