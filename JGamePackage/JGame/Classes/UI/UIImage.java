@@ -96,6 +96,7 @@ public class UIImage extends UIBase implements AbstractImage {
         if (this.scale != null)
             img.SetImageScale(scale);
 
+        img.PixelPerfect = this.PixelPerfect;
         this.cloneHelper(img);
         return img;
     }

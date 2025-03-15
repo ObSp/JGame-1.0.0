@@ -68,7 +68,7 @@ public class Image2D extends WorldBase implements AbstractImage{
     protected Image2D cloneWithoutChildren() {
         Image2D img = new Image2D();
         img.SetImage(this.imagePath);
-
+        img.PixelPerfect = this.PixelPerfect;
         this.cloneHelper(img);
         return img;
     }

@@ -52,6 +52,7 @@ public class UIImageButton extends UIImage implements UIButtonBase {
 
         frame.HoverColor = this.HoverColor;
         frame.HoverEffectsEnabled = this.HoverEffectsEnabled;
+        frame.PixelPerfect = this.PixelPerfect;
         this.cloneHelper(frame);
         
         return frame;
