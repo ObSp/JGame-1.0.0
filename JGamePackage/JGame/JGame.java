@@ -151,7 +151,7 @@ public class JGame {
         return ((double)System.currentTimeMillis())/1000;
     }
 
-    public Instance[] GetAllInstances() {
+    public Instance[] GetAllNodeDescendants() {
         Instance[] worldNodeDesc = this.WorldNode.GetDescendants();
         Instance[] uiNodeDesc = this.UINode.GetDescendants();
         Instance[] storageNodeDesc = this.StorageNode.GetDescendants();

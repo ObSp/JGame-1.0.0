@@ -96,7 +96,7 @@ public class Studio {
         game.SerializationService.ReadInstanceArrayFromFile(projectData.path() + "\\.jgame\\world.json");
 
         game.InputService.GameClosing.Connect(()->{
-            Instance[] desc = game.WorldNode.GetDescendants();
+            Instance[] desc = game.GetAllNodeDescendants();
 
             for (int i = 0; i < desc.length; i++) {
                 if (desc[i] instanceof SelectionBorder) {
