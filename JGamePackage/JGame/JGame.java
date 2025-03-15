@@ -3,6 +3,7 @@ package JGamePackage.JGame;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Misc.Camera;
 import JGamePackage.JGame.Classes.Misc.ScriptNode;
 import JGamePackage.JGame.Classes.Misc.StorageNode;
@@ -148,6 +149,28 @@ public class JGame {
 
     private double curSeconds() {
         return ((double)System.currentTimeMillis())/1000;
+    }
+
+    public Instance[] GetAllInstances() {
+        Instance[] worldNodeDesc = this.WorldNode.GetDescendants();
+        Instance[] uiNodeDesc = this.UINode.GetDescendants();
+        Instance[] storageNodeDesc = this.StorageNode.GetDescendants();
+        Instance[] scriptNodeDesc = this.ScriptNode.GetDescendants();
+
+        Instance[] allInstances = new Instance[worldNodeDesc.length + uiNodeDesc.length + storageNodeDesc.length + scriptNodeDesc.length];
+        for (int i = 0; i < worldNodeDesc.length; i++) {
+            allInstances[i] = worldNodeDesc[i];
+        }
+        for (int i = 0; i < uiNodeDesc.length; i++) {
+            allInstances[i + worldNodeDesc.length] = uiNodeDesc[i];
+        }
+        for (int i = 0; i < storageNodeDesc.length; i++) {
+            allInstances[i + worldNodeDesc.length + uiNodeDesc.length] = storageNodeDesc[i];
+        }
+        for (int i = 0; i < scriptNodeDesc.length; i++) {
+            allInstances[i + worldNodeDesc.length + uiNodeDesc.length + storageNodeDesc.length] = scriptNodeDesc[i];
+        }
+        return allInstances;
     }
 
 

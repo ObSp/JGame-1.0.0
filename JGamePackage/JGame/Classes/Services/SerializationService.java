@@ -5,8 +5,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 import JGamePackage.JGame.Classes.Instance;
@@ -25,6 +27,8 @@ public class SerializationService extends Service {
     public static final int STORAGE_WORLD_IDENTIFIER = -3;
     public static final int NODE_SCRIPT_IDENTIFIER = -4;
     public static final int NULL_IDENTIFIER = -5;
+
+    private List<String> instantiateIgnoreList = List.of("Node");
 
     private HashMap<Class<? extends Instance>, Instance> cachedDefaultComparisonInstances = new HashMap<>();
 
