@@ -15,6 +15,7 @@ import JGameStudio.ProjectHandler.ProjectHandler.ProjectData;
 import JGameStudio.Studio.Classes.KeyboardBehavior.KeyboardBehaviour;
 import JGameStudio.Studio.Classes.Modes.ModeHandler;
 import JGameStudio.Studio.Classes.MouseBehavior.MouseBehaviorHandler;
+import JGameStudio.Studio.Classes.SaveOpenHandler.SaveOpenHandler;
 import JGameStudio.Studio.Classes.WorldNavigation.WorldNavi;
 import JGameStudio.Studio.Components.DisplayWindow;
 import JGameStudio.Studio.Components.Sidebar;
@@ -69,6 +70,9 @@ public class Studio {
             game.Services.WindowService.SetWindowTitle(projectData.name() + " - JGame Studio");
         }
 
+        SaveOpenHandler.game = game;
+        SaveOpenHandler.projectData = projectData;
+
         StudioGlobals.construct();
         Init.showLoadingFrame(game).Wait();
 
@@ -83,6 +87,7 @@ public class Studio {
         StudioGlobals.ModeHandler = new ModeHandler();
 
         initComponents();
+        SaveOpenHandler.displayWindow = displayWindow;
 
         worldNavi = new WorldNavi();
         mouseHandler = new MouseBehaviorHandler();
@@ -96,15 +101,7 @@ public class Studio {
         game.SerializationService.ReadInstanceArrayFromFile(projectData.path() + "\\.jgame\\world.json");
 
         game.InputService.GameClosing.Connect(()->{
-            Instance[] desc = StudioUtil.ConcatInstanceArrays(game.WorldNode.GetDescendants(), displayWindow.GetDescendants(), game.StorageNode.GetDescendants(), game.ScriptNode.GetDescendants());
-
-            for (int i = 0; i < desc.length; i++) {
-                if (desc[i] instanceof SelectionBorder) {
-                    desc[i] = null;
-                }
-            }
-
-            game.SerializationService.WriteInstanceArrayToFile(desc, projectData.path() + "\\.jgame\\world.json");
+            SaveOpenHandler.SaveWorldToCurrentFile();
         });
     }
 

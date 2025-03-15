@@ -18,6 +18,7 @@ import JGamePackage.JGame.Types.Constants.Constants;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
 import JGameStudio.StudioGlobals;
+import JGameStudio.Studio.Classes.SaveOpenHandler.SaveOpenHandler;
 import JGameStudio.Studio.Modules.ColorManager;
 import JGameStudio.Studio.Modules.CreationHandler;
 import JGameStudio.Studio.Modules.Selection;
@@ -204,6 +205,11 @@ public class Topbar extends UIFrame {
         openFile.GetChildOfClass(UIText.class).Text = "Open";
         openFile.GetChildOfClass(UIImage.class).SetImage("JGameStudio\\Assets\\Icons\\Open.png");
         openFile.SetParent(container);
+
+        saveFile.Mouse1Down.Connect(()-> {
+            if (SaveOpenHandler.projectData == null) return;
+            SaveOpenHandler.SaveWorldToCurrentFile();
+        });
     }
 
     private void createModeFrame() {

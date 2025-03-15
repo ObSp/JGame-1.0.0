@@ -3,7 +3,6 @@ package JGameStudio.Studio.Components;
 import java.awt.Color;
 
 import JGamePackage.JGame.Classes.UI.UIFrame;
-import JGamePackage.JGame.Classes.World.Box2D;
 import JGamePackage.JGame.Types.PointObjects.UDim2;
 
 public class DisplayWindow extends UIFrame {
