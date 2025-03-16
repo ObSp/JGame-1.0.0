@@ -10,7 +10,7 @@ import JGamePackage.lib.Signal.SignalWrapper;
 
 public class ScriptService extends Service {
     private CustomError ErrorNoDotJGame = new CustomError("Unable to load scripts: unable to find %s.", CustomError.ERROR, "JGamePackage");
-    private CustomError WarningScriptLoadFail = new CustomError("Error while trying to load Script %s, the loading of this script will be skipped: %s.", CustomError.WARNING, "JGamePackage");
+    private CustomError WarningScriptLoadFail = new CustomError("Error while trying to load Script %s, the loading of this script will be skipped.", CustomError.WARNING, "JGamePackage");
 
     private ArrayList<Script> loadedScripts = new ArrayList<>();
     private ArrayList<WritableScript> loadedWritables = new ArrayList<>();
@@ -20,7 +20,7 @@ public class ScriptService extends Service {
         try {
             writScript = script.GetWritableClass().getDeclaredConstructor().newInstance();
         } catch (Exception e) {
-            WarningScriptLoadFail.Throw(new String[] {script.Name, e.getMessage()});
+            WarningScriptLoadFail.Throw(new String[] {script.Name});
             return;
         }
 
