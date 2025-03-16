@@ -35,6 +35,8 @@ public class StudioService extends Service {
 
         BuildProjectRepresentation();
 
+        game.Services.WindowService.SetWindowTitle(projectRepresentation.projectJson.projectName);
+
         if (!autoUpdate) return;
 
         try {
@@ -51,7 +53,6 @@ public class StudioService extends Service {
     private void BuildProjectRepresentation() {
         try {
             projectRepresentation = new ProjectRepresentation();
-            game.Services.WindowService.SetWindowTitle(projectRepresentation.projectJson.projectName);
         } catch (IOException e) {
             e.printStackTrace();
         }
