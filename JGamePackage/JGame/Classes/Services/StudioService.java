@@ -37,6 +37,12 @@ public class StudioService extends Service {
 
         if (!autoUpdate) return;
 
+        try {
+            jgameSourceVersion = Files.readAllLines(Paths.get(projectRepresentation.projectJson.jgamePackageSource + "\\.version")).get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         if (!IsJGamePackageUpToDate()) {
             UpdateJGamePackageToLatestVersion();
         }
@@ -45,7 +51,7 @@ public class StudioService extends Service {
     private void BuildProjectRepresentation() {
         try {
             projectRepresentation = new ProjectRepresentation();
-            jgameSourceVersion = Files.readAllLines(Paths.get(projectRepresentation.projectJson.jgamePackageSource + "\\.version")).get(0);
+            game.WindowService.SetWindowTitle(projectRepresentation.projectJson.projectName);
         } catch (IOException e) {
             e.printStackTrace();
         }
