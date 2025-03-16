@@ -35,7 +35,7 @@ public class StudioService extends Service {
 
         BuildProjectRepresentation();
 
-        game.Services.WindowService.SetWindowTitle(projectRepresentation.projectJson.projectName);
+        game.GetWindow().setTitle(projectRepresentation.projectJson.projectName);
 
         if (!autoUpdate) return;
 
