@@ -32,7 +32,7 @@ public class Camera extends Instance {
 
     public Vector2 GetWorldBaseRenderSize(WorldBase object) {
        checkDepthFactor();
-        return object.Size.divide(DepthFactor);
+        return new Vector2(Math.floor(object.Size.X/DepthFactor), Math.floor(object.Size.Y/DepthFactor));
     }
 
     private Vector2 getWorldBaseTopLeftCorner(WorldBase object) {
@@ -45,7 +45,8 @@ public class Camera extends Instance {
     
     public Vector2 GetWorldBaseRenderPosition(WorldBase object) {
         checkDepthFactor();
-        return getWorldBaseTopLeftCorner(object).subtract(this.Position).divide(DepthFactor).add(getCenterPos()).subtract(0, game.Services.WindowService.IsFullscreen() ? 50 : 0);//Position.add(object.Position.subtract(object.GetPivotOffset())).divide(DepthFactor).add(game.Services.WindowService.GetWindowSize().divide(2));
+        Vector2 posWithOffset = getWorldBaseTopLeftCorner(object).subtract(this.Position);
+        return new Vector2(Math.floor(posWithOffset.X/DepthFactor), Math.floor(posWithOffset.Y/DepthFactor)).add(getCenterPos()).subtract(0, game.Services.WindowService.IsFullscreen() ? 50 : 0);//Position.add(object.Position.subtract(object.GetPivotOffset())).divide(DepthFactor).add(game.Services.WindowService.GetWindowSize().divide(2));
     }
 
 
