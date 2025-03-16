@@ -30,7 +30,7 @@ public class ScriptService extends Service {
         loadedScripts.add(script);
         loadedWritables.add(writScript);
 
-        writScript.Start();
+        new Thread(writScript::Start).start();
     }
 
     private void loadCreatedScripts() {
@@ -75,7 +75,7 @@ public class ScriptService extends Service {
 
     private void runScriptsOnTick(double dt) {
         for (WritableScript script : loadedWritables) {
-            script.Tick(dt);
+            new Thread(()->script.Tick(dt)).start();
         }
     }
 
