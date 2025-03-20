@@ -209,9 +209,9 @@ public class SerializationService extends Service {
                     }
                 }
 
-                if (script.WritableClass != null) {
-                    game.ScriptService.LoadScript(script);
-                }
+                //if (script.WritableClass != null) {
+                    //game.ScriptService.LoadScript(script);
+                //}
             }
 
             return inst;
