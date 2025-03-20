@@ -1,15 +1,18 @@
 package JGameStudio.Studio.Components;
 
 import java.awt.Color;
+import java.io.File;
 import java.lang.reflect.Field;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Classes.Abstracts.AbstractImage;
 import JGamePackage.JGame.Classes.Modifiers.AspectRatioConstraint;
 import JGamePackage.JGame.Classes.Modifiers.CornerEffect;
 import JGamePackage.JGame.Classes.Modifiers.ListLayout;
+import JGamePackage.JGame.Classes.Scripts.Script;
 import JGamePackage.JGame.Classes.UI.UIButton;
 import JGamePackage.JGame.Classes.UI.UIFrame;
 import JGamePackage.JGame.Classes.UI.UIImageButton;
@@ -320,6 +323,79 @@ public class Properties extends UIFrame {
         return f;
     }
 
+    private String convertFileToClassName(File f) {
+        String projectPath = StudioGlobals.OpenProjectPath;
+        if (projectPath == null) {
+            JOptionPane.showMessageDialog(null, "You must open a JGame Studio project in order to use the script system!", "JGame Studio Script Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
+        String fPath = f.getPath();
+        if (!fPath.contains(".java")) {
+            JOptionPane.showMessageDialog(null, "You must selected a .java file in order to link a script.", "JGame Studio Script Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+        if (!fPath.contains(projectPath)) {
+            JOptionPane.showMessageDialog(null, "You must selected a script within your current project.", "JGame Studio Script Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+
+        String className = fPath.replace(projectPath, "");
+        className = className.replace("\\", ".");
+        className = className.replace(".java", "");
+        if (className.startsWith(".")) className = className.replaceFirst(".", "");
+
+        return className;
+    }
+
+    private UIFrame createWritableScriptClassSelectorField(String fieldName, String name, Script inst) {
+        UIFrame f = createFieldBaseFrame(fieldName);
+
+        UITextInput inp = new UITextInput();
+        inp.Text = name;
+        inp.TextColor = StudioGlobals.TextColor;
+        inp.FontSize = fieldFontSize;
+        inp.BackgroundTransparency = 1;
+        inp.CustomFont = StudioGlobals.GlobalFont;
+        inp.HorizontalTextAlignment = Constants.HorizontalTextAlignment.Left;
+        inp.Position = UDim2.fromScale(.52, 0);
+        inp.Size = UDim2.fromScale(.5, 1);
+        inp.ClearTextOnFocus = false;
+        inp.SetParent(f);
+
+        UIImageButton filePicker = new UIImageButton();
+        filePicker.Size = UDim2.fromScale(0, .98);
+        filePicker.AnchorPoint = new Vector2(1, .5);
+        filePicker.Position = UDim2.fromScale(1.005, 0.5);
+        filePicker.BackgroundColor = StudioGlobals.BackgroundColor;
+        filePicker.SetImage("JGameStudio\\Assets\\Icons\\Open.png", new Vector2(25));
+        filePicker.ZIndex = 2;
+        filePicker.SetParent(f);
+
+        new AspectRatioConstraint().SetParent(filePicker);
+
+        filePicker.Mouse1Down.Connect(()->{
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            int success = chooser.showOpenDialog(null);
+            if (success != JFileChooser.APPROVE_OPTION) return;
+
+            File selectedFile = chooser.getSelectedFile();
+
+            String className = convertFileToClassName(selectedFile);
+            inp.Text = className;
+            inst.SetWritableClassName(className);
+        });
+
+        inp.FocusChanged.Connect(focused -> {
+            if (focused) return;
+            String className = inp.Text;
+            inst.SetWritableClassName(className);
+        });
+
+        return f;
+    }
+
     private void UpdateWindow(Instance cur) throws IllegalArgumentException, IllegalAccessException {
         for (Instance v : propsFrame.GetChildrenOfClass(UIFrame.class)) {
             v.Destroy();
@@ -328,6 +404,11 @@ public class Properties extends UIFrame {
         header.Text = "Properties";
         if (cur == null) return;
         header.Text = "Properties - "+cur.getClass().getSimpleName()+ " \"" + cur.Name + "\"";
+
+        if (cur instanceof Script) {
+            Script script = (Script) cur;
+            createWritableScriptClassSelectorField("WritableScript", script.GetWritableClassName(), script).SetParent(propsFrame);
+        }
 
         for (Field f : cur.getClass().getFields()) {
             Class<?> type = f.getType();

@@ -6,7 +6,6 @@ import java.util.Locale;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import JGamePackage.JGame.JGame;
-import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
@@ -21,7 +20,6 @@ import JGameStudio.Studio.Components.DisplayWindow;
 import JGameStudio.Studio.Components.Sidebar;
 import JGameStudio.Studio.Components.Topbar;
 import JGameStudio.Studio.Instances.InsertMenu;
-import JGameStudio.Studio.Instances.SelectionBorder;
 import JGameStudio.Studio.Pages.Init;
 
 public class Studio {
@@ -68,6 +66,7 @@ public class Studio {
         if (path != null) {
             projectData = ProjectHandler.ReadProjectDir(path);
             game.Services.WindowService.SetWindowTitle(projectData.name() + " - JGame Studio");
+            StudioGlobals.OpenProjectPath = path;
         }
 
         SaveOpenHandler.game = game;

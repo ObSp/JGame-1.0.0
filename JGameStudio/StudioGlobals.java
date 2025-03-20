@@ -33,6 +33,7 @@ public class StudioGlobals{
     public static InsertMenu InsertMenu;
     public static ModeHandler ModeHandler;
     public static DisplayWindow DisplayWindow;
+    public static String OpenProjectPath;
 
     public static void construct() {
         GlobalBorder = new BorderEffect();
