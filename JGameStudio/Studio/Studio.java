@@ -1,11 +1,13 @@
 package JGameStudio.Studio;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 import JGamePackage.JGame.JGame;
+import JGamePackage.JGame.Classes.Instance;
 import JGamePackage.JGame.Types.StartParams.StartParams;
 import JGameStudio.StudioGlobals;
 import JGameStudio.StudioUtil;
@@ -97,7 +99,10 @@ public class Studio {
 
         if (path == null) return;
 
-        game.SerializationService.ReadInstanceArrayFromFile(projectData.path() + "\\.jgame\\world.json");
+        HashMap<Integer, Instance> options = new HashMap<>();
+        options.put(game.SerializationService.NODE_UI_IDENTIFIER, displayWindow);
+
+        game.SerializationService.ReadInstanceArrayFromFile(projectData.path() + "\\.jgame\\world.json", options);
 
         game.InputService.GameClosing.Connect(()->{
             SaveOpenHandler.SaveWorldToCurrentFile();

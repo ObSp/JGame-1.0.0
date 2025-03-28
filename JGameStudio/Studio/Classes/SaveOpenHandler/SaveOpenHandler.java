@@ -1,5 +1,7 @@
 package JGameStudio.Studio.Classes.SaveOpenHandler;
 
+import java.util.HashMap;
+
 import JGamePackage.JGame.JGame;
 import JGamePackage.JGame.Classes.Instance;
 import JGameStudio.StudioUtil;
@@ -22,6 +24,9 @@ public class SaveOpenHandler {
             }
         }
 
-        game.SerializationService.WriteInstanceArrayToFile(desc, projectData.path() + "\\.jgame\\world.json");
+        HashMap<Integer, Instance> options = new HashMap<>();
+        options.put(game.SerializationService.NODE_UI_IDENTIFIER, displayWindow);
+
+        game.SerializationService.WriteInstanceArrayToFile(desc, projectData.path() + "\\.jgame\\world.json", options);
     }
 }
