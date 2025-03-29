@@ -24,6 +24,7 @@ public class ScriptService extends Service {
 
         writScript.game = game;
         writScript.script = script;
+        writScript.world = game.WorldNode;
 
         loadedScripts.add(script);
         loadedWritables.add(writScript);
