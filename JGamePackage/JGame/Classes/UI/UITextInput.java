@@ -3,8 +3,6 @@ package JGamePackage.JGame.Classes.UI;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Shape;
 
 import JGamePackage.JGame.Classes.Rendering.RenderUtil;
 import JGamePackage.JGame.Types.PointObjects.Vector2;
