@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.File;
 import java.lang.reflect.Field;
 
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -396,6 +397,38 @@ public class Properties extends UIFrame {
         return f;
     }
 
+    private UIFrame createColorField(String fieldName, Color val, Field field, Instance inst) {
+        UIFrame f = createFieldBaseFrame(fieldName);
+
+        UIButton toggle = new UIButton();
+        toggle.Size = UDim2.fromScale(0, .6);
+        toggle.AnchorPoint = new Vector2(0, .5);
+        toggle.Position = UDim2.fromScale(.52, .5);
+        toggle.BackgroundColor = val;
+        toggle.SetParent(f);
+
+        toggle.BackgroundColor = val;
+
+        toggle.Mouse1Down.Connect(()-> {
+            try {
+                Color chosen = JColorChooser.showDialog(game.GetWindow(), "Pick Color", val);
+                if (chosen == null) return;
+                field.set(inst, chosen);
+                toggle.BackgroundColor = chosen;
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
+        CornerEffect corner = new CornerEffect();
+        corner.Radius = .5;
+        corner.SetParent(toggle);
+
+        new AspectRatioConstraint().SetParent(toggle);
+
+        return f;
+    }
+
     private void UpdateWindow(Instance cur) throws IllegalArgumentException, IllegalAccessException {
         for (Instance v : propsFrame.GetChildrenOfClass(UIFrame.class)) {
             v.Destroy();
@@ -426,6 +459,8 @@ public class Properties extends UIFrame {
                 createNumberField(name, (Number) curValue, f, cur).SetParent(propsFrame);
             } else if (curValue instanceof Vector2) {
                 createVector2Field(name, (Vector2) curValue, f, cur).SetParent(propsFrame);
+            } else if (curValue instanceof Color) {
+                createColorField(name, (Color) curValue, f, cur).SetParent(propsFrame);
             }
         }
 

@@ -65,12 +65,12 @@ public class UITextInput extends UIText {
             renderColor = new Color(PlaceholderColor.getRed(), PlaceholderColor.getGreen(), PlaceholderColor.getBlue(), renderColor.getAlpha());
         }
 
-        Shape oldClip = graphics.getClip();
-        graphics.setClip(new Rectangle((int) renderPos.X, (int)renderPos.Y, (int)renderSize.X,(int) renderSize.Y));
+        //Shape oldClip = graphics.getClip();
+        //graphics.setClip(new Rectangle((int) renderPos.X, (int)renderPos.Y, (int)renderSize.X,(int) renderSize.Y));
 
         RenderUtil.drawText(renderText, renderSize, renderPos, renderColor, FontSize, FontStyle, FontName, CustomFont, TextScaled, HorizontalTextAlignment, VerticalTextAlignment, focused && showInTextCursor ? "I" : "");
 
-        graphics.setClip(oldClip);
+        //graphics.setClip(oldClip);
     }
 
     @Override
