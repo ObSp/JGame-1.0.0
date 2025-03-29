@@ -14,6 +14,7 @@ public class ScriptService extends Service {
     private ArrayList<WritableScript> loadedWritables = new ArrayList<>();
 
     private void loadScript(Script script) {
+        if (script.Disabled) return;
         WritableScript writScript;
         try {
             writScript = script.WritableClass.getDeclaredConstructor().newInstance();
